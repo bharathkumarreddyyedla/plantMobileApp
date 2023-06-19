@@ -6,6 +6,21 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "fonts": {
+      "RBlack": "./assets/fonts/Roboto-Black.ttf",
+      "RBlackI": "./assets/fonts/Roboto-BlackItalic.ttf",
+      "RB": "./assets/fonts/Roboto-Bold.ttf",
+      "RBI": "./assets/fonts/Roboto-BoldItalic.ttf",
+      "RI": "./assets/fonts/Roboto-Italic.ttf",
+      "RL": "./assets/fonts/Roboto-Light.ttf",
+      "RLI": "./assets/fonts/Roboto-LightItalic.ttf",
+      "RM": "./assets/fonts/Roboto-Medium.ttf",
+      "RMI": "./assets/fonts/Roboto-MediumItalic.ttf",
+      "RR": "./assets/fonts/Roboto-Regular.ttf",
+      "RRI": "./assets/fonts/Roboto-RegularItalic.ttf",
+      "RT": "./assets/fonts/Roboto-Thin.ttf",
+      "RTI": "./assets/fonts/Roboto-ThinItalic.ttf"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -15,9 +30,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.leopard.leafy",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.leopard.leafy",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

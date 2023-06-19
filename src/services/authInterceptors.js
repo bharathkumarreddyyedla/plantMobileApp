@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import NetInfo from "@react-native-community/netinfo";
+// import DeviceInfo from "react-native-device-info";
 import { View } from "react-native";
 import { loadingActions } from "./redux/reduxActions/exportAllActions";
-import { AuthContext } from "../configs/contexts";
-import SuccessPopUp from "../components/customComponents/successPopUp";
-import { Loader } from "../components/customComponents/loader";
 import { apiClientService } from "./ApiService";
-import HomeNavigator from "../navigators/homeNavigator";
+import { AuthContext } from "../configs/contexts";
+import { Loader } from "../components/customComponents/loader";
 import AuthNavigator from "../navigators/authNavigator";
+import SuccessPopUp from "../components/customComponents/successPopUp";
 
-const Interceptors = ({ token }) => {
+const AuthInterceptors = () => {
   const [count, setCount] = useState(0);
   // const { setRefeshToken, getNewToken, logout } = React.useContext(AuthContext);
   const { apiMessage } = useSelector((state) => state?.loader);
@@ -37,6 +37,7 @@ const Interceptors = ({ token }) => {
 
   React.useEffect(() => {
     apiClientService.interceptors.request.use((req) => {
+      console.log("req", req);
       setCount(count + 1);
       setLoading(true);
       return req;
@@ -49,7 +50,7 @@ const Interceptors = ({ token }) => {
           setLoading(false);
         }
         if (res.status === 200) {
-          let msg = res?.data;
+          let msg = res?.data?.error;
           console.log("message", msg);
           setLoading(false);
           if (msg !== "" && msg !== undefined) {
@@ -136,9 +137,9 @@ const Interceptors = ({ token }) => {
       ) : (
         <View />
       )}
-      {token !== "" ? <HomeNavigator /> : <AuthNavigator />}
+      <AuthNavigator />
     </>
   );
 };
 
-export default Interceptors;
+export default AuthInterceptors;
