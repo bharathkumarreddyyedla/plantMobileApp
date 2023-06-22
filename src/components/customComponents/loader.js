@@ -14,7 +14,7 @@ import { Button, LinearProgress } from "react-native-elements";
 import { loadingActions } from "../../services/redux/reduxActions/exportAllActions";
 
 import { AuthContext } from "../../configs/contexts";
-import { NativeIcon } from "../../icons/nativeIcons";
+import { NativeIcon } from "../../icons/NativeIcons";
 
 export const Loader = () => {
   const { colors } = useTheme();

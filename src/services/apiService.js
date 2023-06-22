@@ -8,7 +8,7 @@ export const apiClientService = axios.create({
 
 export const httpService = {
   get: (url, token) => {
-    return apiClientService.get(`${API_URL}${url}`, {
+    return apiClientService.get(`${"http://192.168.0.135:3001/"}${url}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -16,11 +16,15 @@ export const httpService = {
   },
   post: (url, payload, token) => {
     console.log("API_URL", API_URL);
-    return apiClientService.post(`${API_URL}${url}`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    return apiClientService.post(
+      `${"http://192.168.0.135:3001/"}${url}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   },
   update: (url, payload, token) => {
     return apiClientService.post(`${API_URL}${url}`, payload, {

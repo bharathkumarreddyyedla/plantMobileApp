@@ -10,8 +10,10 @@ import { AuthContext } from "../configs/contexts";
 import { Loader } from "../components/customComponents/loader";
 import AuthNavigator from "../navigators/authNavigator";
 import SuccessPopUp from "../components/customComponents/successPopUp";
+import HomeNavigator from "../navigators/homeNavigator";
+import Footer from "../components/customComponents/footer";
 
-const AuthInterceptors = () => {
+const AuthInterceptors = ({ navigation }) => {
   const [count, setCount] = useState(0);
   // const { setRefeshToken, getNewToken, logout } = React.useContext(AuthContext);
   const { apiMessage } = useSelector((state) => state?.loader);
@@ -138,6 +140,7 @@ const AuthInterceptors = () => {
         <View />
       )}
       <AuthNavigator />
+      
     </>
   );
 };

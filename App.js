@@ -16,27 +16,30 @@ import { PaperTheme } from "./src/themes/paperTheme";
 const RootStack = createNativeStackNavigator();
 
 export default function App() {
-  const { auth, state={} } = useAuth();
+  const { auth, state = {} } = useAuth();
   const renderScreens = () => {
-    console.log("state", state);
     return state?.user && state?.user?.token ? (
       <>
-        <RootStack.Screen name="HomeStack">
+      <RootStack.Screen name="HomeStack" component={Interceptors} initialParams={{userData:state?.user,token :state?.user?.token }}/>
+        {/* <RootStack.Screen name="HomeStack">
           {() => (
             <UserContext.Provider
               value={{
                 userState: state.user,
               }}
             >
+              //  <RootStack.Screen
+              //   name="Home"
+              //   component={Interceptors}
+              //   initialParams={state?.user?.token}
+              // /> 
               <Interceptors token={state?.user?.token} />
             </UserContext.Provider>
           )}
-        </RootStack.Screen>
+        </RootStack.Screen> */}
       </>
     ) : (
-      <RootStack.Screen name={"Auth"}>
-        {() => <AuthInterceptors />}
-      </RootStack.Screen>
+      <RootStack.Screen name={"Auth"} component={AuthInterceptors} />
     );
   };
   return (

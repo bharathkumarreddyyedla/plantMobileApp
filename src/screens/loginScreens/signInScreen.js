@@ -48,9 +48,9 @@ const SignInScreen = ({ navigation }) => {
               }}
               style={{ fontSize: 12, fontWeight: "400", color: "grey" }}
             >
-              Need to leafy?{" "}
+              New to leafy?{" "}
               <Text style={{ color: "black", fontWeight: "bold" }}>
-                sign up for free
+                sign up
               </Text>
             </Text>
           </View>

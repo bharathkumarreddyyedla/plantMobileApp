@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import Icons from "./icons";
+import Icons from "../icons/Icons";
 
 export function NativeIcon({
   iconName,
@@ -25,7 +25,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "SimpleLineIcons" && (
-        <Icon.SimpleLineIcons
+        <Icons.SimpleLineIcons
           name={iconName}
           color={iconClr}
           size={size}
@@ -33,7 +33,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "FontAwesome5" && (
-        <Icon.FontAwesome5
+        <Icons.FontAwesome5
           name={iconName}
           color={iconClr}
           size={size}
@@ -41,7 +41,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "MaterialCommunityIcons" && (
-        <Icon.MaterialCommunityIcons
+        <Icons.MaterialCommunityIcons
           name={iconName}
           color={iconClr}
           size={size}
@@ -49,7 +49,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "FontAwesome" && (
-        <Icon.FontAwesome
+        <Icons.FontAwesome
           name={iconName}
           color={iconClr}
           size={size}
@@ -57,7 +57,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "Foundation" && (
-        <Icon.Foundation
+        <Icons.Foundation
           name={iconName}
           color={iconClr}
           size={size}
@@ -65,7 +65,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "EvilIcons" && (
-        <Icon.EvilIcons
+        <Icons.EvilIcons
           name={iconName}
           color={iconClr}
           size={size}
@@ -81,7 +81,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "Octicons" && (
-        <Icon.Octicons
+        <Icons.Octicons
           name={iconName}
           color={iconClr}
           size={size}
@@ -89,7 +89,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "Feather" && (
-        <Icon.Feather
+        <Icons.Feather
           name={iconName}
           color={iconClr}
           size={size}
@@ -97,7 +97,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "Entypo" && (
-        <Icon.Entypo
+        <Icons.Entypo
           name={iconName}
           color={iconClr}
           size={size}
@@ -105,7 +105,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "Zocial" && (
-        <Icon.Zocial
+        <Icons.Zocial
           name={iconName}
           color={iconClr}
           size={size}
@@ -113,7 +113,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "AntDesign" && (
-        <Icon.AntDesign
+        <Icons.AntDesign
           name={iconName}
           color={iconClr}
           size={size}
@@ -121,7 +121,7 @@ export function NativeIcon({
         />
       )}
       {iconLib && iconLib === "Fontisto" && (
-        <Icon.Fontisto
+        <Icons.Fontisto
           name={iconName}
           color={iconClr}
           size={size}

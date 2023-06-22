@@ -4,15 +4,18 @@ import { bindActionCreators } from "redux";
 import NetInfo from "@react-native-community/netinfo";
 import { View } from "react-native";
 import { loadingActions } from "./redux/reduxActions/exportAllActions";
-import { AuthContext } from "../configs/contexts";
+import { AuthContext, UserContext } from "../configs/contexts";
 import SuccessPopUp from "../components/customComponents/successPopUp";
 import { Loader } from "../components/customComponents/loader";
 import { apiClientService } from "./ApiService";
 import HomeNavigator from "../navigators/homeNavigator";
 import AuthNavigator from "../navigators/authNavigator";
+import Footer from "../components/customComponents/footer";
+import { useRoute } from "@react-navigation/native";
 
-const Interceptors = ({ token }) => {
+const Interceptors = ({ navigation, route }) => {
   const [count, setCount] = useState(0);
+  const { userData = {}, token = "" } = route?.params;
   // const { setRefeshToken, getNewToken, logout } = React.useContext(AuthContext);
   const { apiMessage } = useSelector((state) => state?.loader);
   const dispatch = useDispatch();
@@ -49,8 +52,8 @@ const Interceptors = ({ token }) => {
           setLoading(false);
         }
         if (res.status === 200) {
-          let msg = res?.data;
-          console.log("message", msg);
+          let msg = res?.data?.error;
+          // console.log("message", msg);
           setLoading(false);
           if (msg !== "" && msg !== undefined) {
             setApiMessage(msg + " || Info");
@@ -136,7 +139,20 @@ const Interceptors = ({ token }) => {
       ) : (
         <View />
       )}
-      {token !== "" ? <HomeNavigator /> : <AuthNavigator />}
+      {token !== "" ? (
+        <UserContext.Provider
+          value={{
+            userState: userData,
+          }}
+        >
+          <HomeNavigator />
+        </UserContext.Provider>
+      ) : (
+        <AuthNavigator />
+      )}
+      <View style={{ bottom: 0 }}>
+        <Footer navigation={navigation} />
+      </View>
     </>
   );
 };
