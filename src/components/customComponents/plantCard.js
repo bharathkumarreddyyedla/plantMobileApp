@@ -6,14 +6,13 @@ import { commonStyles } from "../../styles/commonStyles";
 import FastImage from "expo-fast-image";
 
 const PlantCard = ({ item, index, marginValue = 0 }) => {
-  console.log("index", index);
   const [imageUrl, setImageUrl] = React.useState("");
   React.useEffect(() => {
     fetchImage();
   }, []);
   const fetchImage = async () => {
     try {
-      const response = await fetch(item?.default_image?.original_url);
+      const response = await fetch(item?.default_image?.medium_url);
       const blob = await response.blob();
       const uri = URL.createObjectURL(blob);
 
@@ -45,21 +44,8 @@ const PlantCard = ({ item, index, marginValue = 0 }) => {
           },
         ]}
       >
-        {/* <FastImage
-          source={{
-            uri: imageUrl,
-            priority: FastImage.priority.normal,
-          }}
-          style={{
-            height: "100%",
-            width: "100%",
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          }}
-          resizeMode={FastImage.resizeMode.cover}
-        /> */}
         <FastImage
-          source={{ uri: imageUrl }}
+          source={{ uri: imageUrl || undefined }}
           resizeMode="cover"
           style={{
             height: "100%",
@@ -80,7 +66,15 @@ const PlantCard = ({ item, index, marginValue = 0 }) => {
           justifyContent: "center",
         }}
       >
-        <Text style={{ color: "black", fontSize: 12, fontWeight: "500" }}>
+        <Text
+          numberOfLines={2}
+          style={{
+            color: "black",
+            fontSize: 10,
+            fontWeight: "500",
+            textAlign: "center",
+          }}
+        >
           {item?.common_name || ""}
         </Text>
         <Text style={{ color: "black", fontSize: 8, fontWeight: "300" }}>

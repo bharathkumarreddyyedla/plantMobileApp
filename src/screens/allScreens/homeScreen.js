@@ -1,17 +1,29 @@
 import React from "react";
-import { Keyboard, Text } from "react-native";
+import { Keyboard, Pressable, Text } from "react-native";
 import { View } from "react-native";
 import { Button } from "react-native-elements";
-import { AuthContext } from "../../configs/contexts";
+import { AuthContext, UserContext } from "../../configs/contexts";
 import { Image } from "react-native";
 import { appImages } from "../../configs/appImages";
 import CustomSearchBar from "../../components/customComponents/customSearchBar";
 import MyPlants from "../../components/dashboard/myPlants";
 import SeasonPlants from "../../components/dashboard/seasonPlants";
 import Footer from "../../components/customComponents/footer";
+import { useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { profileActions } from "../../services/redux/reduxActions/exportAllActions";
 
 const HomeScreen = ({ navigation }) => {
-  
+  const { userState = {} } = React.useContext(UserContext) || {};
+  const { token = "", user = {} } = userState || {};
+  const dispatch = useDispatch();
+  const { getUserProfile } = bindActionCreators(profileActions, dispatch);
+
+  React.useEffect(() => {
+    navigation.addListener("focus", () => {
+      getUserProfile(user?._id, token);
+    });
+  }, []);
   const onSearchClick = () => {
     navigation.navigate("searchScreen");
   };
@@ -43,11 +55,31 @@ const HomeScreen = ({ navigation }) => {
           Welcome back!
         </Text>
       </View>
+
       <Image
         source={appImages.greeBackground}
         style={{ height: 150, width: "100%" }}
         resizeMode="stretch"
       />
+      <Pressable
+        style={{
+          position: "absolute",
+          right: 40,
+          top: 90,
+        }}
+        onPress={() => {
+          navigation.navigate("notificationScreen");
+        }}
+      >
+        <Image
+          source={appImages.bellLogo}
+          style={{
+            height: 25,
+            width: 25,
+          }}
+          resizeMode="contain"
+        />
+      </Pressable>
       <View style={{ flex: 1 }}>
         <CustomSearchBar
           onSearchClick={onSearchClick}
@@ -87,7 +119,6 @@ const HomeScreen = ({ navigation }) => {
             onPress={() => {}}
           />
         </View>
-        
       </View>
     </View>
   );

@@ -1,26 +1,58 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "leafy",
+    "slug": "leafy",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/leafLogo.png",
     "userInterfaceStyle": "light",
-    "fonts": {
-      "RBlack": "./assets/fonts/Roboto-Black.ttf",
-      "RBlackI": "./assets/fonts/Roboto-BlackItalic.ttf",
-      "RB": "./assets/fonts/Roboto-Bold.ttf",
-      "RBI": "./assets/fonts/Roboto-BoldItalic.ttf",
-      "RI": "./assets/fonts/Roboto-Italic.ttf",
-      "RL": "./assets/fonts/Roboto-Light.ttf",
-      "RLI": "./assets/fonts/Roboto-LightItalic.ttf",
-      "RM": "./assets/fonts/Roboto-Medium.ttf",
-      "RMI": "./assets/fonts/Roboto-MediumItalic.ttf",
-      "RR": "./assets/fonts/Roboto-Regular.ttf",
-      "RRI": "./assets/fonts/Roboto-RegularItalic.ttf",
-      "RT": "./assets/fonts/Roboto-Thin.ttf",
-      "RTI": "./assets/fonts/Roboto-ThinItalic.ttf"
-    },
+    "fonts": [
+  {
+    "asset": "/assets/fonts/Roboto-Black.ttf",
+    "fontFamily": "RBlack"
+  },
+  {
+    "asset": "/assets/fonts/Roboto-BlackItalic.ttf",
+    "fontFamily": "RBlackI"
+  },
+  {
+    "asset": "/assets/fonts/Roboto-Bold.ttf",
+    "fontFamily": "RB"
+  },
+  {
+    "asset": "/assets/fonts/Roboto-BoldItalic.ttf",
+    "fontFamily": "RBI"
+  },{
+    "asset": "/assets/fonts/Roboto-Italic.ttf",
+    "fontFamily": "RI"
+  },{
+    "asset": "/assets/fonts/Roboto-Light.ttf",
+    "fontFamily": "RL"
+  },{
+    "asset": "/assets/fonts/Roboto-LightItalic.ttf",
+    "fontFamily": "RLI"
+  },{
+    "asset": "/assets/fonts/Roboto-Medium.ttf",
+    "fontFamily": "RM"
+  },{
+    "asset": "/assets/fonts/Roboto-MediumItalic.ttf",
+    "fontFamily": "RMI"
+  },{
+    "asset": "/assets/fonts/Roboto-Regular.ttf",
+    "fontFamily": "RR"
+  },{
+    "asset": "/assets/fonts/Roboto-RegularItalic.ttf",
+    "fontFamily": "RRI"
+  }
+  ,{
+    "asset": "/assets/fonts/Roboto-Thin.ttf",
+    "fontFamily": "RT"
+  },{
+    "asset": "/assets/fonts/Roboto-ThinItalic.ttf",
+    "fontFamily": "RTI"
+  }
+
+],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -31,17 +63,49 @@
     ],
     "ios": {
       "bundleIdentifier": "com.leopard.leafy",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "fetch",
+          "remote-notification"
+        ],
+        "NSCameraUsageDescription": "Allow access to the camera",
+    "NSPhotoLibraryUsageDescription": "Allow access to the photo library"
+      },
       "supportsTablet": true
     },
     "android": {
       "package": "com.leopard.leafy",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ],
+      "@react-native-firebase/app"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "cbf6937f-23fc-4c72-9db7-abe1e33bd775"
+      }
+    },
+    "owner": "bharathreddy"
   }
 }

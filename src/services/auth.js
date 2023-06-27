@@ -60,10 +60,12 @@ export function useAuth() {
   const auth = React.useMemo(
     () => ({
       login: async (email = "", password = "") => {
+        let deviceToken = await AsyncStorage.getItem("firebaseToken");
         await httpService
           .post("auth/login", {
             email: email || "",
             password: password || "",
+            deviceToken: deviceToken || "",
           })
           .then(async (res) => {
             if (res?.status === 200) {
@@ -71,6 +73,7 @@ export function useAuth() {
               if (res?.data && res?.data?.user) {
                 const user = {
                   token: res?.data?.token || "",
+                  user: res?.data?.user || {},
                 };
                 await AsyncStorage.setItem("user", JSON.stringify(user));
                 dispatch(createAction("SET_USER", user));

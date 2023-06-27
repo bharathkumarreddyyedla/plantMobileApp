@@ -5,4 +5,6 @@ export const appImages = {
   leafLogo: require("../../assets/images/leafLogo.png"),
   leafySignInLogo: require("../../assets/images/leafySignInLogo.png"),
   filterLogo: require("../../assets/images/filterLogo.png"),
+  bellLogo: require("../../assets/images/bellLogo.png"),
+  settingsLogo: require("../../assets/images/settingsLogo.png"),
 };

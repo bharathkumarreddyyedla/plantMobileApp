@@ -1,2 +1,3 @@
 import * as loadingActions from "./loadingActions";
-export { loadingActions };
+import * as profileActions from "./profileActions";
+export { loadingActions,profileActions };

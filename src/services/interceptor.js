@@ -40,6 +40,7 @@ const Interceptors = ({ navigation, route }) => {
 
   React.useEffect(() => {
     apiClientService.interceptors.request.use((req) => {
+      console.log("req", req);
       setCount(count + 1);
       setLoading(true);
       return req;

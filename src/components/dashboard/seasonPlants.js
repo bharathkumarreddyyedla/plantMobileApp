@@ -79,9 +79,6 @@ const SeasonPlants = () => {
           />
         )}
       />
-      {/* {list.map((item, index) => {
-        return <PlantCard item={item} index={index} />;
-      })} */}
     </View>
   );
 };

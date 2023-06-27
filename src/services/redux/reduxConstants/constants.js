@@ -4,3 +4,6 @@ export const ReduxLoadingConstants = {
     SET_INTERNET_CONNECTION: 'SET_INTERNET_CONNECTION',
     SET_API_MESSAGE: 'SET_API_MESSAGE',
 }
+export const ReduxProfileConstants ={
+    SET_PROFILE:'SET_PROFILE'
+}

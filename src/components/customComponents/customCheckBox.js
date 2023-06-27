@@ -13,7 +13,7 @@ const CustomCheckBox = (props) => {
   return (
     <Pressable
       onPress={() => {
-        onSelect(!checked);
+        onSelect(label);
       }}
       style={{ height: 50, width: "30%", flexDirection: "row" }}
     >
@@ -27,9 +27,10 @@ const CustomCheckBox = (props) => {
       >
         <CheckBox
           checked={checked}
+          checkedColor="green"
           size={20}
           onPress={() => {
-            onSelect(!checked);
+            onSelect(label);
           }}
         />
       </TouchableOpacity>

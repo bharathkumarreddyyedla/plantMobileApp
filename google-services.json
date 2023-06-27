@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "414025728654",
+    "project_id": "leafy-b24e4",
+    "storage_bucket": "leafy-b24e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414025728654:android:994eaa55e5e7591cb5ffdf",
+        "android_client_info": {
+          "package_name": "com.leopard.leafy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414025728654-bunulrspv32qr43i0v88e7e42vfk02r8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlslQBgjWMeYk-KbBqA1hd35yhjZLj9xM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414025728654-bunulrspv32qr43i0v88e7e42vfk02r8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "414025728654-q6ogf7aa0bq7vmrpvcu2k2t2e3u0dtqr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.leopard.leafy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

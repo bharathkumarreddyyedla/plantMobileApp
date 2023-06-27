@@ -140,7 +140,10 @@ const AuthInterceptors = ({ navigation }) => {
         <View />
       )}
       <AuthNavigator />
-      
+      {/* <HomeNavigator />
+      <View style={{ bottom: 0 }}>
+        <Footer navigation={navigation} />
+      </View> */}
     </>
   );
 };
