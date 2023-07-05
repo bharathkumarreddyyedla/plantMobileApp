@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Pressable,
+  Alert,
 } from "react-native";
 import { Camera } from "expo-camera";
 import { Button } from "react-native-elements";
@@ -15,6 +16,8 @@ const CustomCamera = (props) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [cameraRef, setCameraRef] = useState(null);
+  const MAX_SIZE_MB = 2;
+  const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024; // Convert MB to bytes
 
   useEffect(() => {
     (async () => {
@@ -33,9 +36,29 @@ const CustomCamera = (props) => {
 
   const takePicture = async () => {
     if (cameraRef) {
-      const { base64 } = await cameraRef.takePictureAsync({ base64: true });
-      // console.log("base64", base64);
-      setCameraBase64(base64);
+      const { base64 } = await cameraRef.takePictureAsync({
+        quality: 0.5,
+        base64: true,
+      });
+
+      const byteSize = Math.ceil(base64.length * 0.75 - 1); // Convert base64 string length to byte size
+      const sizeInMB = byteSize / (1024 * 1024);
+
+      if (byteSize > MAX_SIZE_BYTES) {
+        console.log(
+          `Picture size (${sizeInMB.toFixed(
+            2
+          )}MB) exceeds the maximum allowed size of ${MAX_SIZE_MB}MB.`
+        );
+        Alert.alert(
+          `Picture size (${sizeInMB.toFixed(
+            2
+          )}MB) exceeds the maximum allowed size of ${MAX_SIZE_MB}MB.`
+        );
+        // Handle the validation error accordingly
+      } else {
+        setCameraBase64(base64);
+      }
     }
   };
 

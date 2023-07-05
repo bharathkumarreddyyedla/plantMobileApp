@@ -32,7 +32,6 @@ const CustomSearchBar = (props) => {
       style={{
         height: 40,
         width: "100%",
-        paddingHorizontal: 20,
         marginVertical: 10,
       }}
     >

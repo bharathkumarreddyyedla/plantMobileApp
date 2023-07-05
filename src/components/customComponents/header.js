@@ -7,6 +7,7 @@ const Header = (props) => {
     title = "",
     navigation,
     logo = "",
+    arrowColor = "black",
     onGoback = () => {
       return navigation.goBack();
     },
@@ -37,7 +38,7 @@ const Header = (props) => {
           iconName={"long-arrow-alt-left"}
           iconLib={"FontAwesome5"}
           iconSize={20}
-          iconColor={"black"}
+          iconColor={arrowColor}
         />
       </Pressable>
       <View

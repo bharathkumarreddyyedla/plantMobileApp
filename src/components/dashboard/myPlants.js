@@ -1,21 +1,10 @@
 import React from "react";
-import { Text } from "react-native";
+import { Pressable, Text } from "react-native";
 import { View } from "react-native";
-import PlantCard from "../customComponents/plantCard";
 import { NativeIcon } from "../../icons/NativeIcons";
 import { commonStyles } from "../../styles/commonStyles";
-import SeasonPlants from "./seasonPlants";
-import { appImages } from "../../configs/appImages";
 
-const MyPlants = () => {
-  const list = [
-    {
-      id: 0,
-      name: "Sun Flower",
-      species: "sun",
-      image: appImages.splashScreenLogo,
-    },
-  ];
+const MyPlants = ({ navigation }) => {
   return (
     <View style={{ minHeight: 100, paddingHorizontal: 20, marginVertical: 10 }}>
       <Text
@@ -29,16 +18,10 @@ const MyPlants = () => {
         My Plants
       </Text>
       <View style={{ flexDirection: "row" }}>
-        {/* {list.map((item, index) => {
-          return (
-            <PlantCard
-              item={item}
-              index={index}
-              marginValue={index !== 0 ? 12 : 0}
-            />
-          );
-        })} */}
-        <View
+        <Pressable
+          onPress={() => {
+            navigation.navigate("searchScreen");
+          }}
           style={[
             commonStyles.miniCardShadowEffect,
             {
@@ -59,7 +42,7 @@ const MyPlants = () => {
             iconColor={"grey"}
             iconSize={40}
           />
-        </View>
+        </Pressable>
       </View>
     </View>
   );

@@ -1,3 +1,12 @@
 import * as loadingActions from "./loadingActions";
 import * as profileActions from "./profileActions";
-export { loadingActions,profileActions };
+import * as plantActions from "./plantActions";
+import * as homeActions from "./homeActions";
+import * as notificationAction from "./notificationAction";
+export {
+  loadingActions,
+  profileActions,
+  plantActions,
+  homeActions,
+  notificationAction,
+};

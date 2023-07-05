@@ -11,17 +11,24 @@ import SeasonPlants from "../../components/dashboard/seasonPlants";
 import Footer from "../../components/customComponents/footer";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
-import { profileActions } from "../../services/redux/reduxActions/exportAllActions";
+import {
+  homeActions,
+  profileActions,
+} from "../../services/redux/reduxActions/exportAllActions";
+import * as Location from "expo-location";
 
 const HomeScreen = ({ navigation }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
   const dispatch = useDispatch();
   const { getUserProfile } = bindActionCreators(profileActions, dispatch);
+  const { saveUserLocation } = bindActionCreators(homeActions, dispatch);
+  // const [location, setLocation] = React.useState(null);
 
   React.useEffect(() => {
     navigation.addListener("focus", () => {
       getUserProfile(user?._id, token);
+      saveUserLocation();
     });
   }, []);
   const onSearchClick = () => {
@@ -85,14 +92,14 @@ const HomeScreen = ({ navigation }) => {
           onSearchClick={onSearchClick}
           onFilterClick={onSearchClick}
         />
-        <MyPlants />
+        <MyPlants navigation={navigation} />
         <View
           style={{
             marginVertical: 10,
             paddingHorizontal: 20,
           }}
         >
-          <SeasonPlants />
+          <SeasonPlants navigation={navigation} />
         </View>
         <View
           style={{

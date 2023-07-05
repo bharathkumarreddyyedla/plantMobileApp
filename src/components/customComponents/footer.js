@@ -11,7 +11,7 @@ const Footer = ({ navigation }) => {
     },
     {
       id: 1,
-      name: "communityScreen",
+      name: "myPlantsScreen",
       icon: ["post", "MaterialCommunityIcons", 25],
     },
     {

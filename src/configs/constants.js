@@ -3,11 +3,11 @@ import { getDeviceTypeAsync } from "expo-device";
 export const tabletDimensions = {
   tabletView: getDeviceTypeAsync() === "Tablet",
 };
-export const aToE = ['A', 'B', 'C', 'D', 'E']
-export const fToJ = ['F', 'G', 'H', 'I', 'J']
-export const kToO = ['K', 'L', 'M', 'N', 'O']
-export const pToT = ['P', 'Q', 'R', 'S', 'T']
-export const uToZ = ['U', 'V', 'W', 'X', 'Y', 'Z']
+export const aToE = ["A", "B", "C", "D", "E"];
+export const fToJ = ["F", "G", "H", "I", "J"];
+export const kToO = ["K", "L", "M", "N", "O"];
+export const pToT = ["P", "Q", "R", "S", "T"];
+export const uToZ = ["U", "V", "W", "X", "Y", "Z"];
 
 export const plantCycleList = [
   { label: "perennial", value: "perennial" },
@@ -160,5 +160,20 @@ export const outdoorPlantFAQ = [
       "One life is enough for plants",
       "Skip Question",
     ],
+  },
+];
+
+export const calenderTypes = [
+  {
+    label: "Weekly",
+    value: "WEEKLY",
+  },
+  {
+    label: "Monthly",
+    value: "MONTHLY",
+  },
+  {
+    label: "Yearly",
+    value: "YEARLY",
   },
 ];

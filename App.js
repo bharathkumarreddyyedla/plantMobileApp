@@ -15,6 +15,7 @@ import { useAuth } from "./src/services/auth";
 import { PaperTheme } from "./src/themes/paperTheme";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -40,6 +41,7 @@ async function registerForPushNotificationsAsync() {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log("token:", token);
+    AsyncStorage.setItem("firebaseToken", JSON.stringify(token));
   } else {
     alert("Must use physical device for Push Notifications");
   }

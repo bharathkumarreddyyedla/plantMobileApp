@@ -7,4 +7,12 @@ export const appImages = {
   filterLogo: require("../../assets/images/filterLogo.png"),
   bellLogo: require("../../assets/images/bellLogo.png"),
   settingsLogo: require("../../assets/images/settingsLogo.png"),
+  heightLogo: require("../../assets/images/heightLogo.png"),
+  sunLogo: require("../../assets/images/sunLogo.png"),
+  typeLogo: require("../../assets/images/typeLogo.png"),
+  waterLogo: require("../../assets/images/waterLogo.png"),
+  whishlistLogo: require("../../assets/images/whishlistLogo.png"),
+  addCircleLogo: require("../../assets/images/addCircleLogo.png"),
+  cameraOutlinedLogo: require("../../assets/images/camaraOutlinedLogo.png"),
+  callenderLogo: require("../../assets/images/callenderLogo.png"),
 };

@@ -1,58 +1,45 @@
 import React from "react";
-import { Image, Pressable, Text, View, ScrollView } from "react-native";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import Header from "../../components/customComponents/header";
 import { appImages } from "../../configs/appImages";
+import { useSelector } from "react-redux";
+import CustomCamera from "../../components/customComponents/camera";
+import { Magnetometer } from "expo-sensors";
 import { Button, CheckBox, Input } from "react-native-elements";
-import { Dropdown } from "react-native-element-dropdown";
-import { calenderTypes } from "../../configs/constants";
-import { useDispatch, useSelector } from "react-redux";
-import CustomDateTimePicker from "../../components/customComponents/customDateTimePicker";
-import moment from "moment";
-import { Gyroscope, Magnetometer } from "expo-sensors";
 import { UserContext } from "../../configs/contexts";
-import { addMyPlant } from "../../services/redux/reduxActions/plantActions";
-import { bindActionCreators } from "redux";
-import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
+import { savePlantProgress } from "../../services/redux/reduxActions/plantActions";
 
-const AddPlantScreen = ({ navigation }) => {
+const AddPlantProgress = ({ navigation }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
-  const { plantDetails } = useSelector((state) => state.plants);
-  const { userLocation } = useSelector((state) => state.home);
-  const dispatch = useDispatch();
-  const { setPlantMessage } = bindActionCreators(plantActions, dispatch);
-  const [direction, setDirection] = React.useState("N/A");
   const [imageUrl, setImageUrl] = React.useState("");
-  const [datePicker, setDatePicker] = React.useState(false);
-  const [share, setShare] = React.useState(false);
-  const [plantData, setPlantData] = React.useState({
-    userId: "",
-    perenulaPlantId: "",
+  const { myPlantDetails } = useSelector((state) => state?.plants);
+  const { userLocation } = useSelector((state) => state.home);
+  const [showCamera, setShowCamera] = React.useState(false);
+  const [direction, setDirection] = React.useState("N/A");
+  const [cameraBase64, setCameraBase64] = React.useState("");
+  const [progressData, setProgressData] = React.useState({
+    picture: "",
     plantDob: new Date(),
+    perenulaPlantId: myPlantDetails?.perenulaPlantId,
+    plantName: myPlantDetails?.plantName,
+    plantNotes: "",
+    share: true,
+    platPosition: "",
     plantLat: "",
     plantLong: "",
-    plantName: "",
-    scientific_name: plantDetails?.scientific_name,
-    dimension: plantDetails?.dimension,
-    sunlight: plantDetails?.sunlight,
-    edible_leaf: plantDetails?.edible_leaf,
-    indoor: plantDetails?.indoor,
-    watering: plantDetails?.watering,
-    maintenance: plantDetails?.maintenance,
-    plantDescription: "",
-    city: "",
-    state: "",
-    platPosition: "",
-    share: true,
-    plantPicture: "",
-    plantProgress: [],
-    reminders: "MONTLY",
   });
   React.useEffect(() => {
-    if (Object.keys(plantDetails)?.length > 0) {
-      fetchImage();
+    if (cameraBase64) {
+      setProgressData({
+        ...progressData,
+        picture: cameraBase64?.includes("base64,")
+          ? cameraBase64
+          : "data:image/jpeg;base64," + cameraBase64,
+      });
+      setShowCamera(false);
     }
-  }, [plantDetails]);
+  }, [cameraBase64]);
   React.useEffect(() => {
     subscribeToCompass();
 
@@ -62,8 +49,8 @@ const AddPlantScreen = ({ navigation }) => {
   }, []);
   React.useEffect(() => {
     if (direction) {
-      setPlantData({
-        ...plantData,
+      setProgressData({
+        ...progressData,
         platPosition: direction,
       });
     }
@@ -95,67 +82,24 @@ const AddPlantScreen = ({ navigation }) => {
       setDirection(cardinalDirections[normalizedIndex]);
     });
   };
-  const fetchImage = async () => {
-    try {
-      const response = await fetch(plantDetails?.default_image?.medium_url);
-      const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
-
-      setImageUrl(uri);
-      setPlantData({
-        ...plantData,
-        plantName: plantDetails?.common_name,
-        plantDescription: plantDetails?.description,
-        perenulaPlantId: plantDetails?.id,
-        userId: user?._id,
-        plantPicture: plantDetails?.default_image?.medium_url,
-        plantProgress: [
-          {
-            picture: plantDetails?.default_image?.medium_url,
-            plantDob: new Date(),
-            perenulaPlantId: plantDetails?.id,
-            plantName: plantDetails?.common_name,
-            plantNotes: "",
-          },
-        ],
-      });
-      // setLoading(false);
-    } catch (error) {
-      console.error("Error fetching image:", error);
-    }
-  };
-  const onDateSelected = (dates, flag) => {
-    if (dates !== undefined) {
-      if (Platform.OS === "ios") {
-        if (flag) {
-          setDatePicker(false);
-        } else {
-        }
-      } else {
-        setDatePicker(false);
-      }
-      // setDate(dates)
-      setPlantData({
-        ...plantData,
-        plantDob: moment(dates).format("YYYY-MM-DD"),
-      });
-    }
-  };
-  const onProceed = () => {
-    try {
-      addMyPlant(plantData, token).then((res) => {
-        console.log("message", res);
-        setPlantMessage(res);
-        navigation.navigate("homeScreen");
-      });
-    } catch (err) {
-      console.log(err);
-    }
+  const onSaveProgress = () => {
+    let plantD = myPlantDetails;
+    let arr = [...(myPlantDetails?.plantProgress || [])];
+    arr?.push(progressData);
+    plantD.plantProgress = arr;
+    savePlantProgress(plantD?._id, plantD, token);
+    navigation.navigate("homeScreen");
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      {showCamera && (
+        <CustomCamera
+          setShowCamera={setShowCamera}
+          setCameraBase64={setCameraBase64}
+        />
+      )}
       <View style={{ flex: 1, marginTop: 50, paddingHorizontal: 20 }}>
-        <Header title={"Plants"} navigation={navigation} />
+        <Header title={"Progress"} navigation={navigation} />
         <ScrollView>
           <View style={{ flex: 1 }}>
             <View
@@ -166,11 +110,29 @@ const AddPlantScreen = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <Image
-                source={{ uri: imageUrl }}
-                style={{ height: 150, width: 150, borderRadius: 25 }}
-                resizeMode="cover"
-              />
+              {progressData?.picture ? (
+                <Image
+                  source={{ uri: progressData?.picture || undefined }}
+                  style={{ height: 150, width: 150, borderRadius: 25 }}
+                  resizeMode="cover"
+                />
+              ) : (
+                <Pressable
+                  onPress={() => {
+                    setShowCamera(true);
+                  }}
+                  style={{
+                    height: 150,
+                    width: 150,
+                    borderRadius: 25,
+                    borderWidth: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text>Upload</Text>
+                </Pressable>
+              )}
               <View
                 style={{
                   height: 40,
@@ -192,83 +154,36 @@ const AddPlantScreen = ({ navigation }) => {
               style={{
                 minHeight: 40,
                 width: "100%",
-                marginTop: 10,
               }}
             >
               <Text
                 style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
               >
-                Give a name to your Plant
+                Plant location
               </Text>
               <Input
                 autoCorrect={false}
-                value={plantData?.plantName}
+                value={progressData?.plantNotes}
+                multiline={true}
                 autoComplete="off"
-                placeholder="Plant name"
+                placeholder="Write about your plant..."
                 placeholderTextColor={"#A39E9E"}
                 style={{
-                  borderWidth: 1,
-                  borderRadius: 15,
-                  paddingHorizontal: 10,
-                  marginTop: 10,
-                  borderColor: "#A39E9E",
-                  backgroundColor: "white",
-                }}
-                inputContainerStyle={{
-                  borderBottomWidth: 0,
-                  right: 10,
-                }}
-                inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
-              />
-            </View>
-            <View
-              style={{
-                minHeight: 40,
-                width: "100%",
-              }}
-            >
-              <Text
-                style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
-              >
-                Plant Birthday
-              </Text>
-              <Input
-                autoCorrect={false}
-                value={
-                  plantData?.plantDob
-                    ? moment(plantData?.plantDob).format("YYYY-MM-DD")
-                    : ""
-                }
-                autoComplete="off"
-                placeholder="Select date"
-                placeholderTextColor={"#A39E9E"}
-                rightIcon={() => {
-                  return (
-                    <Pressable
-                      onPress={() => {
-                        setDatePicker(true);
-                      }}
-                    >
-                      <Image
-                        source={appImages?.callenderLogo}
-                        style={{ height: 25, width: 25 }}
-                        resizeMode="contain"
-                      />
-                    </Pressable>
-                  );
-                }}
-                rightIconContainerStyle={{ right: 10 }}
-                style={{
-                  paddingHorizontal: 10,
+                  paddingLeft: 10,
                   // backgroundColor: "white",
                 }}
+                onChangeText={(val) => {
+                  setProgressData({
+                    ...progressData,
+                    plantNotes: val,
+                  });
+                }}
                 inputContainerStyle={{
                   marginTop: 10,
-                  height: 40,
+                  minHeight: 80,
                   borderWidth: 1,
                   borderRadius: 15,
                   borderColor: "#A39E9E",
-                  // borderBottomWidth: 0,
                   right: 10,
                   backgroundColor: "white",
                 }}
@@ -289,8 +204,8 @@ const AddPlantScreen = ({ navigation }) => {
               <Input
                 autoCorrect={false}
                 value={
-                  plantData?.plantLat && plantData?.plantLong
-                    ? `${plantData?.plantLat}:${plantData?.plantLong}`
+                  progressData?.plantLat && progressData?.plantLong
+                    ? `${progressData?.plantLat}:${progressData?.plantLong}`
                     : ""
                 }
                 autoComplete="off"
@@ -300,8 +215,8 @@ const AddPlantScreen = ({ navigation }) => {
                   return (
                     <Pressable
                       onPress={() => {
-                        setPlantData({
-                          ...plantData,
+                        setProgressData({
+                          ...progressData,
                           plantLat: userLocation?.coords?.latitude || "",
                           plantLong: userLocation?.coords?.longitude || "",
                         });
@@ -418,67 +333,18 @@ const AddPlantScreen = ({ navigation }) => {
             >
               <Text>Share your post to feed</Text>
               <CheckBox
-                checked={plantData?.share}
+                checked={progressData?.share}
                 onPress={() => {
-                  setPlantData({ ...plantData, share: !plantData?.share });
-                }}
-              />
-            </View>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ width: "50%" }}>Get reminders</Text>
-              <Dropdown
-                data={calenderTypes}
-                value={plantData?.reminders}
-                labelField={"label"}
-                valueField={"value"}
-                placeholder="Select"
-                itemTextStyle={{
-                  fontSize: 10,
-                  fontWeight: "Bold",
-                  color: "grey",
-                  textTransform: "capitalize",
-                }}
-                confirmSelectItem={true}
-                maxHeight={300}
-                itemContainerStyle={{ backgroundColor: "white" }}
-                selectedTextStyle={{
-                  fontSize: 10,
-                  fontWeight: "Bold",
-                  color: "grey",
-                  textTransform: "capitalize",
-                }}
-                onChange={(val) => {
-                  setPlantData({
-                    ...plantData,
-                    reminders: val?.value,
+                  setProgressData({
+                    ...progressData,
+                    share: !progressData?.share,
                   });
                 }}
-                iconColor={"grey"}
-                style={[
-                  // commonStyles.dropdownShadowEffect,
-                  {
-                    paddingHorizontal: 10,
-                    backgroundColor: "white",
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    borderColor: "grey",
-                    height: 30,
-                    width: "50%",
-                    marginVertical: 5,
-                  },
-                ]}
               />
             </View>
             <Button
               onPress={() => {
-                onProceed();
+                onSaveProgress();
               }}
               buttonStyle={{
                 height: 40,
@@ -493,18 +359,8 @@ const AddPlantScreen = ({ navigation }) => {
           </View>
         </ScrollView>
       </View>
-      <CustomDateTimePicker
-        showDatimePicker={datePicker}
-        date={new Date(plantData?.plantDob)}
-        onChange={(dates, flag) => {
-          onDateSelected(dates, flag);
-        }}
-        onCancel={() => {
-          setDatePicker(false);
-        }}
-      />
     </View>
   );
 };
 
-export default AddPlantScreen;
+export default AddPlantProgress;

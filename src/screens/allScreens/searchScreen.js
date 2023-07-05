@@ -117,14 +117,14 @@ const SearchScreen = ({ navigation }) => {
       <View style={{ marginTop: 50 }}>
         <Header title={"Search"} navigation={navigation} />
 
-        <CustomSearchBar
-          searchValue={searchValue}
-          onChangeSearch={onSearchPlants}
-          onFilterClick={() => {
-            onPressToggle(true);
-          }}
-        />
         <ScrollView>
+          <CustomSearchBar
+            searchValue={searchValue}
+            onChangeSearch={onSearchPlants}
+            onFilterClick={() => {
+              onPressToggle(true);
+            }}
+          />
           <View
             style={{
               flex: 1,
@@ -144,6 +144,7 @@ const SearchScreen = ({ navigation }) => {
                     item={item}
                     index={index}
                     marginValue={index % 3 !== 0 ? 16 : 0}
+                    navigation={navigation}
                   />
                 );
               })}

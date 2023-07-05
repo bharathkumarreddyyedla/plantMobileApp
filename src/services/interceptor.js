@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import NetInfo from "@react-native-community/netinfo";
 import { View } from "react-native";
-import { loadingActions } from "./redux/reduxActions/exportAllActions";
+import {
+  loadingActions,
+  plantActions,
+} from "./redux/reduxActions/exportAllActions";
 import { AuthContext, UserContext } from "../configs/contexts";
 import SuccessPopUp from "../components/customComponents/successPopUp";
 import { Loader } from "../components/customComponents/loader";
@@ -18,9 +21,11 @@ const Interceptors = ({ navigation, route }) => {
   const { userData = {}, token = "" } = route?.params;
   // const { setRefeshToken, getNewToken, logout } = React.useContext(AuthContext);
   const { apiMessage } = useSelector((state) => state?.loader);
+  const { plantMessage } = useSelector((state) => state?.plants);
   const dispatch = useDispatch();
   const { setLoading, setError, checkInternetConnection, setApiMessage } =
     bindActionCreators(loadingActions, dispatch);
+  const { setPlantMessage } = bindActionCreators(plantActions, dispatch);
   const [popupData, setPopupData] = React.useState({
     message: "",
     title: "",
@@ -109,6 +114,9 @@ const Interceptors = ({ navigation, route }) => {
     if (apiMessage !== "") {
       msg = apiMessage;
     }
+    if (plantMessage !== "") {
+      msg = plantMessage;
+    }
     if (msg !== "warn") {
       setPopupData({
         ...popupData,
@@ -118,14 +126,16 @@ const Interceptors = ({ navigation, route }) => {
           if (msg?.split("||")[1]?.trim() === "warn") {
           } else {
             setApiMessage("");
+            setPlantMessage("");
           }
         },
         onCancel: () => {
           setApiMessage("");
+          setPlantMessage("");
         },
       });
     }
-  }, [apiMessage]);
+  }, [apiMessage, plantMessage]);
 
   return (
     <>

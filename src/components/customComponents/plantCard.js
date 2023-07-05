@@ -1,29 +1,70 @@
 import React from "react";
-import { Image, Text } from "react-native";
+import { Image, Pressable, Text } from "react-native";
 import { View } from "react-native";
 import { appImages } from "../../configs/appImages";
 import { commonStyles } from "../../styles/commonStyles";
 import FastImage from "expo-fast-image";
+import { useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
+import { UserContext } from "../../configs/contexts";
 
-const PlantCard = ({ item, index, marginValue = 0 }) => {
+const PlantCard = ({
+  item,
+  index,
+  marginValue = 0,
+  navigation,
+  screen = "",
+}) => {
+  const { userState = {} } = React.useContext(UserContext) || {};
+  const { token = "" } = userState || {};
   const [imageUrl, setImageUrl] = React.useState("");
+  const dispatch = useDispatch();
+  const { savePlantDetailedData, saveMyPlantData } = bindActionCreators(
+    plantActions,
+    dispatch
+  );
   React.useEffect(() => {
     fetchImage();
   }, []);
   const fetchImage = async () => {
     try {
-      const response = await fetch(item?.default_image?.medium_url);
-      const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
 
-      setImageUrl(uri);
-      // setLoading(false);
+        const response = await fetch(screen? item?.plantPicture:item?.default_image?.medium_url);
+        const blob = await response.blob();
+        const uri = URL.createObjectURL(blob);
+        setImageUrl(uri);
+      
     } catch (error) {
       console.error("Error fetching image:", error);
     }
   };
+  const onClick = () =>
+    new Promise((resolve, reject) => {
+      try {
+        savePlantDetailedData(item?.id, token);
+        resolve(true);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  const onSaveMyPlantData = () => {
+    saveMyPlantData(item);
+    navigation.navigate("plantProgressScreen");
+  };
   return (
-    <View
+    <Pressable
+      onPress={async () => {
+        if (screen) {
+          onSaveMyPlantData();
+        } else {
+          await onClick().then((res) => {
+            if (res) {
+              navigation.navigate("plantDetailsScreen");
+            }
+          });
+        }
+      }}
       key={index}
       style={{
         height: 150,
@@ -45,7 +86,7 @@ const PlantCard = ({ item, index, marginValue = 0 }) => {
         ]}
       >
         <FastImage
-          source={{ uri: imageUrl || undefined }}
+          source={{ uri: imageUrl }}
           resizeMode="cover"
           style={{
             height: "100%",
@@ -75,13 +116,13 @@ const PlantCard = ({ item, index, marginValue = 0 }) => {
             textAlign: "center",
           }}
         >
-          {item?.common_name || ""}
+          {screen ? item?.plantName : item?.common_name}
         </Text>
         <Text style={{ color: "black", fontSize: 8, fontWeight: "300" }}>
-          {item?.cycle}
+          {item?.cycle || "NA"}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

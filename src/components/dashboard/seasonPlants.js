@@ -5,7 +5,7 @@ import { appImages } from "../../configs/appImages";
 import { getAllPlants } from "../../services/redux/reduxActions/homeActions";
 import { UserContext } from "../../configs/contexts";
 
-const SeasonPlants = () => {
+const SeasonPlants = ({ navigation }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "" } = userState || {};
   const [plantsList, setPlantsList] = React.useState([]);
@@ -76,6 +76,7 @@ const SeasonPlants = () => {
             item={item}
             index={index}
             marginValue={index !== 0 ? 12 : 0}
+            navigation={navigation}
           />
         )}
       />
