@@ -2,8 +2,9 @@ import { ReduxPlantConstants } from "../reduxConstants/constants";
 
 const initialState = {
   plantDetails: {},
-  myPlantDetails:{},
-  plantMessage:''
+  myPlantDetails: {},
+  plantMessage: "",
+  faqPlantData: [],
 };
 
 export const plantReducers = (state = initialState, action) => {
@@ -13,12 +14,17 @@ export const plantReducers = (state = initialState, action) => {
         ...state,
         plantDetails: action.payload,
       };
-      case ReduxPlantConstants.SET_PLAT_DATA:
+    case ReduxPlantConstants.SET_PLAT_DATA:
       return {
         ...state,
         myPlantDetails: action.payload,
       };
-      case ReduxPlantConstants.SET_MESSAGE:
+    case ReduxPlantConstants.SET_FAQPLAT_DATA:
+      return {
+        ...state,
+        faqPlantData: action.payload,
+      };
+    case ReduxPlantConstants.SET_MESSAGE:
       return {
         ...state,
         plantMessage: action.payload,

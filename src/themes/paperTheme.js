@@ -77,7 +77,7 @@ export const PaperTheme = {
     dullBlue: "#235065",
     casper: "#AEB1B1",
     LightSeaGreen: "#22ACAB",
-    internetMesg: "green",
+    internetMesg: "#56A434",
     red: "#FF0000",
     darkGray: "darkgray",
     lightGreen: "#CEE7EB",

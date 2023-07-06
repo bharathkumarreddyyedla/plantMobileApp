@@ -95,6 +95,9 @@ const SearchScreen = ({ navigation }) => {
         filterValues?.cycle,
         filterValues?.watering,
         filterValues?.sunlight,
+        filterValues?.poisonous,
+        filterValues?.indoor,
+        filterValues?.edible,
         token
       )
         .then((res) => {

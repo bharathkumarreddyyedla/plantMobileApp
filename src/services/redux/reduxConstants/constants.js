@@ -9,12 +9,14 @@ export const ReduxProfileConstants = {
 };
 export const ReduxPlantConstants = {
   SET_DETAILED_PLANT_DATA: "SET_DETAILED_PLANT_DATA",
-  SET_ADD_PLANT:'SET_ADD_PLANT',
-  SET_PLAT_DATA:'SET_PLAT_DATA',
-  SET_MESSAGE:'SET_MESSAGE',
+  SET_ADD_PLANT: "SET_ADD_PLANT",
+  SET_PLAT_DATA: "SET_PLAT_DATA",
+  SET_FAQPLAT_DATA: "SET_FAQPLAT_DATA",
+  SET_MESSAGE: "SET_MESSAGE",
 };
 export const ReduxHomeConstants = {
   SET_LOCATION: "SET_LOCATION",
+  SET_ADDRESS:'SET_ADDRESS',
 };
 export const ReduxNotificationConstants = {
   SET_ALL_NOTIFICATIONS: "SET_ALL_NOTIFICATIONS",

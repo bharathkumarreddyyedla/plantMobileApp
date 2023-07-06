@@ -27,7 +27,7 @@ const CustomCheckBox = (props) => {
       >
         <CheckBox
           checked={checked}
-          checkedColor="green"
+          checkedColor="#56A434"
           size={20}
           onPress={() => {
             onSelect(label);

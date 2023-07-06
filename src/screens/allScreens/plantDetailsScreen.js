@@ -20,7 +20,6 @@ const PlantDetailsScreen = ({ navigation }) => {
       const blob = await response.blob();
       const uri = URL.createObjectURL(blob);
 
-
       setImageUrl(uri);
       // setLoading(false);
     } catch (error) {
@@ -280,7 +279,7 @@ const PlantDetailsScreen = ({ navigation }) => {
                 buttonStyle={{
                   height: 40,
                   width: 130,
-                  backgroundColor: "green",
+                  backgroundColor: "#56A434",
                   borderRadius: 10,
                 }}
                 titleStyle={{ color: "white" }}

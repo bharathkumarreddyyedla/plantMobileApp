@@ -15,4 +15,8 @@ export const appImages = {
   addCircleLogo: require("../../assets/images/addCircleLogo.png"),
   cameraOutlinedLogo: require("../../assets/images/camaraOutlinedLogo.png"),
   callenderLogo: require("../../assets/images/callenderLogo.png"),
+  postLogo: require("../../assets/images/postLogo.png"),
+  favouritesLogo: require("../../assets/images/favouritesLogo.png"),
+  homeLogo: require("../../assets/images/homeLogo.png"),
+  userLogo: require("../../assets/images/userLogo.png"),
 };

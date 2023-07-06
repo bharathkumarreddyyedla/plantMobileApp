@@ -31,14 +31,23 @@ export const searchPlants = (page = 1, name = "", token) =>
 
 export const filterPlants = (
   page = 1,
-  cycle = "",
-  watering = "",
-  sunlight = "",
+  cycle = "NA",
+  watering = "NA",
+  sunlight = "NA",
+  poisonous = null,
+  indoor = null,
+  edible = null,
   token
 ) =>
   new Promise((resolve, reject) => {
+    console.log("cycle", cycle, watering, sunlight);
     httpService
-      .get(`plant/filterPlants/${page}/${cycle}/${watering}/${sunlight}`, token)
+      .get(
+        `plant/filterPlants/${page}/${cycle || "NA"}/${watering ||"NA"}/${
+          sunlight || "NA"
+        }/${poisonous}/${indoor}/${edible}`,
+        token
+      )
       .then((res) => {
         if (res?.data) {
           resolve(res?.data);
@@ -64,5 +73,17 @@ export const saveUserLocation = () => {
         });
       }
     });
+  };
+};
+
+export const saveAddress = (payload) => {
+  const saveLocation = (data) => ({
+    type: ReduxHomeConstants.SET_ADDRESS,
+    payload: data,
+  });
+  return (dispatch) => {
+
+          dispatch(saveLocation(payload));
+        
   };
 };

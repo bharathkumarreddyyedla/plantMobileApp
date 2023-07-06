@@ -33,7 +33,10 @@ export const careLevel = [
   { label: "Medium" },
   { label: "Low" },
 ];
-export const yesOrNO = [{ label: "Yes" }, { label: "No" }];
+export const yesOrNO = [
+  { label: "Yes", value: 1 },
+  { label: "No", value: 0 },
+];
 
 export const plantFAQ = [
   {
@@ -45,125 +48,170 @@ export const plantFAQ = [
 export const indoorPlantFAQ = [
   {
     id: 0,
-    tag: "Care Level",
-    question: "How experienced are you with plants?",
-    options: [
-      "I'm basically a Botanical Connoisseur",
-      "I can keep a few plants alive",
-      "I have a PhD in plant demise",
-      "Skip Question",
-    ],
-  },
-  {
-    id: 1,
-    tag: "Pets",
-    question: "Do you have pets that chew on plants?",
-    options: ["Yes, they love to munch", "No plant eaters", "Skip Question"],
-  },
-  {
-    id: 2,
-    tag: "Watering",
-    question: "Are you a person that has time to water?",
-    options: [
-      "Yes I got all the time in the world",
-      "I might have a minute or two!",
-      "I can barely sit down",
-      "Skip Question",
-    ],
-  },
-  {
-    id: 3,
-    tag: "Sunlight",
-    question: "How much sunlight do you get?",
-    options: [
-      "I'm drowning in sunlight",
-      "I get it then and there",
-      "What's sunlight?!",
-      "Skip Question",
-    ],
-  },
-];
-export const indoorPlantFAQlabels = [
-  "Care Level",
-  "Pets",
-  "Watering",
-  "Sunlight",
-];
-export const outdoorPlantFAQlabels = [
-  "Care Level",
-  "Watering",
-  "Sunlight",
-  "Flower",
-  "Fruits",
-  "Cycle",
-];
-export const outdoorPlantFAQ = [
-  {
-    id: 0,
-    tag: "Care Level",
-    question: "How experienced are you with plants?",
-    options: [
-      "I'm basically a Botanical Connoisseur",
-      "I can keep a few plants alive",
-      "I have a PhD in plant demise",
-      "Skip Question",
-    ],
-  },
-  {
-    id: 1,
-    tag: "Watering",
-    question: "Are you a person that has time to water?",
-    options: [
-      "Yes I got all the time in the world",
-      "I might have a minute or two!",
-      "I can barely sit down",
-      "Skip Question",
-    ],
-  },
-  {
-    id: 2,
-    tag: "Sunlight",
-    question: "How much sunlight do you get?",
-    options: [
-      "I'm drowning in sunlight",
-      "I get it then and there",
-      "What's sunlight?!",
-      "Skip Question",
-    ],
-  },
-  {
-    id: 3,
-    tag: "Flower",
-    question: "Woud you like some flowers?",
-    options: [
-      "Yes, I want a confetti blooms",
-      "No flowers, please",
-      "Skip Question",
-    ],
-  },
-  {
-    id: 4,
-    tag: "Fruits",
-    question: "Would you like some fruits?",
-    options: [
-      "Yes, I want a plant that drops goodies",
-      "No goodies",
-      "Skip Question",
-    ],
-  },
-  {
-    id: 5,
     tag: "Cycle",
     question: "Are you looking for a plant to come back to life?",
     options: [
-      "I want a plant that's a botanical phoenix, reblooming each year",
-      "One life is enough for plants",
-      "Skip Question",
+      {
+        id: 0,
+        label:
+          "I want a plant that's a botanical phoenix, reblooming each year",
+        value: "perennial",
+      },
+      {
+        id: 1,
+        label: "One life is enough for plants",
+        value: "annual",
+      },
+      {
+        id: 2,
+        label: "Skip Question",
+        value: "NA",
+      },
+    ],
+  },
+  {
+    id: 1,
+    tag: "Watering",
+    question: "Are you a person that has time to water?",
+    options: [
+      {
+        id: 0,
+        label: "Yes I got all the time in the world",
+        value: "frequent",
+      },
+      {
+        id: 1,
+        label: "I might have a minute or two!",
+        value: "average",
+      },
+      {
+        id: 2,
+        label: "I can barely sit down",
+        value: "minimum",
+      },
+      {
+        id: 3,
+        label: "Skip Question",
+        value: "NA",
+      },
+    ],
+  },
+  {
+    id: 2,
+    tag: "Sunlight",
+    question: "How much sunlight do you get?",
+    options: [
+      {
+        id: 0,
+        label: "I'm drowning in sunlight",
+        value: "full_sun",
+      },
+      {
+        id: 1,
+        label: "I get it then and there",
+        value: "part_shade",
+      },
+      {
+        id: 2,
+        label: "What's sunlight?!",
+        value: "full_shade",
+      },
+      {
+        id: 3,
+        label: "Skip Question",
+        value: "NA",
+      },
+    ],
+  },
+];
+export const indoorPlantFAQlabels = ["Cycle", "Watering", "Sunlight"];
+export const outdoorPlantFAQlabels = ["Cycle", "Watering", "Sunlight"];
+export const outdoorPlantFAQ = [
+  {
+    id: 0,
+    tag: "Cycle",
+    question: "Are you looking for a plant to come back to life?",
+    options: [
+      {
+        id: 0,
+        label:
+          "I want a plant that's a botanical phoenix, reblooming each year",
+        value: "perennial",
+      },
+      {
+        id: 1,
+        label: "One life is enough for plants",
+        value: "annual",
+      },
+      {
+        id: 2,
+        label: "Skip Question",
+        value: "NA",
+      },
+    ],
+  },
+  {
+    id: 1,
+    tag: "Watering",
+    question: "Are you a person that has time to water?",
+    options: [
+      {
+        id: 0,
+        label: "Yes I got all the time in the world",
+        value: "frequent",
+      },
+      {
+        id: 1,
+        label: "I might have a minute or two!",
+        value: "average",
+      },
+      {
+        id: 2,
+        label: "I can barely sit down",
+        value: "minimum",
+      },
+      {
+        id: 3,
+        label: "Skip Question",
+        value: "NA",
+      },
+    ],
+  },
+  {
+    id: 2,
+    tag: "Sunlight",
+    question: "How much sunlight do you get?",
+    options: [
+      {
+        id: 0,
+        label: "I'm drowning in sunlight",
+        value: "full_sun",
+      },
+      {
+        id: 1,
+        label: "I get it then and there",
+        value: "part_shade",
+      },
+      {
+        id: 2,
+        label: "What's sunlight?!",
+        value: "full_shade",
+      },
+      {
+        id: 3,
+        label: "Skip Question",
+        value: "NA",
+      },
     ],
   },
 ];
 
 export const calenderTypes = [
+
+  {
+    label: "Daily",
+    value: "DAILY",
+  },
   {
     label: "Weekly",
     value: "WEEKLY",
@@ -171,9 +219,5 @@ export const calenderTypes = [
   {
     label: "Monthly",
     value: "MONTHLY",
-  },
-  {
-    label: "Yearly",
-    value: "YEARLY",
   },
 ];

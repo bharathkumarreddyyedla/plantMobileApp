@@ -18,7 +18,7 @@ const AddPlantScreen = ({ navigation }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
   const { plantDetails } = useSelector((state) => state.plants);
-  const { userLocation } = useSelector((state) => state.home);
+  const { userLocation, userAddress } = useSelector((state) => state.home);
   const dispatch = useDispatch();
   const { setPlantMessage } = bindActionCreators(plantActions, dispatch);
   const [direction, setDirection] = React.useState("N/A");
@@ -40,13 +40,13 @@ const AddPlantScreen = ({ navigation }) => {
     watering: plantDetails?.watering,
     maintenance: plantDetails?.maintenance,
     plantDescription: "",
-    city: "",
-    state: "",
+    city: userAddress?.split(",")[1]?.trim(),
+    state: userAddress?.split(",")[2]?.trim(),
     platPosition: "",
     share: true,
     plantPicture: "",
     plantProgress: [],
-    reminders: "MONTLY",
+    reminders: "DAILY",
   });
   React.useEffect(() => {
     if (Object.keys(plantDetails)?.length > 0) {
@@ -154,6 +154,7 @@ const AddPlantScreen = ({ navigation }) => {
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      {console.log("userAddress", userAddress)}
       <View style={{ flex: 1, marginTop: 50, paddingHorizontal: 20 }}>
         <Header title={"Plants"} navigation={navigation} />
         <ScrollView>
@@ -288,11 +289,7 @@ const AddPlantScreen = ({ navigation }) => {
               </Text>
               <Input
                 autoCorrect={false}
-                value={
-                  plantData?.plantLat && plantData?.plantLong
-                    ? `${plantData?.plantLat}:${plantData?.plantLong}`
-                    : ""
-                }
+                value={`${plantData?.city || ""}, ${plantData?.state || ""}`}
                 autoComplete="off"
                 placeholder="Select your location"
                 placeholderTextColor={"#A39E9E"}
@@ -300,11 +297,12 @@ const AddPlantScreen = ({ navigation }) => {
                   return (
                     <Pressable
                       onPress={() => {
-                        setPlantData({
-                          ...plantData,
-                          plantLat: userLocation?.coords?.latitude || "",
-                          plantLong: userLocation?.coords?.longitude || "",
-                        });
+                        return;
+                        // setPlantData({
+                        //   ...plantData,
+                        //   plantLat: userLocation?.coords?.latitude || "",
+                        //   plantLong: userLocation?.coords?.longitude || "",
+                        // });
                       }}
                       style={{
                         height: "100%",
@@ -483,7 +481,7 @@ const AddPlantScreen = ({ navigation }) => {
               buttonStyle={{
                 height: 40,
                 width: "70%",
-                backgroundColor: "green",
+                backgroundColor: "#56A434",
                 alignSelf: "center",
                 marginVertical: 10,
                 borderRadius: 10,

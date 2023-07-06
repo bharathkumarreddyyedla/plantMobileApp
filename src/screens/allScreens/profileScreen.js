@@ -272,7 +272,7 @@ const ProfileScreen = ({ navigation }) => {
             title={"Update"}
             buttonStyle={{
               marginTop: 20,
-              backgroundColor: "green",
+              backgroundColor: "#56A434",
               width: "70%",
               alignSelf: "center",
             }}

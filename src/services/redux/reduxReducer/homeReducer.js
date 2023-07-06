@@ -2,6 +2,7 @@ import { ReduxHomeConstants } from "../reduxConstants/constants";
 
 const initialState = {
   userLocation: {},
+  userAddress:{}
 };
 
 export const homeReducers = (state = initialState, action) => {
@@ -10,6 +11,11 @@ export const homeReducers = (state = initialState, action) => {
       return {
         ...state,
         userLocation: action.payload,
+      };
+      case ReduxHomeConstants.SET_ADDRESS:
+      return {
+        ...state,
+        userAddress: action.payload,
       };
     default:
       return state;

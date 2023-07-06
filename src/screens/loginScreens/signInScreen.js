@@ -100,7 +100,7 @@ const SignInScreen = ({ navigation }) => {
                   onLoginClick();
                 }}
                 buttonStyle={{
-                  backgroundColor: "green",
+                  backgroundColor: "#56A434",
                   borderRadius: 20,
                   marginVertical: 10,
                   height: 40,

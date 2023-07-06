@@ -26,11 +26,9 @@ const Filter = (props) => {
     cycle: "",
     watering: "",
     sunlight: "",
-    careLevel: "",
-    growRate: "",
-    maintanence: "",
-    indoor: 1,
-    edible: 1,
+    poisonous: 0,
+    indoor: 0,
+    edible: 0,
   });
 
   return (
@@ -65,7 +63,7 @@ const Filter = (props) => {
           </Pressable>
         </View>
         <View>
-          <View style={{ marginVertical: 10 }}>
+          <View style={{ marginVertical: 5 }}>
             <CustomDropdown
               data={plantCycleList}
               value={filterValues?.cycle}
@@ -79,7 +77,7 @@ const Filter = (props) => {
               placeholder={"Select"}
             />
           </View>
-          <View style={{ marginVertical: 10 }}>
+          <View style={{ marginVertical: 5 }}>
             <CustomDropdown
               data={plantSunExposureList}
               // value={filterValues?.sunlight}
@@ -93,7 +91,7 @@ const Filter = (props) => {
               placeholder={"Select"}
             />
           </View>
-          <View style={{ marginVertical: 10 }}>
+          <View style={{ marginVertical: 5 }}>
             <CustomDropdown
               data={plantWateringList}
               value={filterValues?.watering}
@@ -107,74 +105,38 @@ const Filter = (props) => {
               placeholder={"Select"}
             />
           </View>
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Care Level</Text>
+          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Poisonous</Text>
           <View style={{ flexDirection: "row" }}>
-            {careLevel?.map((item, index) => {
+            {yesOrNO?.map((item, index) => {
               return (
                 <CustomCheckBox
                   checked={
-                    filterValues?.careLevel === item?.label ? true : false
+                    filterValues?.poisonous === item?.value ? true : false
                   }
                   label={item?.label}
                   onSelect={(val) => {
                     setFilterValues({
                       ...filterValues,
-                      careLevel: val,
+                      poisonous: val === "Yes" ? 1 : 0,
                     });
                   }}
                 />
               );
             })}
           </View>
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Grow Rate</Text>
-          <View style={{ flexDirection: "row" }}>
-            {careLevel?.map((item, index) => {
-              return (
-                <CustomCheckBox
-                  checked={
-                    filterValues?.growRate === item?.label ? true : false
-                  }
-                  label={item?.label}
-                  onSelect={(val) => {
-                    setFilterValues({
-                      ...filterValues,
-                      growRate: val,
-                    });
-                  }}
-                />
-              );
-            })}
-          </View>
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Maintanence</Text>
-          <View style={{ flexDirection: "row" }}>
-            {careLevel?.map((item, index) => {
-              return (
-                <CustomCheckBox
-                  checked={
-                    filterValues?.maintanence === item?.label ? true : false
-                  }
-                  label={item?.label}
-                  onSelect={(val) => {
-                    setFilterValues({
-                      ...filterValues,
-                      maintanence: val,
-                    });
-                  }}
-                />
-              );
-            })}
-          </View>
+          {console.log("filterValues", filterValues)}
           <Text style={{ fontSize: 14, fontWeight: "bold" }}>Indoor </Text>
           <View style={{ flexDirection: "row" }}>
             {yesOrNO?.map((item, index) => {
               return (
                 <CustomCheckBox
-                  checked={filterValues?.indoor === item?.label ? true : false}
+                  checked={filterValues?.indoor === item?.value ? true : false}
                   label={item?.label}
                   onSelect={(val) => {
+                    console.log("val", val);
                     setFilterValues({
                       ...filterValues,
-                      indoor: val,
+                      indoor: val === "Yes" ? 1 : 0,
                     });
                   }}
                 />
@@ -186,12 +148,12 @@ const Filter = (props) => {
             {yesOrNO?.map((item, index) => {
               return (
                 <CustomCheckBox
-                  checked={filterValues?.edible === item?.label ? true : false}
+                  checked={filterValues?.edible === item?.value ? true : false}
                   label={item?.label}
                   onSelect={(val) => {
                     setFilterValues({
                       ...filterValues,
-                      edible: val,
+                      edible: val === "Yes" ? 1 : 0,
                     });
                   }}
                 />
@@ -213,17 +175,15 @@ const Filter = (props) => {
                 cycle: "",
                 watering: "",
                 sunlight: "",
-                careLevel: "",
-                growRate: "",
-                maintanence: "",
-                indoor: 1,
-                edible: 1,
+                poisonous: 0,
+                indoor: 0,
+                edible: 0,
               });
             }}
             buttonStyle={{
               height: 40,
               width: 100,
-              backgroundColor: "green",
+              backgroundColor: "#56A434",
               alignSelf: "flex-start",
               borderRadius: 4,
             }}
@@ -236,7 +196,7 @@ const Filter = (props) => {
             buttonStyle={{
               height: 40,
               width: 100,
-              backgroundColor: "green",
+              backgroundColor: "#56A434",
               alignSelf: "flex-end",
               borderRadius: 4,
             }}

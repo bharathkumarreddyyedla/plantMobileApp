@@ -75,3 +75,32 @@ export const savePlantProgress = (id, payload, token) =>
         reject(err);
       });
   });
+
+export const fetchIndoorPlants = (faqArray, indoor, token) => {
+  const setFaqPlantData = (data) => ({
+    type: ReduxPlantConstants.SET_FAQPLAT_DATA,
+    payload: data,
+  });
+  return (dispatch) => {
+    let url = "";
+    if (indoor) {
+      url = `plant/indoorPlantFAQ/1/${faqArray[0] || "NA"}/${
+        faqArray[1] || "NA"
+      }/${faqArray[2] || "NA"}/${1}`;
+    } else {
+      url = `plant/indoorPlantFAQ/1/${faqArray[0] || "NA"}/${
+        faqArray[1] || "NA"
+      }/${faqArray[2] || "NA"}/${0}`;
+    }
+    httpService
+      .get(url, token)
+      .then((res) => {
+        if (res?.data) {
+          dispatch(setFaqPlantData(res?.data?.data || []));
+        }
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
+};

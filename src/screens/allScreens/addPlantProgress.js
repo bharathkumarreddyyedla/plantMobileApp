@@ -349,7 +349,7 @@ const AddPlantProgress = ({ navigation }) => {
               buttonStyle={{
                 height: 40,
                 width: "70%",
-                backgroundColor: "green",
+                backgroundColor: "#56A434",
                 alignSelf: "center",
                 marginVertical: 10,
                 borderRadius: 10,

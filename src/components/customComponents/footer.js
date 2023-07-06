@@ -1,6 +1,7 @@
 import React from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { NativeIcon } from "../../icons/NativeIcons";
+import { appImages } from "../../configs/appImages";
 
 const Footer = ({ navigation }) => {
   const list = [
@@ -8,21 +9,25 @@ const Footer = ({ navigation }) => {
       id: 0,
       name: "homeScreen",
       icon: ["home", "FontAwesome", 30],
+      logo: appImages?.homeLogo,
     },
     {
       id: 1,
-      name: "myPlantsScreen",
+      name: "commutnityScreen",
       icon: ["post", "MaterialCommunityIcons", 25],
+      logo: appImages?.postLogo,
     },
     {
       id: 2,
       name: "whishlistScreen",
       icon: ["bookmark-o", "FontAwesome", 25],
+      logo: appImages?.favouritesLogo,
     },
     {
       id: 3,
       name: "profileScreen",
       icon: ["user-o", "FontAwesome", 25],
+      logo: appImages?.userLogo,
     },
   ];
   return (
@@ -56,12 +61,20 @@ const Footer = ({ navigation }) => {
                 justifyContent: "center",
               }}
             >
-              <NativeIcon
-                iconName={item?.icon[0]}
-                iconLib={item?.icon[1]}
-                iconSize={item?.icon[2]}
-                iconColor={"white"}
-              />
+              {item?.logo ? (
+                <Image
+                  source={item?.logo}
+                  style={{ height: 25, width: 25, marginTop: 10 }}
+                  resizeMode="contain"
+                />
+              ) : (
+                <NativeIcon
+                  iconName={item?.icon[0]}
+                  iconLib={item?.icon[1]}
+                  iconSize={item?.icon[2]}
+                  iconColor={"white"}
+                />
+              )}
             </Pressable>
           );
         })}
