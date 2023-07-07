@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate("searchScreen");
   };
   const getAddress = async () => {
-    const API_KEY = "AIzaSyBhyRCMG_Hcy3N65_YrvcDv6OU2QGrzL4Q";
+    const API_KEY = "";
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${userLocation?.coords?.latitude},${userLocation?.coords?.longitude}&key=${API_KEY}`;
     const response = await axios.get(url);
     const resAdd = response?.data?.results[0]?.formatted_address;
