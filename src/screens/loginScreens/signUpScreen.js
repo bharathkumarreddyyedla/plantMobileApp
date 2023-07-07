@@ -3,6 +3,7 @@ import React from "react";
 import {
   Image,
   KeyboardAvoidingView,
+  Pressable,
   ScrollView,
   Text,
   View,
@@ -10,6 +11,7 @@ import {
 import { Button, Icon } from "react-native-elements";
 import { AuthContext } from "../../configs/contexts";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { NativeIcon } from "../../icons/NativeIcons";
 
 const SignUpScreen = () => {
   const { register } = React.useContext(AuthContext);
@@ -20,6 +22,8 @@ const SignUpScreen = () => {
     password: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const onRegisterClick = async () => {
     try {
       const registerResponse = await register(
@@ -104,6 +108,48 @@ const SignUpScreen = () => {
               <Input
                 placeholder="Password"
                 autoCapitalize="none"
+                textContentType="password"
+                secureTextEntry={!showPassword}
+                rightIcon={
+                  showPassword ? (
+                    <Pressable
+                      style={{
+                        height: "100%",
+                        width: 30,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      onPress={() => {
+                        setShowPassword(!showPassword);
+                      }}
+                    >
+                      <NativeIcon
+                        iconName={"eye"}
+                        iconLib={"FontAwesome"}
+                        iconSize={20}
+                      />
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      style={{
+                        height: "100%",
+                        width: 30,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      onPress={() => {
+                        setShowPassword(!showPassword);
+                      }}
+                    >
+                      <NativeIcon
+                        iconName={"eye-slash"}
+                        iconLib={"FontAwesome"}
+                        iconSize={20}
+                        iconColor={"black"}
+                      />
+                    </Pressable>
+                  )
+                }
                 value={registerData?.password}
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
@@ -119,6 +165,48 @@ const SignUpScreen = () => {
                 placeholder="Confirm password"
                 autoCapitalize="none"
                 value={registerData?.confirmPassword}
+                textContentType="password"
+                secureTextEntry={!showConfirmPassword}
+                rightIcon={
+                  showConfirmPassword ? (
+                    <Pressable
+                      style={{
+                        height: "100%",
+                        width: 30,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      onPress={() => {
+                        setShowConfirmPassword(!showConfirmPassword);
+                      }}
+                    >
+                      <NativeIcon
+                        iconName={"eye"}
+                        iconLib={"FontAwesome"}
+                        iconSize={20}
+                      />
+                    </Pressable>
+                  ) : (
+                    <Pressable
+                      style={{
+                        height: "100%",
+                        width: 30,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      onPress={() => {
+                        setShowConfirmPassword(!showConfirmPassword);
+                      }}
+                    >
+                      <NativeIcon
+                        iconName={"eye-slash"}
+                        iconLib={"FontAwesome"}
+                        iconSize={20}
+                        iconColor={"black"}
+                      />
+                    </Pressable>
+                  )
+                }
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
                 errorMessage=""

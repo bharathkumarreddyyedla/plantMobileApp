@@ -37,23 +37,23 @@ const HomeScreen = ({ navigation }) => {
       saveUserLocation();
     });
   }, []);
-  React.useEffect(() => {
-    if (Object.keys(userLocation)?.length > 0) {
-      getAddress();
-    }
-  }, [userLocation]);
+  // React.useEffect(() => {
+  //   if (Object.keys(userLocation)?.length > 0) {
+  //     getAddress();
+  //   }
+  // }, [userLocation]);
   const onSearchClick = () => {
     navigation.navigate("searchScreen");
   };
-  const getAddress = async () => {
-    const API_KEY = "";
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${userLocation?.coords?.latitude},${userLocation?.coords?.longitude}&key=${API_KEY}`;
-    const response = await axios.get(url);
-    const resAdd = response?.data?.results[0]?.formatted_address;
-    console.log("Address:", resAdd);
-    // Do something with the address, e.g., set it in state
-    saveAddress(resAdd);
-  };
+  // const getAddress = async () => {
+  //   const API_KEY = "";
+  //   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${userLocation?.coords?.latitude},${userLocation?.coords?.longitude}&key=${API_KEY}`;
+  //   const response = await axios.get(url);
+  //   const resAdd = response?.data?.results[0]?.formatted_address;
+  //   console.log("Address:", resAdd);
+  //   // Do something with the address, e.g., set it in state
+  //   saveAddress(resAdd);
+  // };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>

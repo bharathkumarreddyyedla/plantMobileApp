@@ -1,16 +1,18 @@
 import { Input } from "@rneui/themed";
 import React from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { FontAwesome5 } from "react-native-vector-icons";
 import { AuthContext } from "../../configs/contexts";
 import { API_URL } from "@env";
+import { NativeIcon } from "../../icons/NativeIcons";
 const SignInScreen = ({ navigation }) => {
   const { login } = React.useContext(AuthContext);
   const [loginData, setLoginData] = React.useState({
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = React.useState(false);
   const onLoginClick = async () => {
     try {
       const loginResponse = await login(loginData.email, loginData.password);
@@ -72,6 +74,48 @@ const SignInScreen = ({ navigation }) => {
             <Input
               placeholder="Password"
               autoCapitalize="none"
+              textContentType="password"
+              secureTextEntry={!showPassword}
+              rightIcon={
+                showPassword ? (
+                  <Pressable
+                    style={{
+                      height: "100%",
+                      width: 30,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onPress={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    <NativeIcon
+                      iconName={"eye"}
+                      iconLib={"FontAwesome"}
+                      iconSize={20}
+                    />
+                  </Pressable>
+                ) : (
+                  <Pressable
+                    style={{
+                      height: "100%",
+                      width: 30,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onPress={() => {
+                      setShowPassword(!showPassword);
+                    }}
+                  >
+                    <NativeIcon
+                      iconName={"eye-slash"}
+                      iconLib={"FontAwesome"}
+                      iconSize={20}
+                      iconColor={"black"}
+                    />
+                  </Pressable>
+                )
+              }
               value={loginData?.password}
               placeholderTextColor={"grey"}
               errorStyle={{ color: "red" }}

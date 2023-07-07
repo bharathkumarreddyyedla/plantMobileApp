@@ -1,6 +1,7 @@
 import { httpService } from "../../ApiService";
 import * as Location from "expo-location";
 import { ReduxHomeConstants } from "../reduxConstants/constants";
+import axios from "axios";
 
 export const getAllPlants = (page = 1, token) =>
   new Promise((resolve, reject) => {
@@ -43,7 +44,7 @@ export const filterPlants = (
     console.log("cycle", cycle, watering, sunlight);
     httpService
       .get(
-        `plant/filterPlants/${page}/${cycle || "NA"}/${watering ||"NA"}/${
+        `plant/filterPlants/${page}/${cycle || "NA"}/${watering || "NA"}/${
           sunlight || "NA"
         }/${poisonous}/${indoor}/${edible}`,
         token
@@ -63,27 +64,27 @@ export const saveUserLocation = () => {
     type: ReduxHomeConstants.SET_LOCATION,
     payload: data,
   });
+  const saveAddLocation = (data) => ({
+    type: ReduxHomeConstants.SET_ADDRESS,
+    payload: data,
+  });
   return (dispatch) => {
     Location.requestForegroundPermissionsAsync().then((res) => {
       console.log("status", res);
       if (res?.status === "granted") {
         Location.getCurrentPositionAsync({}).then((res) => {
           console.log("res", res);
-          dispatch(saveLocation(res));
+          const API_KEY = "";
+          const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res?.coords?.latitude},${res?.coords?.longitude}&key=${API_KEY}`;
+          axios.get(url).then((response) => {
+            console.log("response add", response);
+            const resAdd = response?.data?.results[0]?.formatted_address;
+            console.log("Address:", resAdd);
+            dispatch(saveLocation(res));
+            dispatch(saveAddLocation(resAdd));
+          });
         });
       }
     });
-  };
-};
-
-export const saveAddress = (payload) => {
-  const saveLocation = (data) => ({
-    type: ReduxHomeConstants.SET_ADDRESS,
-    payload: data,
-  });
-  return (dispatch) => {
-
-          dispatch(saveLocation(payload));
-        
   };
 };
