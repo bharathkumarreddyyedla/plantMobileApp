@@ -5,6 +5,7 @@ const initialState = {
   myPlantDetails: {},
   plantMessage: "",
   faqPlantData: [],
+  favouritePlants: [],
 };
 
 export const plantReducers = (state = initialState, action) => {
@@ -23,6 +24,11 @@ export const plantReducers = (state = initialState, action) => {
       return {
         ...state,
         faqPlantData: action.payload,
+      };
+    case ReduxPlantConstants.SET_FAVOURITE_PLANT:
+      return {
+        ...state,
+        favouritePlants: action.payload,
       };
     case ReduxPlantConstants.SET_MESSAGE:
       return {

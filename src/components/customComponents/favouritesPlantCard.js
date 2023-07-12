@@ -1,46 +1,24 @@
 import React from "react";
-import { Image, Pressable, Text } from "react-native";
-import { View } from "react-native";
-import { appImages } from "../../configs/appImages";
-import { commonStyles } from "../../styles/commonStyles";
-import FastImage from "expo-fast-image";
+import { UserContext } from "../../configs/contexts";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
-import { UserContext } from "../../configs/contexts";
+import { commonStyles } from "../../styles/commonStyles";
+import ExpoFastImage from "expo-fast-image";
+import { Text } from "react-native";
 
-const PlantCard = ({
-  item,
-  index,
-  marginValue = 0,
-  navigation,
-  screen = "",
-  showFavourite = false,
-}) => {
+const FavouritesPlantCard = ({ item, index }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "" } = userState || {};
   const [imageUrl, setImageUrl] = React.useState("");
   const dispatch = useDispatch();
-  const { savePlantDetailedData, saveMyPlantData } = bindActionCreators(
-    plantActions,
-    dispatch
-  );
+  const { savePlantDetailedData } = bindActionCreators(plantActions, dispatch);
   React.useEffect(() => {
     fetchImage();
   }, []);
   const fetchImage = async () => {
-    // console.log(
-    //   "item?.favouritePlants[0].plantPicture",
-    //   item?.favouritePlants[0].plantPicture
-    // );
     try {
-      const response = await fetch(
-        screen !== "favouriteScreen"
-          ? item?.plantPicture
-          : screen === "favouriteScreen"
-          ? item?.favouritePlants[0].plantPicture
-          : item?.default_image?.medium_url
-      );
+      const response = await fetch(item?.plantPicture);
       const blob = await response.blob();
       const uri = URL.createObjectURL(blob);
       setImageUrl(uri);
@@ -51,28 +29,20 @@ const PlantCard = ({
   const onClick = () =>
     new Promise((resolve, reject) => {
       try {
-        savePlantDetailedData(item?.id, token);
+        savePlantDetailedData(item?.perenulaPlantId, token);
         resolve(true);
       } catch (err) {
         reject(err);
       }
     });
-  const onSaveMyPlantData = () => {
-    saveMyPlantData(item);
-    navigation.navigate("plantProgressScreen");
-  };
   return (
     <Pressable
       onPress={async () => {
-        if (screen) {
-          onSaveMyPlantData();
-        } else {
-          await onClick().then((res) => {
-            if (res) {
-              navigation.navigate("plantDetailsScreen");
-            }
-          });
-        }
+        await onClick().then((res) => {
+          if (res) {
+            navigation.navigate("plantDetailsScreen");
+          }
+        });
       }}
       key={index}
       style={{
@@ -82,20 +52,6 @@ const PlantCard = ({
         marginBottom: 12,
       }}
     >
-      {showFavourite && (
-        <Image
-          source={appImages.filledFavouritesLogo}
-          style={{
-            height: 20,
-            width: 20,
-            position: "absolute",
-            zIndex: 100,
-            top: 10,
-            right: 10,
-          }}
-          resizeMode="contain"
-        />
-      )}
       <View
         style={[
           commonStyles.miniCardShadowEffect,
@@ -108,7 +64,7 @@ const PlantCard = ({
           },
         ]}
       >
-        <FastImage
+        <ExpoFastImage
           source={{ uri: imageUrl }}
           resizeMode="cover"
           style={{
@@ -130,10 +86,6 @@ const PlantCard = ({
           justifyContent: "center",
         }}
       >
-        {/* {console.log(
-          "item?.favouritePlants[0].plantName",
-          screen === "favouriteScreen" ? item : ""
-        )} */}
         <Text
           numberOfLines={2}
           style={{
@@ -143,20 +95,14 @@ const PlantCard = ({
             textAlign: "center",
           }}
         >
-          {screen !== "favouriteScreen"
-            ? item?.plantName
-            : screen === "favouriteScreen"
-            ? item?.favouritePlants[0].plantName
-            : item?.common_name}
+          {item?.plantName}
         </Text>
         <Text style={{ color: "black", fontSize: 8, fontWeight: "300" }}>
-          {screen === "favouriteScreen"
-            ? item?.favouritePlants[0].cycle
-            : item?.cycle}
+          {item?.cycle || "NA"}
         </Text>
       </View>
     </Pressable>
   );
 };
 
-export default PlantCard;
+export default FavouritesPlantCard;

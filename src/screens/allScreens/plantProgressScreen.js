@@ -15,13 +15,103 @@ import { Button } from "react-native-elements";
 import moment from "moment";
 import PlantProgressCard from "../../components/customComponents/plantProgressCard";
 import PlantGalleryCard from "../../components/customComponents/plantGalleryCard";
+import { savePlantProgress } from "../../services/redux/reduxActions/plantActions";
+import { UserContext } from "../../configs/contexts";
+import PopupCard from "../../components/customComponents/PopupCard";
+import MyPlants from "../../components/dashboard/myPlants";
+import { useTheme } from "react-native-paper";
 
 const PlantProgressScreen = ({ navigation }) => {
+  const { colors } = useTheme();
+  const { userState = {} } = React.useContext(UserContext) || {};
+  const { token = "", user = {} } = userState || {};
   const { myPlantDetails } = useSelector((state) => state?.plants);
   const [selectedtag, setSelectedTag] = React.useState("Info");
   const [numColumns, setNumColumns] = React.useState(3);
+  const [enlargedPicture, setEnlargedPictrue] = React.useState({});
+  const [popupData, setPopupData] = React.useState({
+    message: "",
+    title: "",
+    onSubmit: () => {
+      return;
+    },
+    onCancel: () => {
+      return;
+    },
+  });
+  const onEditClick = (item) => {
+    try {
+      navigation.navigate("addPlantProgress", { editDetails: item });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const onDeleteClick = (item) => {
+    setPopupData({
+      ...popupData,
+      title: "Journey will be deleted",
+      message:
+        "Are you sure you want to delete? you will not be able to restore the journey",
+      onSubmit: (item) => {
+        onActionPopUp(item);
+      },
+      onCancel: () => {
+        onClosePopup;
+      },
+    });
+  };
+  const onClosePopup = () => {
+    console.log("close");
+    setPopupData({
+      ...popupData,
+      message: "",
+    });
+  };
+  const onActionPopUp = (item) => {
+    try {
+      // let arr = [...myPlantDetails?.plantProgress || []]
+      const index = myPlantDetails?.plantProgress?.findIndex(
+        (i) => i?._id === item?._id
+      );
+      if (index >= 0) {
+        myPlantDetails?.plantProgress?.splice(index, 1);
+      }
+      savePlantProgress(myPlantDetails?._id, myPlantDetails, token);
+      setPopupData({
+        ...popupData,
+        message: "",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const enlargePicture = (item) => {
+    setEnlargedPictrue(item);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      {popupData?.message ? (
+        <PopupCard
+          title={popupData?.title}
+          message={popupData?.message}
+          buttons={[
+            {
+              action: onClosePopup,
+              title: "Cancel",
+              backgroundColor: "transparent",
+              color: "black",
+            },
+            {
+              action: onActionPopUp,
+              title: "Delete",
+              backgroundColor: "red",
+              color: "white",
+            },
+          ]}
+        />
+      ) : (
+        <View />
+      )}
       <View
         style={{
           height: Dimensions.get("screen").height / 3,
@@ -79,7 +169,7 @@ const PlantProgressScreen = ({ navigation }) => {
             }}
             style={{
               height: "100%",
-              width: "25%",
+              width: "33.33%",
               alignItems: "center",
               justifyContent: "center",
               backgroundColor: selectedtag === "Info" ? "#7BC75A" : "#56A434",
@@ -96,7 +186,7 @@ const PlantProgressScreen = ({ navigation }) => {
             }}
             style={{
               height: "100%",
-              width: "25%",
+              width: "33.33%",
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
@@ -113,7 +203,7 @@ const PlantProgressScreen = ({ navigation }) => {
             }}
             style={{
               height: "100%",
-              width: "25%",
+              width: "33.33%",
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
@@ -124,7 +214,7 @@ const PlantProgressScreen = ({ navigation }) => {
               Gallery
             </Text>
           </Pressable>
-          <Pressable
+          {/* <Pressable
             onPress={() => {
               setSelectedTag("Garden");
             }}
@@ -140,7 +230,7 @@ const PlantProgressScreen = ({ navigation }) => {
             <Text style={{ fontSize: 14, fontWeight: "bold", color: "white" }}>
               Garden
             </Text>
-          </Pressable>
+          </Pressable> */}
         </View>
         <ScrollView>
           {selectedtag === "Info" ? (
@@ -330,16 +420,11 @@ const PlantProgressScreen = ({ navigation }) => {
                 >
                   <Button
                     title={"Edit plant"}
-                    // iconPosition="left"
-                    // icon={() => {
-                    //   return (
-                    //     <Image
-                    //       source={appImages.whishlistLogo}
-                    //       style={{ height: 20, width: 20, right: 5 }}
-                    //       resizeMode="contain"
-                    //     />
-                    //   );
-                    // }}
+                    onPress={() => {
+                      navigation.navigate("addPlantScreen", {
+                        editPlantDetails: myPlantDetails,
+                      });
+                    }}
                     buttonStyle={{
                       height: 40,
                       width: 130,
@@ -350,19 +435,9 @@ const PlantProgressScreen = ({ navigation }) => {
                   />
                   <Button
                     title={"Add Progress"}
-                    // iconPosition="left"
                     onPress={() => {
                       navigation.navigate("addPlantProgress");
                     }}
-                    // icon={() => {
-                    //   return (
-                    //     <Image
-                    //       source={appImages.addCircleLogo}
-                    //       style={{ height: 20, width: 20, right: 5 }}
-                    //       resizeMode="contain"
-                    //     />
-                    //   );
-                    // }}
                     buttonStyle={{
                       height: 40,
                       width: 130,
@@ -388,7 +463,12 @@ const PlantProgressScreen = ({ navigation }) => {
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item?.plantDob}
                 renderItem={({ item, index }) => (
-                  <PlantProgressCard item={item} index={index} />
+                  <PlantProgressCard
+                    item={item}
+                    index={index}
+                    onEditClick={onEditClick}
+                    onDeleteClick={onDeleteClick}
+                  />
                 )}
               />
             </View>
@@ -402,6 +482,48 @@ const PlantProgressScreen = ({ navigation }) => {
                 flexDirection: "row",
               }}
             >
+              {Object.keys(enlargedPicture).length > 0 ? (
+                <Pressable
+                  onPress={() => {
+                    setEnlargedPictrue({});
+                  }}
+                  style={{
+                    height: 500,
+                    // backgroundColor: colors.backdrop,
+                    width: "100%",
+                    position: "absolute",
+                    zIndex: 1000,
+                    marginLeft: 20,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    // opacity: 0.5,
+                  }}
+                >
+                  <Image
+                    source={{ uri: enlargedPicture?.picture }}
+                    style={{
+                      height: 200,
+                      width: 200,
+                      borderRadius: 20,
+                      opacity: 1,
+                    }}
+                  />
+                  <Text
+                    style={{
+                      position: "absolute",
+                      fontSize: 11,
+                      fontWeight: "500",
+                      color: "white",
+                      alignSelf: "center",
+                      paddingTop: 130,
+                    }}
+                  >
+                    {moment(enlargedPicture?.plantDob).format("DD-MM-YYYY")}
+                  </Text>
+                </Pressable>
+              ) : (
+                <View />
+              )}
               <FlatList
                 key={numColumns.toString()}
                 data={myPlantDetails?.plantProgress || []}
@@ -410,11 +532,16 @@ const PlantProgressScreen = ({ navigation }) => {
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item?.plantDob}
                 renderItem={({ item, index }) => (
-                  <PlantGalleryCard item={item} index={index} />
+                  <PlantGalleryCard
+                    item={item}
+                    index={index}
+                    enlargePicture={enlargePicture}
+                  />
                 )}
               />
             </View>
           ) : (
+            // <MyPlants navigation={navigation} screen={"PlantProgress"} />
             <View />
           )}
         </ScrollView>

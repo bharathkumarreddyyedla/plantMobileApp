@@ -17,6 +17,7 @@ export const appImages = {
   callenderLogo: require("../../assets/images/callenderLogo.png"),
   postLogo: require("../../assets/images/postLogo.png"),
   favouritesLogo: require("../../assets/images/favouritesLogo.png"),
+  filledFavouritesLogo: require("../../assets/images/filledFavouritesLogo.png"),
   homeLogo: require("../../assets/images/homeLogo.png"),
   userLogo: require("../../assets/images/userLogo.png"),
 };

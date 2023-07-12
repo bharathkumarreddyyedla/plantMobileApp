@@ -29,14 +29,15 @@ const Header = (props) => {
           height: "100%",
           width: 50,
           justifyContent: "center",
+          zIndex: 100,
         }}
         onPress={() => {
           onGoback();
         }}
       >
         <NativeIcon
-          iconName={"long-arrow-alt-left"}
-          iconLib={"FontAwesome5"}
+          iconName={"arrow-left"}
+          iconLib={"SimpleLineIcons"}
           iconSize={20}
           iconColor={arrowColor}
         />

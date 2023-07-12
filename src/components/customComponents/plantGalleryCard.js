@@ -1,8 +1,14 @@
 import moment from "moment";
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
-const PlantGalleryCard = ({ item, index }) => {
+const PlantGalleryCard = ({
+  item,
+  index,
+  enlargePicture = () => {
+    return;
+  },
+}) => {
   const [imageUrl, setImageUrl] = React.useState("");
   React.useEffect(() => {
     // if (item?.picture?.includes("blob")) {
@@ -20,7 +26,10 @@ const PlantGalleryCard = ({ item, index }) => {
     }
   };
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => {
+        enlargePicture(item);
+      }}
       key={index}
       style={{
         height: 120,
@@ -46,7 +55,7 @@ const PlantGalleryCard = ({ item, index }) => {
       >
         {moment(item?.plantDob).format("DD-MM-YYYY")}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -6,6 +6,8 @@ import { FontAwesome5 } from "react-native-vector-icons";
 import { AuthContext } from "../../configs/contexts";
 import { API_URL } from "@env";
 import { NativeIcon } from "../../icons/NativeIcons";
+import { Constants } from "../../configs/constants";
+import { validateInput } from "../../configs/Validations";
 const SignInScreen = ({ navigation }) => {
   const { login } = React.useContext(AuthContext);
   const [loginData, setLoginData] = React.useState({
@@ -13,10 +15,98 @@ const SignInScreen = ({ navigation }) => {
     password: "",
   });
   const [showPassword, setShowPassword] = React.useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
+  const loginForm = {
+    email: {
+      value: loginData?.email,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.EMAIL_PATERN,
+          message: Constants.ErrorMessage.EMAIL_REGX,
+        },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.EMAIL_REQUIRED,
+        },
+      ],
+    },
+    password: {
+      value: loginData?.password,
+      validations: [
+        // {
+        //   type: Constants.VALIDATIONS_TYPE.PSWRD,
+        //   message: Constants.ErrorMessage.PASSWORD_REQUIRD,
+        // },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.PASSWORD_REQUIRD,
+        },
+      ],
+    },
+  };
+  const onEmailChange = (emailVal) => {
+    setLoginData({
+      ...loginData,
+      email: emailVal,
+    });
+    if (emailVal === "") {
+      setEmailErrorMessage("");
+    }
+    if (emailVal) {
+      if (emailVal.startsWith(" ")) {
+        setRegisterData({
+          ...registerData,
+          email: "",
+        });
+      } else {
+        loginForm.email.value = emailVal;
+        const { errors, valid } = validateInput({
+          email: loginForm.email,
+        });
+        if (!valid) {
+          setEmailErrorMessage(errors.email);
+        } else {
+          setEmailErrorMessage("");
+        }
+      }
+    }
+  };
+  const onPasswordChange = (passwordVal) => {
+    setLoginData({
+      ...loginData,
+      password: passwordVal,
+    });
+    if (passwordVal) {
+      loginForm.password.value = passwordVal;
+      const { errors, valid } = validateInput({
+        password: loginForm.password,
+      });
+      if (!valid) {
+        setPasswordErrorMessage(errors.password);
+      } else {
+        setPasswordErrorMessage("");
+      }
+    }
+  };
+  const setFormErrorMessage = (errors) => {
+    if (errors.email) {
+      setEmailErrorMessage(errors.email);
+    }
+    if (errors.password) {
+      setPasswordErrorMessage(errors.password);
+    }
+  };
   const onLoginClick = async () => {
     try {
-      const loginResponse = await login(loginData.email, loginData.password);
-      console.log("loginResponse", loginResponse);
+      const { errors, valid } = validateInput(loginForm);
+      console.log("errors", errors, valid);
+      if (!valid) {
+        setFormErrorMessage(errors);
+      } else {
+        const loginResponse = await login(loginData.email, loginData.password);
+        console.log("loginResponse", loginResponse);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -60,15 +150,13 @@ const SignInScreen = ({ navigation }) => {
             <Input
               placeholder="Email"
               autoCapitalize="none"
+              keyboardType="email-address"
               value={loginData?.email}
               placeholderTextColor={"grey"}
               errorStyle={{ color: "red" }}
-              errorMessage=""
+              errorMessage={emailErrorMessage || ""}
               onChangeText={(val) => {
-                setLoginData({
-                  ...loginData,
-                  email: val,
-                });
+                onEmailChange(val);
               }}
             />
             <Input
@@ -119,12 +207,9 @@ const SignInScreen = ({ navigation }) => {
               value={loginData?.password}
               placeholderTextColor={"grey"}
               errorStyle={{ color: "red" }}
-              errorMessage=""
+              errorMessage={passwordErrorMessage || ""}
               onChangeText={(val) => {
-                setLoginData({
-                  ...loginData,
-                  password: val,
-                });
+                onPasswordChange(val);
               }}
             />
             <Text

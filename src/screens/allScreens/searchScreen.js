@@ -114,10 +114,8 @@ const SearchScreen = ({ navigation }) => {
     }
   };
   return (
-    <View
-      style={{ flex: 1, backgroundColor: "#FEF9F1", paddingHorizontal: 20 }}
-    >
-      <View style={{ marginTop: 50 }}>
+    <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      <View style={{ marginTop: 50, paddingHorizontal: 20 }}>
         <Header title={"Search"} navigation={navigation} />
 
         <ScrollView>
@@ -140,7 +138,7 @@ const SearchScreen = ({ navigation }) => {
             >
               {showSearch ? "Search Results" : "All Plants"}
             </Text>
-            <View style={{ flex: 1, flexWrap: "wrap", flexDirection: "row" }}>
+            <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
               {plantsList.map((item, index) => {
                 return (
                   <PlantCard
@@ -153,64 +151,61 @@ const SearchScreen = ({ navigation }) => {
               })}
             </View>
           </View>
-
-          <View
-            style={{ flex: 1, paddingHorizontal: 20, marginTop: 10 }}
-          ></View>
         </ScrollView>
-        <Animated.View
+      </View>
+      <Animated.View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "100%",
+          width: "100%",
+          transform: [{ translateY: bounceValue }],
+          justifyContent: "flex-end",
+          paddingHorizontal: 20,
+        }}
+      >
+        <Pressable
           style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
             height: "100%",
             width: "100%",
-            transform: [{ translateY: bounceValue }],
-            justifyContent: "flex-end",
+            backgroundColor: "transparent",
+            position: "absolute",
           }}
-        >
-          <Pressable
-            style={{
-              height: "100%",
+          onPress={() => {
+            onPressToggle(false);
+          }}
+        />
+        <View
+          style={[
+            Platform.OS === "ios"
+              ? commonStyles.boldShadowEffect
+              : commonStyles.normalShadowEffect,
+            {
+              height: "88%",
               width: "100%",
-              backgroundColor: "transparent",
-              position: "absolute",
-            }}
-            onPress={() => {
-              onPressToggle(false);
-            }}
-          />
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              backgroundColor: "white",
+            },
+          ]}
+        >
           <View
-            style={[
-              Platform.OS === "ios"
-                ? commonStyles.boldShadowEffect
-                : commonStyles.normalShadowEffect,
-              {
-                height: "98%",
-                width: "100%",
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                backgroundColor: "white",
-              },
-            ]}
+            style={{
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              backgroundColor: "white",
+              elevation: 10,
+            }}
           >
-            <View
-              style={{
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20,
-                backgroundColor: "white",
-                elevation: 10,
-              }}
-            >
-              <Filter
-                onPressToggle={onPressToggle}
-                onApplyFilter={onApplyFilter}
-              />
-            </View>
+            <Filter
+              onPressToggle={onPressToggle}
+              onApplyFilter={onApplyFilter}
+            />
           </View>
-        </Animated.View>
-      </View>
+        </View>
+      </Animated.View>
     </View>
   );
 };

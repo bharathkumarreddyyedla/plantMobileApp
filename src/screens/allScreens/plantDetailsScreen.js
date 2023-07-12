@@ -4,10 +4,20 @@ import Header from "../../components/customComponents/header";
 import { appImages } from "../../configs/appImages";
 import { NativeIcon } from "../../icons/NativeIcons";
 import { Button } from "react-native-elements";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { UserContext } from "../../configs/contexts";
+import { onAddToUserFavourite } from "../../services/redux/reduxActions/plantActions";
+import { bindActionCreators } from "redux";
+import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
 
 const PlantDetailsScreen = ({ navigation }) => {
-  const { plantDetails } = useSelector((state) => state.plants);
+  const { userState = {} } = React.useContext(UserContext) || {};
+  const { token = "", user = {} } = userState || {};
+  const { plantDetails, favouritePlants } = useSelector(
+    (state) => state.plants
+  );
+  const dispatch = useDispatch();
+  const { getFavourites } = bindActionCreators(plantActions, dispatch);
   const [imageUrl, setImageUrl] = React.useState("");
   React.useEffect(() => {
     if (Object.keys(plantDetails)?.length > 0) {
@@ -21,10 +31,36 @@ const PlantDetailsScreen = ({ navigation }) => {
       const uri = URL.createObjectURL(blob);
 
       setImageUrl(uri);
-      // setLoading(false);
     } catch (error) {
       console.error("Error fetching image:", error);
     }
+  };
+  const onAddFavourite = () => {
+    let favArray = [...(favouritePlants?.favouritePlants || [])];
+    const index = favArray?.findIndex(
+      (i) => i?.perenulaPlantId === plantDetails?.perenulaPlantId
+    );
+    console.log("index", index);
+    if (index === -1) {
+      favArray?.push({
+        plantId: plantDetails?._id || "",
+        perenulaPlantId: plantDetails?.perenulaPlantId || "",
+        plantPicture: plantDetails?.default_image?.medium_url || "",
+        plantName: plantDetails?.common_name || "",
+        cycle: plantDetails?.cycle || "",
+      });
+    }
+    let obj = {
+      userId: user?._id,
+      favouritePlants: favArray,
+    };
+    // console.log("favArray", favArray);
+    onAddToUserFavourite(obj, token).then((res) => {
+      if (res) {
+        console.log("res", res);
+        getFavourites(user?._id, token);
+      }
+    });
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
@@ -243,6 +279,9 @@ const PlantDetailsScreen = ({ navigation }) => {
             >
               <Button
                 title={"Whishlist"}
+                onPress={() => {
+                  onAddFavourite();
+                }}
                 iconPosition="left"
                 icon={() => {
                   return (

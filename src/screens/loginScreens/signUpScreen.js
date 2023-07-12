@@ -12,6 +12,8 @@ import { Button, Icon } from "react-native-elements";
 import { AuthContext } from "../../configs/contexts";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { NativeIcon } from "../../icons/NativeIcons";
+import { Constants } from "../../configs/constants";
+import { validateInput } from "../../configs/Validations";
 
 const SignUpScreen = () => {
   const { register } = React.useContext(AuthContext);
@@ -24,15 +26,245 @@ const SignUpScreen = () => {
   });
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [firstNameErrorMessage, setFirstNameErrorMessage] = React.useState("");
+  const [surNameErrorMessage, setSurNameErrorMessage] = React.useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
+  const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] =
+    React.useState("");
+  const registrationForm = {
+    firstName: {
+      value: registerData?.firstName,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.MINLENGTH,
+          message: Constants.ErrorMessage.MINLENGTH_REQUIRED,
+          length: 3,
+        },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.NAME_REQUIRED,
+        },
+      ],
+    },
+    surName: {
+      value: registerData?.surName,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.MINLENGTH,
+          message: Constants.ErrorMessage.MINLENGTH_REQUIRED,
+          length: 3,
+        },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.NAME_REQUIRED,
+        },
+      ],
+    },
+
+    email: {
+      value: registerData?.email,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.EMAIL_PATERN,
+          message: Constants.ErrorMessage.EMAIL_REGX,
+        },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.EMAIL_REQUIRED,
+        },
+      ],
+    },
+    password: {
+      value: registerData?.password,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.PSWRD,
+          message: Constants.ErrorMessage.PASSWORD_REQUIRD,
+        },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.PASSWORD_REQUIRD,
+        },
+      ],
+    },
+    confirmPassword: {
+      value: registerData?.confirmPassword,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.MATCH_PASWRD,
+          message: Constants.ErrorMessage.PASSWORD_MATCH,
+        },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.CPASSWORD_REQUIRD,
+        },
+      ],
+    },
+  };
+  const onFirstNameChange = (firstName) => {
+    setRegisterData({
+      ...registerData,
+      firstName: firstName,
+    });
+    if (firstName === "") {
+      setFirstNameErrorMessage("");
+    }
+    if (firstName) {
+      if (firstName.startsWith(" ")) {
+        setRegisterData({
+          ...registerData,
+          firstName: "",
+        });
+      } else {
+        registrationForm.firstName.value = firstName;
+        const { errors, valid } = validateInput({
+          firstName: registrationForm.firstName,
+        });
+        if (!valid) {
+          setFirstNameErrorMessage(errors.firstName);
+        } else {
+          setFirstNameErrorMessage("");
+        }
+      }
+    }
+  };
+  const onSurNameChange = (surName) => {
+    setRegisterData({
+      ...registerData,
+      surName: surName,
+    });
+    if (surName === "") {
+      setSurNameErrorMessage("");
+    }
+    if (surName) {
+      if (surName.startsWith(" ")) {
+        setRegisterData({
+          ...registerData,
+          surName: "",
+        });
+      } else {
+        registrationForm.surName.value = surName;
+        const { errors, valid } = validateInput({
+          surName: registrationForm.surName,
+        });
+        if (!valid) {
+          setSurNameErrorMessage(errors.surName);
+        } else {
+          setSurNameErrorMessage("");
+        }
+      }
+    }
+  };
+  const onEmailChange = (emailVal) => {
+    setRegisterData({
+      ...registerData,
+      email: emailVal,
+    });
+    if (emailVal === "") {
+      setEmailErrorMessage("");
+    }
+    if (emailVal) {
+      if (emailVal.startsWith(" ")) {
+        setRegisterData({
+          ...registerData,
+          email: "",
+        });
+      } else {
+        registrationForm.email.value = emailVal;
+        const { errors, valid } = validateInput({
+          email: registrationForm.email,
+        });
+        if (!valid) {
+          setEmailErrorMessage(errors.email);
+        } else {
+          setEmailErrorMessage("");
+        }
+      }
+    }
+  };
+  const onPasswordChange = (passwordVal) => {
+    setRegisterData({
+      ...registerData,
+      password: passwordVal,
+      confirmPassword: "",
+    });
+
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$_])[A-Za-z\d@$_]{8,15}$/;
+    if (passwordVal === "") {
+      setPasswordErrorMessage("");
+    }
+    if (passwordVal) {
+      registrationForm.password.value = passwordVal;
+      const { errors, valid } = validateInput({
+        password: registrationForm.password,
+      });
+      if (!valid) {
+        setPasswordErrorMessage(errors.password);
+      } else if (!regex.test(passwordVal)) {
+        setPasswordErrorMessage(Constants.ErrorMessage.PSWRD_VALIDATION);
+      } else {
+        setPasswordErrorMessage("");
+      }
+    }
+  };
+  const onConfirmPasswordChange = (confirmPasswordVal) => {
+    setRegisterData({
+      ...registerData,
+      confirmPassword: confirmPasswordVal,
+    });
+    if (confirmPasswordVal === "") {
+      setConfirmPasswordErrorMessage("");
+    }
+    if (confirmPasswordVal) {
+      registrationForm.confirmPassword.value = confirmPasswordVal;
+      const { errors, valid } = validateInput({
+        confirmPassword: registrationForm.confirmPassword,
+        password: registrationForm.password,
+      });
+      if (!valid) {
+        setConfirmPasswordErrorMessage(errors.confirmPassword);
+      } else {
+        setConfirmPasswordErrorMessage("");
+      }
+    }
+  };
+  const setFormErrorMessage = (errors) => {
+    if (errors.firstName) {
+      setFirstNameErrorMessage(errors.firstName);
+    }
+    if (errors.surName) {
+      setSurNameErrorMessage(errors.surName);
+    }
+    if (errors.email) {
+      setEmailErrorMessage(errors.email);
+    }
+    if (errors.password) {
+      setPasswordErrorMessage(errors.password);
+    }
+    if (errors.confirmPassword) {
+      setConfirmPasswordErrorMessage(errors.confirmPassword);
+    }
+  };
   const onRegisterClick = async () => {
     try {
-      const registerResponse = await register(
-        registerData.firstName,
-        registerData.surName,
-        registerData?.email,
-        registerData.password
-      );
-      console.log("registerResponse", registerResponse);
+      const { errors, valid } = validateInput(registrationForm);
+      console.log("errors", errors, valid);
+      if (registerData?.password === "") {
+        setPasswordErrorMessage(Constants.ErrorMessage.PASSWORD_REQUIRD);
+      }
+      if (!valid) {
+        setFormErrorMessage(errors);
+      } else {
+        const registerResponse = await register(
+          registerData.firstName,
+          registerData.surName,
+          registerData?.email,
+          registerData.password
+        );
+        console.log("registerResponse", registerResponse);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -69,12 +301,9 @@ const SignUpScreen = () => {
                 value={registerData?.firstName}
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
-                errorMessage=""
+                errorMessage={firstNameErrorMessage || ""}
                 onChangeText={(val) => {
-                  setRegisterData({
-                    ...registerData,
-                    firstName: val,
-                  });
+                  onFirstNameChange(val);
                 }}
               />
               <Input
@@ -83,26 +312,21 @@ const SignUpScreen = () => {
                 value={registerData?.surName}
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
-                errorMessage=""
+                errorMessage={surNameErrorMessage || ""}
                 onChangeText={(val) => {
-                  setRegisterData({
-                    ...registerData,
-                    surName: val,
-                  });
+                  onSurNameChange(val)
                 }}
               />
               <Input
                 placeholder="Email"
                 autoCapitalize="none"
+                textContentType="emailAddress"
                 value={registerData?.email}
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
-                errorMessage=""
+                errorMessage={emailErrorMessage || ""}
                 onChangeText={(val) => {
-                  setRegisterData({
-                    ...registerData,
-                    email: val,
-                  });
+                  onEmailChange(val);
                 }}
               />
               <Input
@@ -153,12 +377,9 @@ const SignUpScreen = () => {
                 value={registerData?.password}
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
-                errorMessage=""
+                errorMessage={passwordErrorMessage || ""}
                 onChangeText={(val) => {
-                  setRegisterData({
-                    ...registerData,
-                    password: val,
-                  });
+                  onPasswordChange(val);
                 }}
               />
               <Input
@@ -209,15 +430,11 @@ const SignUpScreen = () => {
                 }
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
-                errorMessage=""
+                errorMessage={confirmPasswordErrorMessage || ""}
                 onChangeText={(val) => {
-                  setRegisterData({
-                    ...registerData,
-                    confirmPassword: val,
-                  });
+                  onConfirmPasswordChange(val);
                 }}
               />
-              {/* <Text style={{fontSize:14,color:'black',fontWeight:'bold',paddingHorizontal:10}}>Forgot password? </Text> */}
               <View style={{ paddingHorizontal: 10 }}>
                 <Button
                   title={"Sign up"}

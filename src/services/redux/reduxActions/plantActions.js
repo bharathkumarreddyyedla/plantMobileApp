@@ -25,7 +25,7 @@ export const addMyPlant = (payload, token) =>
     httpService
       .post("plant/addPlant", payload, token)
       .then((res) => {
-        if (res?.data) {
+        if (res?.data && res?.data?.error === undefined) {
           resolve(res?.data?.message);
         }
       })
@@ -102,5 +102,33 @@ export const fetchIndoorPlants = (faqArray, indoor, token) => {
       .catch((err) => {
         throw err;
       });
+  };
+};
+
+export const onAddToUserFavourite = (payload, token) =>
+  new Promise((resolve, reject) => {
+    try {
+      httpService
+        .post("favourite/saveToFavourite", payload, token)
+        .then((res) => {
+          if (res?.data?.message) {
+            resolve(res?.data?.message);
+          }
+        });
+    } catch (err) {
+      reject(err);
+    }
+  });
+export const getFavourites = (id, token) => {
+  const setFavourites = (data) => ({
+    type: ReduxPlantConstants.SET_FAVOURITE_PLANT,
+    payload:data
+  });
+  return (dispatch) => {
+    httpService.get(`favourite/getFavouritePlants/${id}`, token).then((res) => {
+      if (res?.data) {
+        dispatch(setFavourites(res?.data));
+      }
+    });
   };
 };

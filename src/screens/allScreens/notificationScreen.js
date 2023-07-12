@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import Header from "../../components/customComponents/header";
 import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -27,44 +27,50 @@ const NotificationScreen = ({ navigation }) => {
     >
       <View style={{ marginTop: 50 }}>
         <Header title={"Notifications"} navigation={navigation} />
-        <View style={{ flex: 1 }}>
-          {notifications?.notifications?.map((item, index) => {
-            return (
-              <View
-                key={index}
-                style={{
-                  marginVertical: 10,
-                  minHeight: 40,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingRight: 20,
-                  width: "100%",
-                }}
-              >
-                <Image
-                  source={{ uri: notifications?.profilePicture || undefined }}
-                  style={{ height: 40, width: 40, borderRadius: 35 }}
-                  // resizeMode="contain"
-                />
-                <Text
+        <ScrollView>
+          <View style={{ flex: 1, paddingBottom: 50 }}>
+            {notifications?.notifications?.map((item, index) => {
+              return (
+                <View
+                  key={index}
                   style={{
-                    fontSize: 13,
-                    fontWeight: "400",
-                    color: "black",
-                    paddingLeft: 10,
+                    marginVertical: 10,
+                    minHeight: 40,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingRight: 20,
+                    width: "100%",
                   }}
                 >
+                  <Image
+                    source={{ uri: notifications?.profilePicture || undefined }}
+                    style={{ height: 40, width: 40, borderRadius: 35 }}
+                    // resizeMode="contain"
+                  />
                   <Text
-                    style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
+                    style={{
+                      fontSize: 13,
+                      fontWeight: "400",
+                      color: "black",
+                      paddingLeft: 10,
+                    }}
                   >
-                    {notifications?.firstName} {"  "}
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "bold",
+                        color: "black",
+                      }}
+                    >
+                      {notifications?.firstName} {"  "}
+                    </Text>
+                    {item?.notificationPayload?.body}
                   </Text>
-                  {item?.notificationPayload?.body}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
+                </View>
+              );
+            })}
+          </View>
+        </ScrollView>
       </View>
     </View>
   );

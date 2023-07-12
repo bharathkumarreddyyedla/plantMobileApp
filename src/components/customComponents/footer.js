@@ -13,7 +13,7 @@ const Footer = ({ navigation }) => {
     },
     {
       id: 1,
-      name: "commutnityScreen",
+      name: "communityScreen",
       icon: ["post", "MaterialCommunityIcons", 25],
       logo: appImages?.postLogo,
     },

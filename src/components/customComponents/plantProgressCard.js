@@ -1,9 +1,20 @@
 import moment from "moment";
 import React from "react";
-import { Dimensions, Image, Text, View } from "react-native";
+import { Dimensions, Image, Pressable, Text, View } from "react-native";
+import { NativeIcon } from "../../icons/NativeIcons";
 
-const PlantProgressCard = ({ item, index }) => {
+const PlantProgressCard = ({
+  item,
+  index,
+  onEditClick = () => {
+    return;
+  },
+  onDeleteClick=()=>{
+    return
+  }
+}) => {
   const [imageUrl, setImageUrl] = React.useState("");
+  const [showPopup, setShowPopup] = React.useState("");
   React.useEffect(() => {
     // if (item?.picture?.includes("blob")) {
     fetchImage();
@@ -20,17 +31,96 @@ const PlantProgressCard = ({ item, index }) => {
       console.error("Error fetching image:", error);
     }
   };
+
   return (
     <View
       key={index}
       style={{
         height: 100,
         width: "100%",
-        backgroundColor: "white",
+        backgroundColor: "#FEF2F0",
         flexDirection: "row",
         marginVertical: 10,
+        borderRadius: 10,
       }}
     >
+      {showPopup === index && (
+        <Pressable
+          onPress={() => {
+            setShowPopup("");
+          }}
+          style={{
+            height: 100,
+            width: "100%",
+            // backgroundColor: "blue",
+            position: "absolute",
+            zIndex: 1000,
+            alignItems: "flex-end",
+          }}
+        >
+          <Pressable
+            onPress={() => {
+              return;
+            }}
+            style={{
+              minHeight: 40,
+              width: 100,
+              backgroundColor: "white",
+              paddingHorizontal: 10,
+              right: 30,
+              top: 20,
+              zIndex: 1000,
+            }}
+          >
+            <Pressable
+              onPress={() => {
+                onEditClick(item);
+              }}
+              style={{
+                height: 30,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text>Edit</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+               onDeleteClick(item);
+              }}
+              style={{
+                height: 30,
+                alignItems: "center",
+                justifyContent: "center",
+                borderTopWidth: 1,
+              }}
+            >
+              <Text>Delete</Text>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      )}
+      <Pressable
+        onPress={() => {
+          setShowPopup(index);
+        }}
+        style={{
+          position: "absolute",
+          right: 20,
+          top: 5,
+          zIndex: 100,
+          height: 40,
+          width: 50,
+          alignItems: "flex-end",
+        }}
+      >
+        <NativeIcon
+          iconName={"dots-three-horizontal"}
+          iconLib={"Entypo"}
+          iconSize={20}
+          iconColor={"black"}
+        />
+      </Pressable>
       <View
         style={{
           width: "20%",
@@ -41,7 +131,7 @@ const PlantProgressCard = ({ item, index }) => {
       >
         <Image
           source={{ uri: imageUrl || undefined }}
-          style={{ height: 70, width: 60 }}
+          style={{ height: 70, width: 60, borderRadius: 10 }}
           resizeMode="cover"
         />
       </View>

@@ -17,6 +17,7 @@ import {
 } from "../../services/redux/reduxActions/exportAllActions";
 import * as Location from "expo-location";
 import axios from "axios";
+import PopupCard from "../../components/customComponents/PopupCard";
 
 const HomeScreen = ({ navigation }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -28,8 +29,16 @@ const HomeScreen = ({ navigation }) => {
     homeActions,
     dispatch
   );
-  // const [address, setAddress] = React.useState("");
-  // const [location, setLocation] = React.useState(null);
+  const [popupData, setPopupData] = React.useState({
+    message: "Are you sure you want to share?",
+    title: "Journey will be shared!",
+    onSubmit: () => {
+      return;
+    },
+    onCancel: () => {
+      return;
+    },
+  });
 
   React.useEffect(() => {
     navigation.addListener("focus", () => {
@@ -37,27 +46,12 @@ const HomeScreen = ({ navigation }) => {
       saveUserLocation();
     });
   }, []);
-  // React.useEffect(() => {
-  //   if (Object.keys(userLocation)?.length > 0) {
-  //     getAddress();
-  //   }
-  // }, [userLocation]);
   const onSearchClick = () => {
     navigation.navigate("searchScreen");
   };
-  // const getAddress = async () => {
-  //   const API_KEY = "";
-  //   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${userLocation?.coords?.latitude},${userLocation?.coords?.longitude}&key=${API_KEY}`;
-  //   const response = await axios.get(url);
-  //   const resAdd = response?.data?.results[0]?.formatted_address;
-  //   console.log("Address:", resAdd);
-  //   // Do something with the address, e.g., set it in state
-  //   saveAddress(resAdd);
-  // };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      {}
       <ScrollView>
         <View
           style={{

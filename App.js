@@ -16,6 +16,14 @@ import { PaperTheme } from "./src/themes/paperTheme";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SplashScreen from "expo-splash-screen";
+
+// Prevent native splash screen from autohiding before App component declaration
+SplashScreen.preventAutoHideAsync()
+  .then((result) =>
+    console.log(`SplashScreen.preventAutoHideAsync() succeeded: ${result}`)
+  )
+  .catch(console.warn); // it's good to explicitly catch and inspect any error
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -71,6 +79,9 @@ export default function App() {
     registerForPushNotificationsAsync().then((token) =>
       setExpoPushToken(token)
     );
+    setTimeout(async () => {
+      await SplashScreen.hideAsync();
+    }, 2000);
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {

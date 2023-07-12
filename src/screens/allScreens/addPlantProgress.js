@@ -9,9 +9,10 @@ import { Button, CheckBox, Input } from "react-native-elements";
 import { UserContext } from "../../configs/contexts";
 import { savePlantProgress } from "../../services/redux/reduxActions/plantActions";
 
-const AddPlantProgress = ({ navigation }) => {
+const AddPlantProgress = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
+  const { editDetails ={} } = route?.params || {};
   const [imageUrl, setImageUrl] = React.useState("");
   const { myPlantDetails } = useSelector((state) => state?.plants);
   const { userLocation } = useSelector((state) => state.home);
@@ -19,15 +20,16 @@ const AddPlantProgress = ({ navigation }) => {
   const [direction, setDirection] = React.useState("N/A");
   const [cameraBase64, setCameraBase64] = React.useState("");
   const [progressData, setProgressData] = React.useState({
-    picture: "",
-    plantDob: new Date(),
-    perenulaPlantId: myPlantDetails?.perenulaPlantId,
-    plantName: myPlantDetails?.plantName,
-    plantNotes: "",
-    share: true,
-    platPosition: "",
-    plantLat: "",
-    plantLong: "",
+    picture: editDetails?.picture || "",
+    plantDob: editDetails?.plantDob || new Date(),
+    perenulaPlantId:
+      editDetails?.perenulaPlantId || myPlantDetails?.perenulaPlantId,
+    plantName: editDetails?.plantName || myPlantDetails?.plantName,
+    plantNotes: editDetails?.plantNotes || "",
+    share: editDetails?.share || true,
+    platPosition: editDetails?.platPosition || "",
+    plantLat: editDetails?.plantLat || "",
+    plantLong: editDetails?.plantLong || "",
   });
   React.useEffect(() => {
     if (cameraBase64) {
@@ -85,7 +87,12 @@ const AddPlantProgress = ({ navigation }) => {
   const onSaveProgress = () => {
     let plantD = myPlantDetails;
     let arr = [...(myPlantDetails?.plantProgress || [])];
-    arr?.push(progressData);
+    if (Object.keys(editDetails).length > 0) {
+      const index = arr?.findIndex((i) => i?._id === editDetails?._id);
+      arr[index] = progressData;
+    } else {
+      arr?.push(progressData);
+    }
     plantD.plantProgress = arr;
     savePlantProgress(plantD?._id, plantD, token);
     navigation.navigate("homeScreen");
@@ -354,7 +361,7 @@ const AddPlantProgress = ({ navigation }) => {
                 marginVertical: 10,
                 borderRadius: 10,
               }}
-              title={"Proceed"}
+              title={Object.keys(editDetails).length > 0 ? "update" : "Proceed"}
             />
           </View>
         </ScrollView>

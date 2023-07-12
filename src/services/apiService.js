@@ -5,41 +5,31 @@ import { API_URL } from "@env";
 export const apiClientService = axios.create({
   timeout: 50000,
 });
-
+export const api_Url = "http://192.168.0.135:3001/";
 export const httpService = {
   get: (url, token) => {
-    console.log("API_URL", API_URL);
-    return apiClientService.get(`${"http://192.168.1.241:3001/"}${url}`, {
+    return apiClientService.get(`${api_Url}${url}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
   },
   post: (url, payload, token) => {
-    console.log("API_URL", API_URL);
-    return apiClientService.post(
-      `${"http://192.168.1.241:3001/"}${url}`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    return apiClientService.post(`${api_Url}${url}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
   put: (url, payload, token) => {
-    return apiClientService.put(
-      `${"http://192.168.1.241:3001/"}${url}`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    return apiClientService.put(`${api_Url}${url}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
   delete: (url, token) => {
-    return apiClientService.delete(`${API_URL}${url}`, {
+    return apiClientService.delete(`${api_Url}${url}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -8,7 +8,7 @@ import { getMyPlants } from "../../services/redux/reduxActions/plantActions";
 import PlantCard from "../customComponents/plantCard";
 import { Button } from "react-native-elements";
 
-const MyPlants = ({ navigation }) => {
+const MyPlants = ({ navigation, screen = "" }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
   const [plants, setPlants] = React.useState([]);
@@ -34,7 +34,13 @@ const MyPlants = ({ navigation }) => {
         My Plants
       </Text>
       {plants?.length > 0 ? (
-        <View style={{ flexDirection: "row" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: screen ? "wrap" : "nowrap",
+            width: "100%",
+          }}
+        >
           <ScrollView horizontal={true}>
             {plants?.map((item, index) => {
               return (
@@ -47,31 +53,35 @@ const MyPlants = ({ navigation }) => {
                 />
               );
             })}
-            <Pressable
-              onPress={() => {
-                navigation.navigate("searchScreen");
-              }}
-              style={[
-                commonStyles.miniCardShadowEffect,
-                {
-                  height: 150,
-                  width: 100,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "#FEF9F1",
-                  borderRadius: 10,
-                  borderWidth: 0.7,
-                  marginLeft: 12,
-                },
-              ]}
-            >
-              <NativeIcon
-                iconName={"plus-circle"}
-                iconLib={"Feather"}
-                iconColor={"grey"}
-                iconSize={40}
-              />
-            </Pressable>
+            {screen === "" ? (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("searchScreen");
+                }}
+                style={[
+                  commonStyles.miniCardShadowEffect,
+                  {
+                    height: 150,
+                    width: 100,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#FEF9F1",
+                    borderRadius: 10,
+                    borderWidth: 0.7,
+                    marginLeft: 12,
+                  },
+                ]}
+              >
+                <NativeIcon
+                  iconName={"plus-circle"}
+                  iconLib={"Feather"}
+                  iconColor={"grey"}
+                  iconSize={40}
+                />
+              </Pressable>
+            ) : (
+              <View />
+            )}
           </ScrollView>
         </View>
       ) : (
@@ -99,6 +109,7 @@ const MyPlants = ({ navigation }) => {
           <Button
             title={"Start Planting"}
             onPress={() => {
+              // navigation.navigate("plantProgressScreen");
               navigation.navigate("searchScreen");
             }}
             buttonStyle={{

@@ -61,11 +61,11 @@ const AuthInterceptors = ({ navigation }) => {
           return res;
         } else {
           let msg =
-            res.data?.message || res.data?.error || "Something went wrong";
+            res?.data?.message || res?.data?.error || "Something went wrong";
           setLoading(false);
           if (msg !== "") {
             setError(
-              res.data?.message || res.data?.error || "Something went wrong"
+              res?.data?.message || res?.data?.error || "Something went wrong"
             );
             // setError(res.data?.message + ' url:' + res.config.url || res.data?.error + ' url:' + res.config.url || 'Something went wrong' + ' url:' + res.config.url)
           }
@@ -140,8 +140,8 @@ const AuthInterceptors = ({ navigation }) => {
         <View />
       )}
       <AuthNavigator />
-      {/* <HomeNavigator />
-      <View style={{ bottom: 0 }}>
+      {/* <HomeNavigator /> */}
+      {/* <View style={{ bottom: 0 }}>
         <Footer navigation={navigation} />
       </View> */}
     </>
