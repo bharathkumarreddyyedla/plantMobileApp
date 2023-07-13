@@ -18,7 +18,7 @@ const PlantCard = ({
   showFavourite = false,
 }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
-  const { token = "" } = userState || {};
+  const { token = "", user = {} } = userState || {};
   const [imageUrl, setImageUrl] = React.useState("");
   const dispatch = useDispatch();
   const { savePlantDetailedData, saveMyPlantData } = bindActionCreators(
@@ -29,17 +29,10 @@ const PlantCard = ({
     fetchImage();
   }, []);
   const fetchImage = async () => {
-    // console.log(
-    //   "item?.favouritePlants[0].plantPicture",
-    //   item?.favouritePlants[0].plantPicture
-    // );
+    console.log("item?.favouritePlants[0].plantPicture", screen);
     try {
       const response = await fetch(
-        screen !== "favouriteScreen"
-          ? item?.plantPicture
-          : screen === "favouriteScreen"
-          ? item?.favouritePlants[0].plantPicture
-          : item?.default_image?.medium_url
+        screen ? item?.plantPicture : item?.default_image?.medium_url
       );
       const blob = await response.blob();
       const uri = URL.createObjectURL(blob);
@@ -51,7 +44,7 @@ const PlantCard = ({
   const onClick = () =>
     new Promise((resolve, reject) => {
       try {
-        savePlantDetailedData(item?.id, token);
+        savePlantDetailedData(item?.id, user?._id, token);
         resolve(true);
       } catch (err) {
         reject(err);
@@ -64,7 +57,9 @@ const PlantCard = ({
   return (
     <Pressable
       onPress={async () => {
-        if (screen) {
+        if (screen === "favouriteScreen") {
+          return;
+        } else if (screen === "homeScreen") {
           onSaveMyPlantData();
         } else {
           await onClick().then((res) => {
@@ -143,16 +138,10 @@ const PlantCard = ({
             textAlign: "center",
           }}
         >
-          {screen !== "favouriteScreen"
-            ? item?.plantName
-            : screen === "favouriteScreen"
-            ? item?.favouritePlants[0].plantName
-            : item?.common_name}
+          {screen ? item?.plantName : item?.common_name}
         </Text>
         <Text style={{ color: "black", fontSize: 8, fontWeight: "300" }}>
-          {screen === "favouriteScreen"
-            ? item?.favouritePlants[0].cycle
-            : item?.cycle}
+          {item?.cycle}
         </Text>
       </View>
     </Pressable>

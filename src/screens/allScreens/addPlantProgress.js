@@ -12,10 +12,10 @@ import { savePlantProgress } from "../../services/redux/reduxActions/plantAction
 const AddPlantProgress = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
-  const { editDetails ={} } = route?.params || {};
+  const { editDetails = {} } = route?.params || {};
   const [imageUrl, setImageUrl] = React.useState("");
   const { myPlantDetails } = useSelector((state) => state?.plants);
-  const { userLocation } = useSelector((state) => state.home);
+  const { userLocation, userAddress } = useSelector((state) => state.home);
   const [showCamera, setShowCamera] = React.useState(false);
   const [direction, setDirection] = React.useState("N/A");
   const [cameraBase64, setCameraBase64] = React.useState("");
@@ -30,6 +30,8 @@ const AddPlantProgress = ({ navigation, route }) => {
     platPosition: editDetails?.platPosition || "",
     plantLat: editDetails?.plantLat || "",
     plantLong: editDetails?.plantLong || "",
+    city: userAddress?.split(",")[1]?.trim() || "",
+    state: userAddress?.split(",")[2]?.trim() || "",
   });
   React.useEffect(() => {
     if (cameraBase64) {
@@ -211,8 +213,10 @@ const AddPlantProgress = ({ navigation, route }) => {
               <Input
                 autoCorrect={false}
                 value={
-                  progressData?.plantLat && progressData?.plantLong
-                    ? `${progressData?.plantLat}:${progressData?.plantLong}`
+                  progressData?.city && progressData?.state
+                    ? `${progressData?.city || "NA"} ${
+                        progressData?.state || "NA"
+                      }`
                     : ""
                 }
                 autoComplete="off"

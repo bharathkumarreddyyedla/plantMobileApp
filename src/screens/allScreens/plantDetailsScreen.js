@@ -1,12 +1,12 @@
 import React from "react";
-import { Dimensions, Image, ScrollView, Text, View } from "react-native";
+import { Alert, Dimensions, Image, ScrollView, Text, View } from "react-native";
 import Header from "../../components/customComponents/header";
 import { appImages } from "../../configs/appImages";
 import { NativeIcon } from "../../icons/NativeIcons";
 import { Button } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { UserContext } from "../../configs/contexts";
-import { onAddToUserFavourite } from "../../services/redux/reduxActions/plantActions";
+// import { onAddToUserFavourite } from "../../services/redux/reduxActions/plantActions";
 import { bindActionCreators } from "redux";
 import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
 
@@ -17,7 +17,10 @@ const PlantDetailsScreen = ({ navigation }) => {
     (state) => state.plants
   );
   const dispatch = useDispatch();
-  const { getFavourites } = bindActionCreators(plantActions, dispatch);
+  const { getFavourites, onAddToUserFavourite } = bindActionCreators(
+    plantActions,
+    dispatch
+  );
   const [imageUrl, setImageUrl] = React.useState("");
   React.useEffect(() => {
     if (Object.keys(plantDetails)?.length > 0) {
@@ -36,34 +39,31 @@ const PlantDetailsScreen = ({ navigation }) => {
     }
   };
   const onAddFavourite = () => {
-    let favArray = [...(favouritePlants?.favouritePlants || [])];
+    let favArray = [...(favouritePlants || [])];
+    console.log("favArray", favArray);
     const index = favArray?.findIndex(
-      (i) => i?.perenulaPlantId === plantDetails?.perenulaPlantId
+      (i) => i?.perenulaPlantId === plantDetails?.id
     );
     console.log("index", index);
     if (index === -1) {
-      favArray?.push({
+      let obj = {
+        userId: user?._id,
         plantId: plantDetails?._id || "",
-        perenulaPlantId: plantDetails?.perenulaPlantId || "",
+        perenulaPlantId: plantDetails?.id || "",
         plantPicture: plantDetails?.default_image?.medium_url || "",
         plantName: plantDetails?.common_name || "",
         cycle: plantDetails?.cycle || "",
-      });
+      };
+      favArray.push(obj);
+      onAddToUserFavourite(obj, favArray, token);
+      plantDetails.favourite = true;
+    } else {
+      Alert.alert("Already added to whishlist");
     }
-    let obj = {
-      userId: user?._id,
-      favouritePlants: favArray,
-    };
-    // console.log("favArray", favArray);
-    onAddToUserFavourite(obj, token).then((res) => {
-      if (res) {
-        console.log("res", res);
-        getFavourites(user?._id, token);
-      }
-    });
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      {console.log("plantDetails", favouritePlants, user?._id)}
       <View
         style={{
           height: Dimensions.get("screen").height / 3,
@@ -286,7 +286,11 @@ const PlantDetailsScreen = ({ navigation }) => {
                 icon={() => {
                   return (
                     <Image
-                      source={appImages.whishlistLogo}
+                      source={
+                        plantDetails?.favourite
+                          ? appImages?.filledFavouritesLogo
+                          : appImages.whishlistLogo
+                      }
                       style={{ height: 20, width: 20, right: 5 }}
                       resizeMode="contain"
                     />

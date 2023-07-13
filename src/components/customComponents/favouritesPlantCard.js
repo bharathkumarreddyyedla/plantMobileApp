@@ -9,7 +9,7 @@ import { Text } from "react-native";
 
 const FavouritesPlantCard = ({ item, index }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
-  const { token = "" } = userState || {};
+  const { token = "", user = {} } = userState || {};
   const [imageUrl, setImageUrl] = React.useState("");
   const dispatch = useDispatch();
   const { savePlantDetailedData } = bindActionCreators(plantActions, dispatch);
@@ -29,7 +29,7 @@ const FavouritesPlantCard = ({ item, index }) => {
   const onClick = () =>
     new Promise((resolve, reject) => {
       try {
-        savePlantDetailedData(item?.perenulaPlantId, token);
+        savePlantDetailedData(item?.perenulaPlantId, user?._id, token);
         resolve(true);
       } catch (err) {
         reject(err);

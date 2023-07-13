@@ -93,6 +93,8 @@ const AddPlantScreen = ({ navigation, route }) => {
             perenulaPlantId: plantDetails?.id,
             plantName: plantDetails?.common_name,
             plantNotes: "",
+            city: userAddress?.split(",")[1]?.trim() || "",
+            state: userAddress?.split(",")[2]?.trim() || "",
           },
         ],
       });
@@ -167,6 +169,8 @@ const AddPlantScreen = ({ navigation, route }) => {
             perenulaPlantId: plantDetails?.id,
             plantName: plantDetails?.common_name,
             plantNotes: "",
+            city: userAddress?.split(",")[1]?.trim() || "",
+            state: userAddress?.split(",")[2]?.trim() || "",
           },
         ],
       });

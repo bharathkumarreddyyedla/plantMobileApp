@@ -1,14 +1,14 @@
 import { httpService } from "../../ApiService";
 import { ReduxPlantConstants } from "../reduxConstants/constants";
 
-export const savePlantDetailedData = (id, token) => {
+export const savePlantDetailedData = (id, userID, token) => {
   const setPlantData = (data) => ({
     type: ReduxPlantConstants.SET_DETAILED_PLANT_DATA,
     payload: data,
   });
   return (dispatch) => {
     httpService
-      .get(`plant/getPlantFromPerenualById/${id}`, token)
+      .get(`plant/getPlantFromPerenualById/${id}/${userID}`, token)
       .then((res) => {
         if (res?.data) {
           dispatch(setPlantData(res?.data));
@@ -105,24 +105,25 @@ export const fetchIndoorPlants = (faqArray, indoor, token) => {
   };
 };
 
-export const onAddToUserFavourite = (payload, token) =>
-  new Promise((resolve, reject) => {
-    try {
-      httpService
-        .post("favourite/saveToFavourite", payload, token)
-        .then((res) => {
-          if (res?.data?.message) {
-            resolve(res?.data?.message);
-          }
-        });
-    } catch (err) {
-      reject(err);
-    }
+export const onAddToUserFavourite = (payload, favArray, token) => {
+  const setFavourites = (data) => ({
+    type: ReduxPlantConstants.SET_FAVOURITE_PLANT,
+    payload: data,
   });
+  return (dispatch) => {
+    httpService
+      .post("favourite/saveToFavourite", payload, token)
+      .then((res) => {
+        if (res?.data?.message) {
+          dispatch(setFavourites(favArray));
+        }
+      });
+  };
+};
 export const getFavourites = (id, token) => {
   const setFavourites = (data) => ({
     type: ReduxPlantConstants.SET_FAVOURITE_PLANT,
-    payload:data
+    payload: data,
   });
   return (dispatch) => {
     httpService.get(`favourite/getFavouritePlants/${id}`, token).then((res) => {

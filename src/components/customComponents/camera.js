@@ -6,7 +6,9 @@ import {
   Dimensions,
   Pressable,
   Alert,
+  Linking,
 } from "react-native";
+import { Permissions } from "expo-permissions";
 import { Camera } from "expo-camera";
 import { Button } from "react-native-elements";
 import { NativeIcon } from "../../icons/NativeIcons";
@@ -20,12 +22,39 @@ const CustomCamera = (props) => {
   const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024; // Convert MB to bytes
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.getCameraPermissionsAsync();
-      console.log("status", status);
-      setHasPermission(status === "granted");
-    })();
+    askPermission();
   }, []);
+  const askPermission = async () => {
+    const { status } = await Camera.getCameraPermissionsAsync();
+    console.log("status", status);
+    switch (status) {
+      case "granted":
+        console.log("Camera permission is granted");
+        setHasPermission(status === "granted");
+        // Proceed with camera usage
+        break;
+      case "undetermined":
+        const { status: newStatus } = await Permissions.askAsync(
+          Permissions.CAMERA
+        );
+        console.log("Camera permission is undetermined", newStatus);
+        // You can ask for permission here
+        break;
+      case "denied":
+        Linking.openSettings();
+        console.log("Camera permission is denied");
+        // Handle permission denied case
+        break;
+      case "blocked":
+        console.log("Camera permission is blocked");
+        // Handle permission blocked case
+        break;
+      default:
+        console.log("Unknown camera permission status");
+        // Handle unknown status
+        break;
+    }
+  };
   const handleFlip = () => {
     setCameraType(
       cameraType === Camera.Constants.Type.back

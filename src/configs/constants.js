@@ -260,11 +260,6 @@ export const indoorPlantFAQ = [
         label: "One life is enough for plants",
         value: "annual",
       },
-      {
-        id: 2,
-        label: "Skip Question",
-        value: "NA",
-      },
     ],
   },
   {
@@ -287,11 +282,6 @@ export const indoorPlantFAQ = [
         label: "I can barely sit down",
         value: "minimum",
       },
-      {
-        id: 3,
-        label: "Skip Question",
-        value: "NA",
-      },
     ],
   },
   {
@@ -313,11 +303,6 @@ export const indoorPlantFAQ = [
         id: 2,
         label: "What's sunlight?!",
         value: "full_shade",
-      },
-      {
-        id: 3,
-        label: "Skip Question",
-        value: "NA",
       },
     ],
   },
@@ -341,11 +326,6 @@ export const outdoorPlantFAQ = [
         label: "One life is enough for plants",
         value: "annual",
       },
-      {
-        id: 2,
-        label: "Skip Question",
-        value: "NA",
-      },
     ],
   },
   {
@@ -368,11 +348,6 @@ export const outdoorPlantFAQ = [
         label: "I can barely sit down",
         value: "minimum",
       },
-      {
-        id: 3,
-        label: "Skip Question",
-        value: "NA",
-      },
     ],
   },
   {
@@ -394,11 +369,6 @@ export const outdoorPlantFAQ = [
         id: 2,
         label: "What's sunlight?!",
         value: "full_shade",
-      },
-      {
-        id: 3,
-        label: "Skip Question",
-        value: "NA",
       },
     ],
   },
