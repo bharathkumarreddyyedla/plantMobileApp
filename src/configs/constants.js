@@ -5,6 +5,9 @@ export const Constants = {
   COUNTRY_CODE: "+91",
   ErrorMessage: {
     NAME_REQUIRED: "Name cannot be blank",
+    LOCATION_REQUIRED: "Location cannot be blank",
+    POSITION_REQUIRED: "Position cannot be blank",
+    NOTES_REQUIRED: "Notes cannot be blank",
     MINLENGTH_REQUIRED: "Name should have 4 charcters",
     EMAIL_REQUIRED: "Email cannot be blank",
     AGE_REQUIRED: "Age is required",

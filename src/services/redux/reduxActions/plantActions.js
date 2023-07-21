@@ -133,3 +133,18 @@ export const getFavourites = (id, token) => {
     });
   };
 };
+export const deleteFavouritePlants = (id, payload, token) => {
+  const setFavourites = (data) => ({
+    type: ReduxPlantConstants.SET_FAVOURITE_PLANT,
+    payload: data,
+  });
+  return (dispatch) => {
+    httpService
+      .get(`favourite/deleteFavouritePlants/${id}`, token)
+      .then((res) => {
+        if (res?.data) {
+          dispatch(setFavourites(payload));
+        }
+      });
+  };
+};

@@ -124,7 +124,7 @@ const HomeScreen = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
               Let's find a perfect plant for you
             </Text>
             <Button
@@ -139,12 +139,15 @@ const HomeScreen = ({ navigation }) => {
                 marginVertical: 10,
                 paddingHorizontal: 45,
               }}
-              titleStyle={{ fontSize: 14, fontWeight: "700", color: "white" }}
+              titleStyle={{ fontSize: 16, fontWeight: "700", color: "white" }}
               onPress={() => {}}
             />
           </View>
         </View>
       </ScrollView>
+      <View style={{ bottom: 0 }}>
+        <Footer navigation={navigation} />
+      </View>
     </View>
   );
 };

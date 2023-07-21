@@ -83,7 +83,7 @@ const PopupCard = ({
               borderColor: "black",
             }}
             titleStyle={{
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: "600",
               color: buttons[0].color,
             }}
@@ -98,7 +98,7 @@ const PopupCard = ({
               borderRadius: 20,
             }}
             titleStyle={{
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: "600",
               color: buttons[1].color,
             }}

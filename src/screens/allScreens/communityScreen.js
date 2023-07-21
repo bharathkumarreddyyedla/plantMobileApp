@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, Text } from "react-native";
+import { FlatList, ScrollView, Text } from "react-native";
 import { View } from "react-native";
 import {
   getAllPost,
@@ -11,6 +11,8 @@ import { UserContext } from "../../configs/contexts";
 import Header from "../../components/customComponents/header";
 import { Button } from "react-native-elements";
 import FeedCard from "../../components/customComponents/feedCard";
+import Footer from "../../components/customComponents/footer";
+import { appImages } from "../../configs/appImages";
 
 const CommunityScreen = ({ navigation }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -63,11 +65,12 @@ const CommunityScreen = ({ navigation }) => {
   };
   const onLike = async (val) => {
     let obj = {};
+    console.log("val", val?.post);
     if (selectedLabel === "All Posts") {
       obj = {
-        _id: val?.posts[0]?._id,
-        userId: val?.posts[0]?.userId,
-        isLiked: !val?.posts[0]?.liked,
+        _id: val?.post?._id,
+        userId: val?.post?.userId,
+        isLiked: !val?.post?.liked,
         likedUser: user?._id,
       };
     } else if (selectedLabel === "liked") {
@@ -85,6 +88,7 @@ const CommunityScreen = ({ navigation }) => {
         likedUser: user?._id,
       };
     }
+    console.log("obj", obj);
 
     await updatePosts(obj, token).then((res) => {
       if (res) {
@@ -93,13 +97,18 @@ const CommunityScreen = ({ navigation }) => {
     });
   };
   return (
-    <View
-      style={{ flex: 1, backgroundColor: "#FEF9F1", paddingHorizontal: 20 }}
-    >
-      <View style={{ marginTop: 50 }}>
-        <Header title={"Feed"} navigation={navigation} />
+    <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      <View style={{ marginTop: 50, paddingHorizontal: 20 }}>
+        <Header
+          title={"Feed"}
+          navigation={navigation}
+          logo={appImages.addLogo}
+          onLogoClick={() => {
+            navigation.navigate("plantsScreen");
+          }}
+        />
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingHorizontal: 20 }}>
         <View
           style={{
             height: 40,
@@ -136,19 +145,26 @@ const CommunityScreen = ({ navigation }) => {
             );
           })}
         </View>
+
         {selectedLabel === "All Posts" ? (
-          <FlatList
-            data={feeds}
-            keyExtractor={(item) => item?._id}
-            renderItem={({ item, index }) => (
-              <FeedCard
-                item={item}
-                index={index}
-                selectedLabel={selectedLabel}
-                onLike={onLike}
-              />
-            )}
-          />
+          <ScrollView>
+            {feeds?.map((item, index) => {
+              console.log("item", item?.posts);
+              return item?.posts?.map((it, ind) => {
+                console.log("it", it);
+                return (
+                  <FeedCard
+                    item={it}
+                    index={ind}
+                    userDetails={item}
+                    selectedLabel={selectedLabel}
+                    onLike={onLike}
+                    navigation={navigation}
+                  />
+                );
+              });
+            })}
+          </ScrollView>
         ) : selectedLabel === "My Posts" ? (
           <FlatList
             data={myFeeds?.posts || []}
@@ -160,6 +176,7 @@ const CommunityScreen = ({ navigation }) => {
                 userDetails={myFeeds}
                 selectedLabel={selectedLabel}
                 onLike={onLike}
+                navigation={navigation}
               />
             )}
           />
@@ -173,11 +190,15 @@ const CommunityScreen = ({ navigation }) => {
                 index={index}
                 selectedLabel={selectedLabel}
                 onLike={onLike}
+                navigation={navigation}
               />
             )}
           />
         )}
         {/* <FeedCard /> */}
+      </View>
+      <View style={{ bottom: 0 }}>
+        <Footer navigation={navigation} />
       </View>
     </View>
   );

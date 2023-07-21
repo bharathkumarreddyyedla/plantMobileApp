@@ -13,6 +13,8 @@ import AddPlantScreen from "../screens/allScreens/addPlantScreen";
 import MyPlantsScreen from "../screens/allScreens/myPlantsScreen";
 import PlantProgressScreen from "../screens/allScreens/plantProgressScreen";
 import AddPlantProgress from "../screens/allScreens/addPlantProgress";
+import DetailedPostScreen from "../screens/allScreens/detailedPostScreen";
+import PlantsScreen from "../screens/allScreens/plantsScreen";
 const HomeStack = createNativeStackNavigator();
 const HomeNavigator = () => {
   return (
@@ -39,6 +41,11 @@ const HomeNavigator = () => {
         component={PlantProgressScreen}
       />
       <HomeStack.Screen name="addPlantProgress" component={AddPlantProgress} />
+      <HomeStack.Screen
+        name="detailedPostScreen"
+        component={DetailedPostScreen}
+      />
+      <HomeStack.Screen name="plantsScreen" component={PlantsScreen} />
     </HomeStack.Navigator>
   );
 };

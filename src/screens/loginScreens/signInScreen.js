@@ -34,10 +34,6 @@ const SignInScreen = ({ navigation }) => {
     password: {
       value: loginData?.password,
       validations: [
-        // {
-        //   type: Constants.VALIDATIONS_TYPE.PSWRD,
-        //   message: Constants.ErrorMessage.PASSWORD_REQUIRD,
-        // },
         {
           type: Constants.VALIDATIONS_TYPE.REQ,
           message: Constants.ErrorMessage.PASSWORD_REQUIRD,
@@ -138,7 +134,7 @@ const SignInScreen = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("registration");
               }}
-              style={{ fontSize: 12, fontWeight: "400", color: "grey" }}
+              style={{ fontSize: 14, fontWeight: "400", color: "grey" }}
             >
               New to leafy?{" "}
               <Text style={{ color: "black", fontWeight: "bold" }}>
@@ -214,7 +210,7 @@ const SignInScreen = ({ navigation }) => {
             />
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 color: "black",
                 fontWeight: "bold",
                 paddingHorizontal: 10,

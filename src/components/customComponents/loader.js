@@ -70,7 +70,7 @@ export const Loader = () => {
                   marginVertical: 10,
                 }}
               >
-                <Text style={{ fontSize: 14 }}>{loading?.text}</Text>
+                <Text style={{ fontSize: 16 }}>{loading?.text}</Text>
               </View>
             ) : (
               <View />

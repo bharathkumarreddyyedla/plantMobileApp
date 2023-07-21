@@ -2,7 +2,10 @@ import React from "react";
 import { FlatList, Text, View } from "react-native";
 import PlantCard from "../customComponents/plantCard";
 import { appImages } from "../../configs/appImages";
-import { getAllPlants } from "../../services/redux/reduxActions/homeActions";
+import {
+  getAllPlants,
+  getSeasonPlants,
+} from "../../services/redux/reduxActions/homeActions";
 import { UserContext } from "../../configs/contexts";
 
 const SeasonPlants = ({ navigation }) => {
@@ -42,7 +45,7 @@ const SeasonPlants = ({ navigation }) => {
   }, []);
   const getAllPlantsList = async () => {
     try {
-      await getAllPlants(1, token)
+      await getSeasonPlants(1, 1, token)
         .then((res) => {
           console.log("res", res);
           setPlantsList(res?.data?.slice(0, 5));
@@ -59,7 +62,7 @@ const SeasonPlants = ({ navigation }) => {
       <Text
         style={{
           color: "black",
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: "bold",
           marginVertical: 10,
         }}

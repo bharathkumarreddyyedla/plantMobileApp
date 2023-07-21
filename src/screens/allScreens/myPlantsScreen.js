@@ -35,7 +35,7 @@ const MyPlantsScreen = ({ navigation }) => {
                 <PlantCard
                   item={item}
                   index={index}
-                  marginValue={index !== 0 ? 12 : 0}
+                  marginValue={index % 2 ? 12 : 0}
                   navigation={navigation}
                 />
               );

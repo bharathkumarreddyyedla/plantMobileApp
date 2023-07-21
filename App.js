@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { Provider as ReduxProvider } from "react-redux";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { LogBox, Platform, StyleSheet, Text, View } from "react-native";
 import store from "./src/services/redux/reduxStore/store";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ThemeProvider } from "react-native-elements";
@@ -92,6 +92,8 @@ export default function App() {
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log(response);
       });
+    LogBox.ignoreLogs(["Warning:"]);
+    LogBox.ignoreAllLogs();
 
     return () => {
       Notifications.removeNotificationSubscription(

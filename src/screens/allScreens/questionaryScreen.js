@@ -86,7 +86,7 @@ const QuestionaryScreen = ({ navigation }) => {
           setCurrentStep(position);
           setPagination({
             ...pagination,
-            page:position
+            page: position,
           });
         }}
         style={[styles.step, stepStyle]}
@@ -181,7 +181,7 @@ const QuestionaryScreen = ({ navigation }) => {
                   >
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: "500",
                         color: "black",
                         lineHeight: 20,
@@ -247,7 +247,7 @@ const QuestionaryScreen = ({ navigation }) => {
                   >
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: "500",
                         color: faqValues?.includes(item?.value)
                           ? "white"
@@ -312,7 +312,7 @@ const QuestionaryScreen = ({ navigation }) => {
                   >
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: "500",
                         color: faqValues?.includes(item?.value)
                           ? "white"

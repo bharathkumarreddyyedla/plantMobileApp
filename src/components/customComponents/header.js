@@ -52,7 +52,7 @@ const Header = (props) => {
       >
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: "bold",
             color: "black",
           }}
@@ -72,7 +72,7 @@ const Header = (props) => {
             justifyContent: "center",
           }}
         >
-          <Image source={logo} style={{ height: 20, width: 20 }} />
+          <Image source={logo} style={{ height: 25, width: 25 }} />
         </Pressable>
       )}
     </View>

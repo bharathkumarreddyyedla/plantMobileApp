@@ -105,7 +105,7 @@ const Filter = (props) => {
               placeholder={"Select"}
             />
           </View>
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Poisonous</Text>
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>Poisonous</Text>
           <View style={{ flexDirection: "row" }}>
             {yesOrNO?.map((item, index) => {
               return (
@@ -125,7 +125,7 @@ const Filter = (props) => {
             })}
           </View>
           {console.log("filterValues", filterValues)}
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Indoor </Text>
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>Indoor </Text>
           <View style={{ flexDirection: "row" }}>
             {yesOrNO?.map((item, index) => {
               return (
@@ -143,7 +143,7 @@ const Filter = (props) => {
               );
             })}
           </View>
-          <Text style={{ fontSize: 14, fontWeight: "bold" }}>Edible</Text>
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>Edible</Text>
           <View style={{ flexDirection: "row" }}>
             {yesOrNO?.map((item, index) => {
               return (

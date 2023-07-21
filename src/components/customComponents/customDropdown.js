@@ -48,7 +48,7 @@ const CustomDropdown = (props) => {
             marginVertical: 5,
           }}
           selectedTextStyle={{
-            fontSize: 12,
+            fontSize: 14,
             fontWeight: "bold",
             color: "#000",
           }}

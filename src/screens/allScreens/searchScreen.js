@@ -115,8 +115,10 @@ const SearchScreen = ({ navigation }) => {
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      <View style={{ marginTop: 50, paddingHorizontal: 20 }}>
-        <Header title={"Search"} navigation={navigation} />
+      <View style={{ marginTop: 50 }}>
+        <View style={{ paddingHorizontal: 20 }}>
+          <Header title={"Search"} navigation={navigation} />
+        </View>
 
         <ScrollView>
           <CustomSearchBar
@@ -131,10 +133,11 @@ const SearchScreen = ({ navigation }) => {
               flex: 1,
               paddingBottom: 100,
               marginTop: 10,
+              paddingHorizontal: 20,
             }}
           >
             <Text
-              style={{ fontSize: 14, fontWeight: "bold", marginBottom: 10 }}
+              style={{ fontSize: 16, fontWeight: "bold", marginBottom: 10 }}
             >
               {showSearch ? "Search Results" : "All Plants"}
             </Text>
@@ -144,7 +147,7 @@ const SearchScreen = ({ navigation }) => {
                   <PlantCard
                     item={item}
                     index={index}
-                    marginValue={index % 3 !== 0 ? 16 : 0}
+                    marginValue={index % 2 ? 16 : 0}
                     navigation={navigation}
                   />
                 );

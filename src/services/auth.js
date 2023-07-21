@@ -103,9 +103,10 @@ export function useAuth() {
           .then(async (res) => {
             if (res?.status === 200) {
               console.log("res?.data ", res?.data);
-              if (res?.data && res?.data?.result) {
+              if (res?.data && res?.data?.user) {
                 const user = {
                   token: res?.data?.token || "",
+                  user: res?.data?.user || {},
                 };
                 await AsyncStorage.setItem("user", JSON.stringify(user));
                 dispatch(createAction("SET_USER", user));

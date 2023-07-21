@@ -1,5 +1,12 @@
 import React from "react";
-import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Header from "../../components/customComponents/header";
 import { appImages } from "../../configs/appImages";
 import { useSelector } from "react-redux";
@@ -8,6 +15,8 @@ import { Magnetometer } from "expo-sensors";
 import { Button, CheckBox, Input } from "react-native-elements";
 import { UserContext } from "../../configs/contexts";
 import { savePlantProgress } from "../../services/redux/reduxActions/plantActions";
+import { validateInput } from "../../configs/Validations";
+import { Constants } from "../../configs/constants";
 
 const AddPlantProgress = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -19,6 +28,12 @@ const AddPlantProgress = ({ navigation, route }) => {
   const [showCamera, setShowCamera] = React.useState(false);
   const [direction, setDirection] = React.useState("N/A");
   const [cameraBase64, setCameraBase64] = React.useState("");
+  const [plantNotesErrorMessage, setPlantNotesErrorMessage] =
+    React.useState("");
+  const [plantPositionErrorMessage, setPlantPositionErrorMessage] =
+    React.useState("");
+  const [plantLocationErrorMessage, setPlantLocationErrorMessage] =
+    React.useState("");
   const [progressData, setProgressData] = React.useState({
     picture: editDetails?.picture || "",
     plantDob: editDetails?.plantDob || new Date(),
@@ -27,12 +42,46 @@ const AddPlantProgress = ({ navigation, route }) => {
     plantName: editDetails?.plantName || myPlantDetails?.plantName,
     plantNotes: editDetails?.plantNotes || "",
     share: editDetails?.share || true,
-    platPosition: editDetails?.platPosition || "",
+    platPosition: "",
     plantLat: editDetails?.plantLat || "",
     plantLong: editDetails?.plantLong || "",
-    city: userAddress?.split(",")[1]?.trim() || "",
-    state: userAddress?.split(",")[2]?.trim() || "",
+    city: editDetails?.city || "",
+    state: editDetails?.state || "",
   });
+  const addPlantProgressForm = {
+    plantNotes: {
+      value: progressData?.plantNotes,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.MINLENGTH,
+          message: Constants.ErrorMessage.MINLENGTH_REQUIRED,
+          length: 3,
+        },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.NOTES_REQUIRED,
+        },
+      ],
+    },
+    platPosition: {
+      value: progressData?.platPosition,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.POSITION_REQUIRED,
+        },
+      ],
+    },
+    city: {
+      value: progressData?.city,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.LOCATION_REQUIRED,
+        },
+      ],
+    },
+  };
   React.useEffect(() => {
     if (cameraBase64) {
       setProgressData({
@@ -51,14 +100,14 @@ const AddPlantProgress = ({ navigation, route }) => {
       Magnetometer.removeAllListeners();
     };
   }, []);
-  React.useEffect(() => {
-    if (direction) {
-      setProgressData({
-        ...progressData,
-        platPosition: direction,
-      });
-    }
-  }, [direction]);
+  // React.useEffect(() => {
+  //   if (direction) {
+  //     setProgressData({
+  //       ...progressData,
+  //       platPosition: direction,
+  //     });
+  //   }
+  // }, [direction]);
   const subscribeToCompass = async () => {
     const { status } = await Magnetometer.requestPermissionsAsync();
     if (status !== "granted") {
@@ -86,18 +135,114 @@ const AddPlantProgress = ({ navigation, route }) => {
       setDirection(cardinalDirections[normalizedIndex]);
     });
   };
-  const onSaveProgress = () => {
-    let plantD = myPlantDetails;
-    let arr = [...(myPlantDetails?.plantProgress || [])];
-    if (Object.keys(editDetails).length > 0) {
-      const index = arr?.findIndex((i) => i?._id === editDetails?._id);
-      arr[index] = progressData;
-    } else {
-      arr?.push(progressData);
+  const setFormErrorMessage = (errors) => {
+    console.log("errors", errors);
+    if (errors.plantNotes) {
+      setPlantNotesErrorMessage(errors.plantNotes);
     }
-    plantD.plantProgress = arr;
-    savePlantProgress(plantD?._id, plantD, token);
-    navigation.navigate("homeScreen");
+    if (errors.city) {
+      setPlantLocationErrorMessage(errors.city);
+    }
+    if (errors.platPosition) {
+      setPlantPositionErrorMessage(errors.platPosition);
+    }
+  };
+  const onSaveProgress = () => {
+    try {
+      const { errors, valid } = validateInput(addPlantProgressForm);
+      if (!valid) {
+        setFormErrorMessage(errors);
+      } else {
+        let plantD = myPlantDetails;
+        let arr = [...(myPlantDetails?.plantProgress || [])];
+        if (Object.keys(editDetails).length > 0) {
+          const index = arr?.findIndex((i) => i?._id === editDetails?._id);
+          arr[index] = progressData;
+        } else {
+          arr?.push(progressData);
+        }
+        plantD.plantProgress = arr;
+        savePlantProgress(plantD?._id, plantD, token);
+        navigation.navigate("homeScreen");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const onPlantNotesChange = async (val) => {
+    try {
+      setProgressData({
+        ...progressData,
+        plantNotes: val,
+      });
+      if (val === "") {
+        setPlantNotesErrorMessage("");
+      } else {
+        addPlantProgressForm.plantNotes.value = val;
+        const { errors, valid } = validateInput({
+          plantNotes: addPlantProgressForm?.plantNotes,
+        });
+        if (!valid) {
+          setPlantNotesErrorMessage(errors.plantName);
+        } else {
+          setPlantNotesErrorMessage("");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onPlantPositionChange = () => {
+    try {
+      setProgressData({
+        ...progressData,
+        platPosition: direction,
+      });
+      if (direction !== "") {
+        setPlantPositionErrorMessage("");
+      } else {
+        addPlantProgressForm.platPosition.value = val;
+        const { errors, valid } = validateInput({
+          platPosition: addPlantProgressForm?.platPosition,
+        });
+        if (!valid) {
+          setPlantPositionErrorMessage("");
+          errors.platPosition;
+        } else {
+          setPlantPositionErrorMessage("");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const onPlantLocationChange = () => {
+    try {
+      setProgressData({
+        ...progressData,
+        plantLat: userLocation?.coords?.latitude || "",
+        plantLong: userLocation?.coords?.longitude || "",
+        city: userAddress?.split(",")[1]?.trim() || "",
+        state: userAddress?.split(",")[2]?.trim() || "",
+      });
+      if (Object.keys(userAddress).length > 0) {
+        setPlantLocationErrorMessage("");
+      } else {
+        addPlantProgressForm.city.value = userAddress?.split(",")[1]?.trim();
+        const { errors, valid } = validateInput({
+          city: addPlantProgressForm?.city,
+        });
+        if (!valid) {
+          setPlantLocationErrorMessage("");
+          errors.city;
+        } else {
+          setPlantLocationErrorMessage("");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
@@ -166,14 +311,15 @@ const AddPlantProgress = ({ navigation, route }) => {
               }}
             >
               <Text
-                style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
+                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
               >
-                Plant location
+                Notes
               </Text>
               <Input
                 autoCorrect={false}
                 value={progressData?.plantNotes}
                 multiline={true}
+                errorMessage={plantNotesErrorMessage || ""}
                 autoComplete="off"
                 placeholder="Write about your plant..."
                 placeholderTextColor={"#A39E9E"}
@@ -182,10 +328,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                   // backgroundColor: "white",
                 }}
                 onChangeText={(val) => {
-                  setProgressData({
-                    ...progressData,
-                    plantNotes: val,
-                  });
+                  onPlantNotesChange(val);
                 }}
                 inputContainerStyle={{
                   marginTop: 10,
@@ -206,7 +349,7 @@ const AddPlantProgress = ({ navigation, route }) => {
               }}
             >
               <Text
-                style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
+                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
               >
                 Plant location
               </Text>
@@ -214,23 +357,20 @@ const AddPlantProgress = ({ navigation, route }) => {
                 autoCorrect={false}
                 value={
                   progressData?.city && progressData?.state
-                    ? `${progressData?.city || "NA"} ${
-                        progressData?.state || "NA"
-                      }`
+                    ? `${
+                        progressData?.city ? progressData?.city + ", " : "NA"
+                      }${progressData?.state || "NA"}`
                     : ""
                 }
+                errorMessage={plantLocationErrorMessage || ""}
                 autoComplete="off"
                 placeholder="Select your location"
                 placeholderTextColor={"#A39E9E"}
                 rightIcon={() => {
                   return (
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => {
-                        setProgressData({
-                          ...progressData,
-                          plantLat: userLocation?.coords?.latitude || "",
-                          plantLong: userLocation?.coords?.longitude || "",
-                        });
+                        onPlantLocationChange();
                       }}
                       style={{
                         height: "100%",
@@ -243,14 +383,14 @@ const AddPlantProgress = ({ navigation, route }) => {
                     >
                       <Text
                         style={{
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: "bold",
                           color: "white",
                         }}
                       >
                         Get location
                       </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   );
                 }}
                 rightIconContainerStyle={{ right: -4 }}
@@ -278,22 +418,23 @@ const AddPlantProgress = ({ navigation, route }) => {
               }}
             >
               <Text
-                style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
+                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
               >
                 Plant direction
               </Text>
               <Input
                 autoCorrect={false}
-                value={direction}
+                value={progressData?.platPosition}
                 autoComplete="off"
-                disabled={true}
+                // disabled={true}
+                errorMessage={plantPositionErrorMessage || ""}
                 placeholder="Select plant direction"
                 placeholderTextColor={"#A39E9E"}
                 rightIcon={() => {
                   return (
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => {
-                        subscribeToCompass();
+                        onPlantPositionChange();
                       }}
                       style={{
                         height: "100%",
@@ -306,14 +447,14 @@ const AddPlantProgress = ({ navigation, route }) => {
                     >
                       <Text
                         style={{
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: "bold",
                           color: "white",
                         }}
                       >
                         Get position
                       </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   );
                 }}
                 rightIconContainerStyle={{ right: -4 }}

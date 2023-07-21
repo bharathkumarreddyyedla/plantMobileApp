@@ -111,7 +111,7 @@ const SuccessPopUp = ({
                 : "ok"
             }
             onPress={onSubmit}
-            titleStyle={{ textTransform: "uppercase", fontSize: 12 }}
+            titleStyle={{ textTransform: "uppercase", fontSize: 14 }}
             buttonStyle={{
               height: 40,
               width: "auto",
@@ -123,7 +123,7 @@ const SuccessPopUp = ({
             <Button
               title={"No"}
               onPress={onCancel}
-              titleStyle={{ textTransform: "uppercase", fontSize: 12 }}
+              titleStyle={{ textTransform: "uppercase", fontSize: 14 }}
               buttonStyle={{
                 height: 30,
                 width: "auto",

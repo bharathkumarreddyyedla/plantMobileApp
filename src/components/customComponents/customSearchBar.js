@@ -33,6 +33,7 @@ const CustomSearchBar = (props) => {
         height: 40,
         width: "100%",
         marginVertical: 10,
+        paddingHorizontal: 20,
       }}
     >
       <View

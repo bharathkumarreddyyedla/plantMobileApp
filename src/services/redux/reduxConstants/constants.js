@@ -22,3 +22,6 @@ export const ReduxHomeConstants = {
 export const ReduxNotificationConstants = {
   SET_ALL_NOTIFICATIONS: "SET_ALL_NOTIFICATIONS",
 };
+export const ReduxPostConstants = {
+  SET_POST_DETAILS: 'SET_POST_DETAILS'
+}

@@ -18,6 +18,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { commonStyles } from "../../styles/commonStyles";
 import { Camera, CameraType } from "expo-camera";
 import CustomCamera from "../../components/customComponents/camera";
+import Footer from "../../components/customComponents/footer";
 
 const ProfileScreen = ({ navigation }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -177,7 +178,7 @@ const ProfileScreen = ({ navigation }) => {
                 }}
               >
                 <Text
-                  style={{ fontSize: 14, fontWeight: "500", color: "grey" }}
+                  style={{ fontSize: 16, fontWeight: "500", color: "grey" }}
                 >
                   Gallery
                 </Text>
@@ -281,6 +282,9 @@ const ProfileScreen = ({ navigation }) => {
             }}
           />
         </KeyboardAwareScrollView>
+      </View>
+      <View style={{ bottom: 0 }}>
+        <Footer navigation={navigation} />
       </View>
     </View>
   );

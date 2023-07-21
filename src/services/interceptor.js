@@ -161,9 +161,6 @@ const Interceptors = ({ navigation, route }) => {
       ) : (
         <AuthNavigator />
       )}
-      <View style={{ bottom: 0 }}>
-        <Footer navigation={navigation} />
-      </View>
     </>
   );
 };

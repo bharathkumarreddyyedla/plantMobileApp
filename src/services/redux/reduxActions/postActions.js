@@ -1,4 +1,5 @@
 import { httpService } from "../../ApiService";
+import { ReduxPostConstants } from "../reduxConstants/constants";
 
 export const getAllPost = (id, token) =>
   new Promise((resolve, reject) => {
@@ -48,3 +49,13 @@ export const getLikedPosts = (id, token) =>
       reject(err);
     }
   });
+
+export const setDetailedPost = (payload) => {
+  const saveDetailedPost = (data) => ({
+    type: ReduxPostConstants.SET_POST_DETAILS,
+    payload: data,
+  });
+  return (dispatch) => {
+    dispatch(saveDetailedPost(payload));
+  };
+};

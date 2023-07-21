@@ -1,10 +1,17 @@
 import React from "react";
-import { Image, Pressable, Text, View, ScrollView } from "react-native";
+import {
+  Image,
+  Pressable,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import Header from "../../components/customComponents/header";
 import { appImages } from "../../configs/appImages";
 import { Button, CheckBox, Input } from "react-native-elements";
 import { Dropdown } from "react-native-element-dropdown";
-import { calenderTypes } from "../../configs/constants";
+import { Constants, calenderTypes } from "../../configs/constants";
 import { useDispatch, useSelector } from "react-redux";
 import CustomDateTimePicker from "../../components/customComponents/customDateTimePicker";
 import moment from "moment";
@@ -17,6 +24,7 @@ import {
 import { bindActionCreators } from "redux";
 import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
 import CustomCamera from "../../components/customComponents/camera";
+import { validateInput } from "../../configs/Validations";
 
 const AddPlantScreen = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -34,6 +42,11 @@ const AddPlantScreen = ({ navigation, route }) => {
   const [showCamera, setShowCamera] = React.useState(false);
   const [cameraBase64, setCameraBase64] = React.useState("");
   const [edit, setEdit] = React.useState(editPlantDetails);
+  const [plantNameErrorMessage, setPlantNameErrorMessage] = React.useState("");
+  const [plantPositionErrorMessage, setPlantPositionErrorMessage] =
+    React.useState("");
+  const [plantLocationErrorMessage, setPlantLocationErrorMessage] =
+    React.useState("");
   const [plantData, setPlantData] = React.useState({
     userId: "",
     perenulaPlantId: "",
@@ -51,14 +64,48 @@ const AddPlantScreen = ({ navigation, route }) => {
     watering: editPlantDetails?.watering || plantDetails?.watering,
     maintenance: editPlantDetails?.maintenance || plantDetails?.maintenance,
     plantDescription: "",
-    city: userAddress?.split(",")[1]?.trim() || "",
-    state: userAddress?.split(",")[2]?.trim() || "",
+    city: editPlantDetails?.city || "",
+    state: editPlantDetails?.state || "",
     platPosition: "",
     share: editPlantDetails?.shareSocialFeed || true,
     plantPicture: "",
     plantProgress: editPlantDetails?.plantProgress || [],
     reminders: editPlantDetails?.reminders || "DAILY",
   });
+  const addPlantForm = {
+    plantName: {
+      value: plantData?.plantName,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.MINLENGTH,
+          message: Constants.ErrorMessage.MINLENGTH_REQUIRED,
+          length: 3,
+        },
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.NAME_REQUIRED,
+        },
+      ],
+    },
+    platPosition: {
+      value: plantData?.platPosition,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.POSITION_REQUIRED,
+        },
+      ],
+    },
+    city: {
+      value: plantData?.city,
+      validations: [
+        {
+          type: Constants.VALIDATIONS_TYPE.REQ,
+          message: Constants.ErrorMessage.LOCATION_REQUIRED,
+        },
+      ],
+    },
+  };
   React.useEffect(() => {
     if (
       Object.keys(plantDetails)?.length > 0 ||
@@ -106,14 +153,11 @@ const AddPlantScreen = ({ navigation, route }) => {
       setShowCamera(false);
     }
   }, [cameraBase64]);
-  React.useEffect(() => {
-    if (direction) {
-      setPlantData({
-        ...plantData,
-        platPosition: direction,
-      });
-    }
-  }, [direction]);
+  // React.useEffect(() => {
+  //   if (direction) {
+
+  //   }
+  // }, [direction]);
   const subscribeToCompass = async () => {
     const { status } = await Magnetometer.requestPermissionsAsync();
     if (status !== "granted") {
@@ -168,7 +212,7 @@ const AddPlantScreen = ({ navigation, route }) => {
             plantDob: new Date(),
             perenulaPlantId: plantDetails?.id,
             plantName: plantDetails?.common_name,
-            plantNotes: "",
+            plantNotes: "It’s my plant birthday, let us celebrate it!!",
             city: userAddress?.split(",")[1]?.trim() || "",
             state: userAddress?.split(",")[2]?.trim() || "",
           },
@@ -199,22 +243,109 @@ const AddPlantScreen = ({ navigation, route }) => {
   };
   const onProceed = () => {
     try {
-      if (Object.keys(editPlantDetails).length > 0) {
-        savePlantProgress(editPlantDetails?._id, plantData, token).then(
-          (res) => {
+      const { errors, valid } = validateInput(addPlantForm);
+      if (!valid) {
+        setFormErrorMessage(errors);
+      } else {
+        if (Object.keys(editPlantDetails).length > 0) {
+          savePlantProgress(editPlantDetails?._id, plantData, token).then(
+            (res) => {
+              if (res) {
+                navigation.navigate("homeScreen");
+              }
+            }
+          );
+        } else {
+          addMyPlant(plantData, token).then((res) => {
+            console.log("message", res);
             if (res) {
+              setPlantMessage(res);
               navigation.navigate("homeScreen");
             }
-          }
-        );
+          });
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const setFormErrorMessage = (errors) => {
+    console.log("errors", errors);
+    if (errors.plantName) {
+      setPlantNameErrorMessage(errors.plantName);
+    }
+    if (errors.city) {
+      setPlantLocationErrorMessage(errors.city);
+    }
+    if (errors.platPosition) {
+      setPlantPositionErrorMessage(errors.platPosition);
+    }
+  };
+  const onPlantNameChange = async (val) => {
+    try {
+      setPlantData({
+        ...plantData,
+        plantName: val,
+      });
+      if (val === "") {
+        setPlantNameErrorMessage("");
       } else {
-        addMyPlant(plantData, token).then((res) => {
-          console.log("message", res);
-          if (res) {
-            setPlantMessage(res);
-            navigation.navigate("homeScreen");
-          }
+        addPlantForm.plantName.value = val;
+        const { errors, valid } = validateInput({
+          plantName: addPlantForm?.plantName,
         });
+        if (!valid) {
+          setPlantNameErrorMessage(errors.plantName);
+        } else {
+          setPlantNameErrorMessage("");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const onLocationChanged = async () => {
+    try {
+      setPlantData({
+        ...plantData,
+        city: userAddress?.split(",")[1]?.trim() || "",
+        state: userAddress?.split(",")[2]?.trim() || "",
+      });
+      if (Object.keys(userAddress).length > 0) {
+        setPlantLocationErrorMessage("");
+      } else {
+        addPlantForm.city.value = userAddress?.split(",")[1]?.trim();
+        const { errors, valid } = validateInput({
+          city: addPlantForm?.city,
+        });
+        if (!valid) {
+          setPlantLocationErrorMessage(errors.city);
+        } else {
+          setPlantLocationErrorMessage("");
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const onPositionChanged = async () => {
+    try {
+      setPlantData({
+        ...plantData,
+        platPosition: direction,
+      });
+      if (direction !== "") {
+        setPlantPositionErrorMessage("");
+      } else {
+        addPlantForm.platPosition.value = direction;
+        const { errors, valid } = validateInput({
+          platPosition: addPlantForm?.platPosition,
+        });
+        if (!valid) {
+          setPlantPositionErrorMessage(errors.platPosition);
+        } else {
+          setPlantPositionErrorMessage("");
+        }
       }
     } catch (err) {
       console.log(err);
@@ -276,7 +407,7 @@ const AddPlantScreen = ({ navigation, route }) => {
               }}
             >
               <Text
-                style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
+                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
               >
                 Give a name to your Plant
               </Text>
@@ -285,6 +416,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 value={plantData?.plantName}
                 autoComplete="off"
                 placeholder="Plant name"
+                errorMessage={plantNameErrorMessage || ""}
                 placeholderTextColor={"#A39E9E"}
                 style={{
                   borderWidth: 1,
@@ -300,10 +432,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 }}
                 inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
                 onChangeText={(val) => {
-                  setPlantData({
-                    ...plantData,
-                    plantName: val,
-                  });
+                  onPlantNameChange(val);
                 }}
               />
             </View>
@@ -314,7 +443,7 @@ const AddPlantScreen = ({ navigation, route }) => {
               }}
             >
               <Text
-                style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
+                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
               >
                 Plant Birthday
               </Text>
@@ -368,26 +497,24 @@ const AddPlantScreen = ({ navigation, route }) => {
               }}
             >
               <Text
-                style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
+                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
               >
                 Plant location
               </Text>
               <Input
                 autoCorrect={false}
-                value={`${plantData?.city || ""}, ${plantData?.state || ""}`}
+                value={`${plantData?.city ? plantData?.city + ", " : ""}${
+                  plantData?.state || ""
+                }`}
                 autoComplete="off"
+                errorMessage={plantLocationErrorMessage || ""}
                 placeholder="Select your location"
                 placeholderTextColor={"#A39E9E"}
                 rightIcon={() => {
                   return (
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => {
-                        return;
-                        // setPlantData({
-                        //   ...plantData,
-                        //   plantLat: userLocation?.coords?.latitude || "",
-                        //   plantLong: userLocation?.coords?.longitude || "",
-                        // });
+                        onLocationChanged();
                       }}
                       style={{
                         height: "100%",
@@ -400,14 +527,14 @@ const AddPlantScreen = ({ navigation, route }) => {
                     >
                       <Text
                         style={{
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: "bold",
                           color: "white",
                         }}
                       >
                         Get location
                       </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   );
                 }}
                 rightIconContainerStyle={{ right: -4 }}
@@ -435,22 +562,23 @@ const AddPlantScreen = ({ navigation, route }) => {
               }}
             >
               <Text
-                style={{ fontSize: 14, fontWeight: "bold", color: "black" }}
+                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
               >
                 Plant direction
               </Text>
               <Input
                 autoCorrect={false}
-                value={direction}
+                value={plantData?.platPosition || ""}
                 autoComplete="off"
-                disabled={true}
+                // disabled={true}
+                errorMessage={plantPositionErrorMessage || ""}
                 placeholder="Select plant direction"
                 placeholderTextColor={"#A39E9E"}
                 rightIcon={() => {
                   return (
-                    <Pressable
+                    <TouchableOpacity
                       onPress={() => {
-                        subscribeToCompass();
+                        onPositionChanged();
                       }}
                       style={{
                         height: "100%",
@@ -463,14 +591,14 @@ const AddPlantScreen = ({ navigation, route }) => {
                     >
                       <Text
                         style={{
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: "bold",
                           color: "white",
                         }}
                       >
                         Get position
                       </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                   );
                 }}
                 rightIconContainerStyle={{ right: -4 }}

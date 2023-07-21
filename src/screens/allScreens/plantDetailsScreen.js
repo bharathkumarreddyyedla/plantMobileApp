@@ -58,12 +58,12 @@ const PlantDetailsScreen = ({ navigation }) => {
       onAddToUserFavourite(obj, favArray, token);
       plantDetails.favourite = true;
     } else {
-      Alert.alert("Already added to whishlist");
+      Alert.alert("Already added to wishlist");
     }
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      {console.log("plantDetails", favouritePlants, user?._id)}
+      {console.log("plantDetails", plantDetails, user?._id)}
       <View
         style={{
           height: Dimensions.get("screen").height / 3,
@@ -90,10 +90,10 @@ const PlantDetailsScreen = ({ navigation }) => {
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "white", fontSize: 14, fontWeight: "bold" }}>
+          <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
             {plantDetails?.common_name}
           </Text>
-          <Text style={{ color: "white", fontSize: 14, fontWeight: "bold" }}>
+          <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
             {plantDetails?.scientific_name?.length > 0
               ? plantDetails?.scientific_name[0]
               : "NA"}
@@ -110,7 +110,7 @@ const PlantDetailsScreen = ({ navigation }) => {
           <View style={{ marginVertical: 20 }}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: "bold",
                 color: "black",
                 lineHeight: 30,
@@ -120,7 +120,7 @@ const PlantDetailsScreen = ({ navigation }) => {
             </Text>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: "500",
                 color: "black",
                 textAlign: "left",
@@ -278,7 +278,7 @@ const PlantDetailsScreen = ({ navigation }) => {
               }}
             >
               <Button
-                title={"Whishlist"}
+                title={"Wishlist"}
                 onPress={() => {
                   onAddFavourite();
                 }}
@@ -301,6 +301,9 @@ const PlantDetailsScreen = ({ navigation }) => {
                   width: 130,
                   backgroundColor: "transparent",
                   paddingHorizontal: 10,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  borderColor: "black",
                 }}
                 titleStyle={{ color: "black" }}
               />

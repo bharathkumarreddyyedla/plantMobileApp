@@ -16,6 +16,12 @@ const PlantCard = ({
   navigation,
   screen = "",
   showFavourite = false,
+  setPopupData = () => {
+    return;
+  },
+  setSelectedItem = () => {
+    return;
+  },
 }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
@@ -27,7 +33,7 @@ const PlantCard = ({
   );
   React.useEffect(() => {
     fetchImage();
-  }, []);
+  }, [item]);
   const fetchImage = async () => {
     console.log("item?.favouritePlants[0].plantPicture", screen);
     try {
@@ -58,6 +64,11 @@ const PlantCard = ({
     <Pressable
       onPress={async () => {
         if (screen === "favouriteScreen") {
+          setSelectedItem(item);
+          setPopupData({
+            message: "Are you sure you want to remove plant from favourites?",
+            title: "Favourites",
+          });
           return;
         } else if (screen === "homeScreen") {
           onSaveMyPlantData();
@@ -71,8 +82,8 @@ const PlantCard = ({
       }}
       key={index}
       style={{
-        height: 150,
-        width: 100,
+        height: 190,
+        width: 160,
         marginLeft: marginValue,
         marginBottom: 12,
       }}
@@ -133,14 +144,14 @@ const PlantCard = ({
           numberOfLines={2}
           style={{
             color: "black",
-            fontSize: 10,
+            fontSize: 13,
             fontWeight: "500",
             textAlign: "center",
           }}
         >
           {screen ? item?.plantName : item?.common_name}
         </Text>
-        <Text style={{ color: "black", fontSize: 8, fontWeight: "300" }}>
+        <Text style={{ color: "black", fontSize: 11, fontWeight: "300" }}>
           {item?.cycle}
         </Text>
       </View>

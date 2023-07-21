@@ -16,7 +16,7 @@ const NotificationScreen = ({ navigation }) => {
   React.useEffect(() => {
     getNotification(user?._id, token).then((res) => {
       if (res) {
-        // console.log("red", res);
+        console.log("Notifications", res);
         setNotifications(res);
       }
     });
@@ -57,7 +57,7 @@ const NotificationScreen = ({ navigation }) => {
                   >
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: "bold",
                         color: "black",
                       }}

@@ -25,7 +25,7 @@ const CustomCamera = (props) => {
     askPermission();
   }, []);
   const askPermission = async () => {
-    const { status } = await Camera.getCameraPermissionsAsync();
+    const { status } = await Camera.requestCameraPermissionsAsync();
     console.log("status", status);
     switch (status) {
       case "granted":
@@ -34,10 +34,7 @@ const CustomCamera = (props) => {
         // Proceed with camera usage
         break;
       case "undetermined":
-        const { status: newStatus } = await Permissions.askAsync(
-          Permissions.CAMERA
-        );
-        console.log("Camera permission is undetermined", newStatus);
+        console.log("Camera permission is undetermined");
         // You can ask for permission here
         break;
       case "denied":

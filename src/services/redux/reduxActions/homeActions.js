@@ -16,6 +16,19 @@ export const getAllPlants = (page = 1, token) =>
         reject(err);
       });
   });
+export const getSeasonPlants = (page = 1, indoor = 1, token) =>
+  new Promise((resolve, reject) => {
+    httpService
+      .get(`plant/getSeasonPlantFromPerenual/${page}/${indoor}`, token)
+      .then((res) => {
+        if (res?.data) {
+          resolve(res?.data);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 export const searchPlants = (page = 1, name = "", token) =>
   new Promise((resolve, reject) => {
     httpService

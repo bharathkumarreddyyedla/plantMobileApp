@@ -73,7 +73,7 @@ const CustomDateTimePicker = (props) => {
                 marginVertical: 10,
               }}
               titleStyle={{
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: "bold",
                 color: colors.background,
               }}

@@ -26,7 +26,7 @@ const MyPlants = ({ navigation, screen = "" }) => {
       <Text
         style={{
           color: "black",
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: "bold",
           marginVertical: 10,
         }}
@@ -61,8 +61,8 @@ const MyPlants = ({ navigation, screen = "" }) => {
                 style={[
                   commonStyles.miniCardShadowEffect,
                   {
-                    height: 150,
-                    width: 100,
+                    height: 190,
+                    width: 150,
                     alignItems: "center",
                     justifyContent: "center",
                     backgroundColor: "#FEF9F1",
@@ -88,7 +88,7 @@ const MyPlants = ({ navigation, screen = "" }) => {
         <View style={{ alignItems: "center", justifyContent: "center" }}>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: "500",
               color: "black",
               lineHeight: 20,
@@ -98,7 +98,7 @@ const MyPlants = ({ navigation, screen = "" }) => {
           </Text>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: "500",
               color: "black",
               lineHeight: 20,
@@ -120,7 +120,7 @@ const MyPlants = ({ navigation, screen = "" }) => {
               marginVertical: 10,
             }}
             titleStyle={{
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: "700",
               color: "white",
             }}
