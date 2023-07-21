@@ -65,26 +65,26 @@ const CommunityScreen = ({ navigation }) => {
   };
   const onLike = async (val) => {
     let obj = {};
-    console.log("val", val?.post);
+    console.log("val", val);
     if (selectedLabel === "All Posts") {
       obj = {
-        _id: val?.post?._id,
-        userId: val?.post?.userId,
-        isLiked: !val?.post?.liked,
+        _id: val?.postId,
+        userId: val?.userId,
+        isLiked: !val?.liked,
         likedUser: user?._id,
       };
     } else if (selectedLabel === "liked") {
       obj = {
-        _id: val?.posts[0]?._id,
-        userId: val?.posts[0]?.userId,
-        isLiked: !val?.posts[0]?.liked,
+        _id: val?.postId,
+        userId: val?.userId,
+        isLiked: !val?.liked,
         likedUser: user?._id,
       };
     } else {
       obj = {
-        _id: val?.post?._id,
-        userId: val?.post?.userId,
-        isLiked: !val?.post?.liked,
+        _id: val?.postId,
+        userId: val?.userId,
+        isLiked: !val?.liked,
         likedUser: user?._id,
       };
     }
@@ -149,31 +149,25 @@ const CommunityScreen = ({ navigation }) => {
         {selectedLabel === "All Posts" ? (
           <ScrollView>
             {feeds?.map((item, index) => {
-              console.log("item", item?.posts);
-              return item?.posts?.map((it, ind) => {
-                console.log("it", it);
-                return (
-                  <FeedCard
-                    item={it}
-                    index={ind}
-                    userDetails={item}
-                    selectedLabel={selectedLabel}
-                    onLike={onLike}
-                    navigation={navigation}
-                  />
-                );
-              });
+              return (
+                <FeedCard
+                  item={item}
+                  index={index}
+                  selectedLabel={selectedLabel}
+                  onLike={onLike}
+                  navigation={navigation}
+                />
+              );
             })}
           </ScrollView>
         ) : selectedLabel === "My Posts" ? (
           <FlatList
-            data={myFeeds?.posts || []}
-            keyExtractor={(item) => item?.post?._id}
+            data={myFeeds || []}
+            keyExtractor={(item) => item?._id}
             renderItem={({ item, index }) => (
               <FeedCard
                 item={item}
                 index={index}
-                userDetails={myFeeds}
                 selectedLabel={selectedLabel}
                 onLike={onLike}
                 navigation={navigation}

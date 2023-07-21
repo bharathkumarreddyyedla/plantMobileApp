@@ -15,7 +15,11 @@ import { Button } from "react-native-elements";
 import moment from "moment";
 import PlantProgressCard from "../../components/customComponents/plantProgressCard";
 import PlantGalleryCard from "../../components/customComponents/plantGalleryCard";
-import { savePlantProgress } from "../../services/redux/reduxActions/plantActions";
+import {
+  deleteToProgress,
+  getPlantProgress,
+  savePlantProgress,
+} from "../../services/redux/reduxActions/plantActions";
 import { UserContext } from "../../configs/contexts";
 import PopupCard from "../../components/customComponents/PopupCard";
 import MyPlants from "../../components/dashboard/myPlants";
@@ -46,6 +50,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
   const [numColumns, setNumColumns] = React.useState(3);
   const [enlargedPicture, setEnlargedPictrue] = React.useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
+  const [plantProgress, setPlantProgress] = React.useState([]);
   const [popupData, setPopupData] = React.useState({
     message: "",
     title: "",
@@ -56,6 +61,19 @@ const PlantProgressScreen = ({ navigation, route }) => {
       return;
     },
   });
+  React.useEffect(() => {
+    getProgress();
+  }, []);
+  const getProgress = async () => {
+    console.log("userDetails", myPlantDetails);
+    await getPlantProgress(user?._id, myPlantDetails?._id, token).then(
+      (res) => {
+        if (res) {
+          setPlantProgress(res || []);
+        }
+      }
+    );
+  };
   const onEditClick = (item) => {
     try {
       navigation.navigate("addPlantProgress", { editDetails: item });
@@ -64,7 +82,6 @@ const PlantProgressScreen = ({ navigation, route }) => {
     }
   };
   const onDeleteClick = (item) => {
-    console.log("delere", item);
     setSelectedItem(item);
     setPopupData({
       ...popupData,
@@ -87,16 +104,18 @@ const PlantProgressScreen = ({ navigation, route }) => {
   };
   const onActionPopUp = () => {
     try {
-      const index = myPlantDetails?.plantProgress?.findIndex(
-        (i) => i?.plantDob === selectedItem?.plantDob
+      const index = plantProgress?.findIndex(
+        (i) => i?._id === selectedItem?._id
       );
-      if (index >= 0) {
-        myPlantDetails?.plantProgress?.splice(index, 1);
-      }
-      savePlantProgress(myPlantDetails?._id, myPlantDetails, token);
-      setPopupData({
-        ...popupData,
-        message: "",
+
+      deleteToProgress(selectedItem?._id, token).then((res) => {
+        if (index >= 0) {
+          plantProgress?.splice(index, 1);
+        }
+        setPopupData({
+          ...popupData,
+          message: "",
+        });
       });
     } catch (err) {
       console.log(err);
@@ -249,7 +268,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
             }}
             style={{
               height: "100%",
-              width: screen ? "25%" : "33.3%",
+              width: "33.3%",
               alignItems: "center",
               justifyContent: "center",
               backgroundColor: selectedtag === "Info" ? "#7BC75A" : "#56A434",
@@ -266,7 +285,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
             }}
             style={{
               height: "100%",
-              width: screen ? "25%" : "33.3%",
+              width: "33.3%",
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
@@ -283,19 +302,19 @@ const PlantProgressScreen = ({ navigation, route }) => {
             }}
             style={{
               height: "100%",
-              width: screen ? "25%" : "33.3%",
+              width: "33.3%",
               alignItems: "center",
               justifyContent: "center",
               backgroundColor:
                 selectedtag === "Gallery" ? "#7BC75A" : "#56A434",
-              borderTopRightRadius: screen ? 0 : 20,
+              borderTopRightRadius: 20,
             }}
           >
             <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
               Gallery
             </Text>
           </Pressable>
-          {screen && (
+          {/* {screen && (
             <Pressable
               onPress={() => {
                 setSelectedTag("Garden");
@@ -316,7 +335,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                 Garden
               </Text>
             </Pressable>
-          )}
+          )} */}
         </View>
         <ScrollView>
           {selectedtag === "Info" ? (
@@ -513,7 +532,6 @@ const PlantProgressScreen = ({ navigation, route }) => {
                       />
                       <Text style={{ alignItems: "center" }}> Cycle</Text>
                     </View>
-                    {console.log("myPlantDetails?.cycle", myPlantDetails)}
                     <Text>{myPlantDetails?.cycle || "NA"}</Text>
                   </View>
                   {/* <View
@@ -548,34 +566,33 @@ const PlantProgressScreen = ({ navigation, route }) => {
                     marginVertical: 10,
                   }}
                 >
-                  {console.log("myPlantDetails", myPlantDetails)}
                   <Button
-                    title={screen ? "Wishlist" : "Edit plant"}
+                    title={"Edit plant"}
                     onPress={() => {
-                      if (screen) {
-                        onAddFavourite();
-                      } else {
-                        navigation.navigate("addPlantScreen", {
-                          editPlantDetails: myPlantDetails,
-                        });
-                      }
+                      // if (screen) {
+                      //   onAddFavourite();
+                      // } else {
+                      navigation.navigate("addPlantScreen", {
+                        editPlantDetails: myPlantDetails,
+                      });
+                      // }
                     }}
-                    iconPosition="left"
-                    icon={() => {
-                      if (screen) {
-                        return (
-                          <Image
-                            source={
-                              favPlant
-                                ? appImages?.filledFavouritesLogo
-                                : appImages.whishlistLogo
-                            }
-                            style={{ height: 20, width: 20, right: 5 }}
-                            resizeMode="contain"
-                          />
-                        );
-                      }
-                    }}
+                    // iconPosition="left"
+                    // icon={() => {
+                    //   if (screen) {
+                    //     return (
+                    //       <Image
+                    //         source={
+                    //           favPlant
+                    //             ? appImages?.filledFavouritesLogo
+                    //             : appImages.whishlistLogo
+                    //         }
+                    //         style={{ height: 20, width: 20, right: 5 }}
+                    //         resizeMode="contain"
+                    //       />
+                    //     );
+                    //   }
+                    // }}
                     buttonStyle={{
                       height: 40,
                       width: 130,
@@ -590,7 +607,9 @@ const PlantProgressScreen = ({ navigation, route }) => {
                   <Button
                     title={"Add Progress"}
                     onPress={() => {
-                      navigation.navigate("addPlantProgress");
+                      navigation.navigate("addPlantProgress", {
+                        plantID: myPlantDetails?._id,
+                      });
                     }}
                     buttonStyle={{
                       height: 40,
@@ -612,10 +631,10 @@ const PlantProgressScreen = ({ navigation, route }) => {
               }}
             >
               <FlatList
-                data={myPlantDetails?.plantProgress || []}
+                data={plantProgress || []}
                 scrollEnabled={false}
                 showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => item?.plantDob}
+                keyExtractor={(item) => item?._id}
                 renderItem={({ item, index }) => (
                   <PlantProgressCard
                     item={item}
@@ -680,11 +699,11 @@ const PlantProgressScreen = ({ navigation, route }) => {
               )}
               <FlatList
                 key={numColumns.toString()}
-                data={myPlantDetails?.plantProgress || []}
+                data={plantProgress || []}
                 scrollEnabled={false}
                 numColumns={numColumns}
                 showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => item?.plantDob}
+                keyExtractor={(item) => item?._id}
                 renderItem={({ item, index }) => (
                   <PlantGalleryCard
                     item={item}

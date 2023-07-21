@@ -26,7 +26,7 @@ export const addMyPlant = (payload, token) =>
       .post("plant/addPlant", payload, token)
       .then((res) => {
         if (res?.data && res?.data?.error === undefined) {
-          resolve(res?.data?.message);
+          resolve(res?.data);
         }
       })
       .catch((err) => {
@@ -43,6 +43,19 @@ export const getMyPlants = (id, token) =>
   new Promise((resolve, reject) => {
     httpService
       .get(`plant/getPlantsByUser/${id}`, token)
+      .then((res) => {
+        if (res?.data) {
+          resolve(res?.data);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+  export const getMyPlantsById = (id,plantId, token) =>
+  new Promise((resolve, reject) => {
+    httpService
+      .get(`plant/getPlantsByUserAndId/${id}/${plantId}`, token)
       .then((res) => {
         if (res?.data) {
           resolve(res?.data);
@@ -75,7 +88,57 @@ export const savePlantProgress = (id, payload, token) =>
         reject(err);
       });
   });
-
+  export const getPlantProgress=(userId,plantId,token)=>new Promise((resolve, reject) => {
+    httpService
+      .get(`plant/getPlantProgress/${userId}/${plantId}`, token)
+      .then((res) => {
+        if (res?.data) {
+          resolve(res?.data);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+export const saveToProgress = (payload, token) =>
+  new Promise((resolve, reject) => {
+    httpService
+      .post(`plant/savePlantProgress`, payload, token)
+      .then((res) => {
+        if (res?.data) {
+          resolve(res?.data);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+  export const updateToProgress = (id,payload, token) =>
+  new Promise((resolve, reject) => {
+    httpService
+      .put(`plant/updatePlantProgress/${id}`, payload, token)
+      .then((res) => {
+        if (res?.data) {
+          resolve(res?.data);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+  export const deleteToProgress = (id, token) =>
+  new Promise((resolve, reject) => {
+    httpService
+      .get(`plant/deletePlantProgress/${id}`, token)
+      .then((res) => {
+        if (res?.data) {
+          resolve(res?.data);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 export const fetchIndoorPlants = (faqArray, indoor, token) => {
   const setFaqPlantData = (data) => ({
     type: ReduxPlantConstants.SET_FAQPLAT_DATA,

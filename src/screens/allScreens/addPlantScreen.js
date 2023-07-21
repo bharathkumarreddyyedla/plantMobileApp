@@ -20,6 +20,7 @@ import { UserContext } from "../../configs/contexts";
 import {
   addMyPlant,
   savePlantProgress,
+  saveToProgress,
 } from "../../services/redux/reduxActions/plantActions";
 import { bindActionCreators } from "redux";
 import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
@@ -131,19 +132,7 @@ const AddPlantScreen = ({ navigation, route }) => {
         plantPicture: cameraBase64?.includes("base64,")
           ? cameraBase64
           : "data:image/jpeg;base64," + cameraBase64,
-        plantProgress: [
-          {
-            picture: cameraBase64?.includes("base64,")
-              ? cameraBase64
-              : "data:image/jpeg;base64," + cameraBase64,
-            plantDob: new Date(),
-            perenulaPlantId: plantDetails?.id,
-            plantName: plantDetails?.common_name,
-            plantNotes: "",
-            city: userAddress?.split(",")[1]?.trim() || "",
-            state: userAddress?.split(",")[2]?.trim() || "",
-          },
-        ],
+        plantProgress: [],
       });
       setImageUrl(
         cameraBase64?.includes("base64,")
@@ -206,17 +195,17 @@ const AddPlantScreen = ({ navigation, route }) => {
         plantPicture:
           editPlantDetails?.plantPicture ||
           plantDetails?.default_image?.medium_url,
-        plantProgress: editPlantDetails?.plantProgress || [
-          {
-            picture: plantDetails?.default_image?.medium_url,
-            plantDob: new Date(),
-            perenulaPlantId: plantDetails?.id,
-            plantName: plantDetails?.common_name,
-            plantNotes: "It’s my plant birthday, let us celebrate it!!",
-            city: userAddress?.split(",")[1]?.trim() || "",
-            state: userAddress?.split(",")[2]?.trim() || "",
-          },
-        ],
+        // plantProgress: editPlantDetails?.plantProgress || [
+        //   {
+        //     picture: plantDetails?.default_image?.medium_url,
+        //     plantDob: new Date(),
+        //     perenulaPlantId: plantDetails?.id,
+        //     plantName: plantDetails?.common_name,
+        //     plantNotes: "It’s my plant birthday, let us celebrate it!!",
+        //     city: userAddress?.split(",")[1]?.trim() || "",
+        //     state: userAddress?.split(",")[2]?.trim() || "",
+        //   },
+        // ],
       });
       setImageFetched(true);
       // setLoading(false);
@@ -248,19 +237,60 @@ const AddPlantScreen = ({ navigation, route }) => {
         setFormErrorMessage(errors);
       } else {
         if (Object.keys(editPlantDetails).length > 0) {
+          // console.log("edit", editPlantDetails, "plant data", plantData);
           savePlantProgress(editPlantDetails?._id, plantData, token).then(
             (res) => {
               if (res) {
+                // let obj = {
+                //   userId: user?._id,
+                //   plantId: res?.plantId,
+                //   plantName: plantData?.plantName,
+                //   plantNotes: "It’s my plant birthday, let us celebrate it!!",
+                //   picture: plantData?.plantPicture,
+                //   perenulaPlantId: plantDetails?.id,
+                //   share: plantData?.share,
+                //   platPosition: plantData?.platPosition,
+                //   plantLat: plantData?.plantLat,
+                //   plantLong: plantData?.plantLong,
+                //   city: userAddress?.split(",")[1]?.trim() || "",
+                //   state: userAddress?.split(",")[2]?.trim() || "",
+                // };
+                // saveToProgress(obj, token)
+                //   .then((progressRes) => {
+                setPlantMessage(res?.message);
                 navigation.navigate("homeScreen");
+                // })
+                // .catch((err) => {
+                //   console.log(err);
+                // });
               }
             }
           );
         } else {
           addMyPlant(plantData, token).then((res) => {
-            console.log("message", res);
             if (res) {
-              setPlantMessage(res);
-              navigation.navigate("homeScreen");
+              let obj = {
+                userId: user?._id,
+                plantId: res?.plantId,
+                plantName: plantData?.plantName,
+                plantNotes: "It’s my plant birthday, let us celebrate it!!",
+                picture: plantData?.plantPicture,
+                perenulaPlantId: plantDetails?.id,
+                share: plantData?.share,
+                platPosition: plantData?.platPosition,
+                plantLat: plantData?.plantLat,
+                plantLong: plantData?.plantLong,
+                city: userAddress?.split(",")[1]?.trim() || "",
+                state: userAddress?.split(",")[2]?.trim() || "",
+              };
+              saveToProgress(obj, token)
+                .then((progressRes) => {
+                  setPlantMessage(progressRes?.message);
+                  navigation.navigate("homeScreen");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             }
           });
         }
@@ -270,7 +300,6 @@ const AddPlantScreen = ({ navigation, route }) => {
     }
   };
   const setFormErrorMessage = (errors) => {
-    console.log("errors", errors);
     if (errors.plantName) {
       setPlantNameErrorMessage(errors.plantName);
     }

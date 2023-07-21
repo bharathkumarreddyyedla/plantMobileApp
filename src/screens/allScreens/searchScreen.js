@@ -17,6 +17,7 @@ import Filter from "../../components/customComponents/filter";
 import {
   filterPlants,
   getAllPlants,
+  getSeasonPlants,
   searchPlants,
 } from "../../services/redux/reduxActions/homeActions";
 import { UserContext } from "../../configs/contexts";
@@ -32,7 +33,7 @@ const SearchScreen = ({ navigation }) => {
   const [showFilter, setShowFilter] = React.useState(false);
   const [showSearch, setShowSearch] = React.useState(false);
   const [bounceValue, setBounceValue] = React.useState(
-    new Animated.Value(-Dimensions.get("window").height)
+    new Animated.Value(Dimensions.get("window").height)
   );
   React.useEffect(() => {
     navigation.addListener("focus", () => {
@@ -41,7 +42,7 @@ const SearchScreen = ({ navigation }) => {
   }, []);
   const getAllPlantsList = async () => {
     try {
-      await getAllPlants(1, token)
+      await getSeasonPlants(1, 1, token)
         .then((res) => {
           setPlantsList(res?.data?.slice(0, 10));
         })
@@ -72,6 +73,7 @@ const SearchScreen = ({ navigation }) => {
     }
   };
   const onPressToggle = (toggle) => {
+    console.log("toogle", toggle);
     var toValue = Dimensions.get("window").height;
     if (toggle) {
       toValue = 0;
@@ -102,7 +104,7 @@ const SearchScreen = ({ navigation }) => {
       )
         .then((res) => {
           arr = res?.data?.slice(0, 10);
-
+          setShowSearch(true);
           onPressToggle(false);
         })
         .catch((err) => {
@@ -139,7 +141,7 @@ const SearchScreen = ({ navigation }) => {
             <Text
               style={{ fontSize: 16, fontWeight: "bold", marginBottom: 10 }}
             >
-              {showSearch ? "Search Results" : "All Plants"}
+              {showSearch ? "Search Results" : "Recommended Plants"}
             </Text>
             <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
               {plantsList.map((item, index) => {

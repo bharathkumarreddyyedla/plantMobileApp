@@ -10,6 +10,8 @@ import {
   plantActions,
   postActions,
 } from "../../services/redux/reduxActions/exportAllActions";
+import { UserContext } from "../../configs/contexts";
+import { getMyPlantsById } from "../../services/redux/reduxActions/plantActions";
 
 const FeedCard = ({
   item,
@@ -21,20 +23,23 @@ const FeedCard = ({
   },
   navigation = { navigation },
 }) => {
+  const { userState = {} } = React.useContext(UserContext) || {};
+  const { token = "", user = {} } = userState || {};
   const [imageUrl, setImageUrl] = React.useState("");
   const dispatch = useDispatch();
   const { setDetailedPost } = bindActionCreators(postActions, dispatch);
-  const { saveMyPlantData } = bindActionCreators(plantActions, dispatch);
+  const { savePlantDetailedData, saveMyPlantData } = bindActionCreators(
+    plantActions,
+    dispatch
+  );
   React.useEffect(() => {
+    // navigation.addListener("focus", () => {
     fetchImage();
+    // });
   }, []);
   const fetchImage = async () => {
     try {
-      const response = await fetch(
-        selectedLabel === "My Posts" || selectedLabel === "All Posts"
-          ? item?.plant?.plantPicture || ""
-          : item?.plants[0]?.plantPicture || ""
-      );
+      const response = await fetch(item?.picture);
       const blob = await response.blob();
       const uri = URL.createObjectURL(blob);
       setImageUrl(uri);
@@ -42,15 +47,41 @@ const FeedCard = ({
       console.error("Error fetching image:", error);
     }
   };
-  return (
-    <Pressable
-      onPress={() => {
-        saveMyPlantData(item?.plant);
+  const onClick = () =>
+    new Promise((resolve, reject) => {
+      try {
+        // console.log("itemid", item?.perenulaPlantId);
+        savePlantDetailedData(item?.perenulaPlantId, user?._id, token);
+        resolve(true);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  const getPlantData = async () => {
+    getMyPlantsById(item?.userId, item?.plantId, token).then((res) => {
+      if (res) {
+        console.log("plantttttt", res);
+        saveMyPlantData(res);
         navigation.navigate("plantProgressScreen", {
           screen: "feed",
-          userDetails: userDetails,
+          userDetails: item,
           favourite: item?.favourite,
         });
+      }
+    });
+  };
+  return (
+    <Pressable
+      onPress={async () => {
+        if (user?._id === item?.userId) {
+          getPlantData();
+        } else {
+          await onClick().then((res) => {
+            if (res) {
+              navigation.navigate("plantDetailsScreen");
+            }
+          });
+        }
       }}
       key={index}
       style={{
@@ -62,7 +93,7 @@ const FeedCard = ({
         paddingVertical: 5,
       }}
     >
-      {console.log("item", item)}
+      {/* {console.log("item", item)} */}
       <View
         style={{
           height: 60,
@@ -80,16 +111,8 @@ const FeedCard = ({
           }}
         >
           <ProfilePicOrChar
-            image={
-              selectedLabel === "My Posts" || selectedLabel === "All Posts"
-                ? userDetails?.profilePicture || ""
-                : item?.profilePicture || ""
-            }
-            name={
-              selectedLabel === "My Posts" || selectedLabel === "All Posts"
-                ? userDetails?.firstName?.charAt("0").toUpperCase()
-                : item?.firstName?.charAt("0").toUpperCase()
-            }
+            image={item?.profilePicture || ""}
+            name={item?.firstName?.charAt("0").toUpperCase()}
             styleProp={{ width: 50, height: 50, borderRadius: 30 }}
           />
         </View>
@@ -102,18 +125,10 @@ const FeedCard = ({
           }}
         >
           <Text style={{ fontSize: 16, fontWeight: "bold", color: "black" }}>
-            {selectedLabel === "My Posts" || selectedLabel === "All Posts"
-              ? userDetails?.firstName
-              : item?.firstName || ""}
+            {item?.firstName || ""}
           </Text>
           <Text style={{ fontSize: 11, fontWeight: "500", color: "black" }}>
-            {selectedLabel === "My Posts" || selectedLabel === "All Posts"
-              ? item?.plant?.city
-              : item?.plants[0]?.city || ""}
-            ,{" "}
-            {selectedLabel === "My Posts" || selectedLabel === "All Posts"
-              ? item?.plant?.state
-              : item?.plants[0]?.state || ""}
+            {item?.city || ""}, {item?.state || ""}
           </Text>
         </View>
         <View
@@ -131,16 +146,7 @@ const FeedCard = ({
             iconColor={"black"}
           />
           <Text style={{ fontSize: 9, fontWeight: "500", color: "black" }}>
-            {moment
-              .duration(
-                moment().diff(
-                  selectedLabel === "My Posts" || selectedLabel === "All Posts"
-                    ? item?.post?.postedDate
-                    : item?.posts[0]?.postedDate
-                )
-              )
-              .humanize()}{" "}
-            ago
+            {moment.duration(moment().diff(item?.progressDate)).humanize()} ago
           </Text>
         </View>
       </View>
@@ -168,14 +174,10 @@ const FeedCard = ({
           }}
         >
           <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-            {selectedLabel === "My Posts" || selectedLabel === "All Posts"
-              ? item?.plant?.plantName
-              : item?.plants[0]?.plantName}
+            {item?.plantName}
           </Text>
           <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-            {selectedLabel === "My Posts" || selectedLabel === "All Posts"
-              ? item?.plant?.cycle
-              : item?.plants[0]?.cycle}
+            {item?.cycle}
           </Text>
         </View>
       </View>
@@ -197,9 +199,7 @@ const FeedCard = ({
             style={{ fontSize: 11, fontWeight: "500", color: "black" }}
             numberOfLines={2}
           >
-            {selectedLabel === "My Posts" || selectedLabel === "All Posts"
-              ? item?.plant?.plantDescription
-              : item?.plants[0]?.plantDescription}
+            {item?.plantNotes}
           </Text>
         </View>
         <TouchableOpacity
@@ -214,32 +214,13 @@ const FeedCard = ({
           }}
         >
           <NativeIcon
-            iconName={
-              selectedLabel === "My Posts" || selectedLabel === "All Posts"
-                ? item?.post?.liked
-                  ? "heart"
-                  : "heart-o"
-                : item?.posts[0]?.liked
-                ? "heart"
-                : "heart-o"
-            }
+            iconName={item?.liked ? "heart" : "heart-o"}
             iconLib={"FontAwesome"}
             iconSize={20}
-            iconColor={
-              selectedLabel === "My Posts" || selectedLabel === "All Posts"
-                ? item?.post?.liked
-                  ? "green"
-                  : "black"
-                : item?.posts[0]?.liked
-                ? "green"
-                : "black"
-            }
+            iconColor={item?.liked ? "green" : "black"}
           />
           <Text style={{ fontSize: 11, fontWeight: "500", color: "black" }}>
-            {selectedLabel === "My Posts" || selectedLabel === "All Posts"
-              ? item?.post?.likes
-              : item?.posts[0]?.likes}{" "}
-            likes
+            {item?.likes} likes
           </Text>
         </TouchableOpacity>
       </View>

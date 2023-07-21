@@ -1,7 +1,7 @@
 import { httpService } from "../../ApiService";
 import { ReduxPostConstants } from "../reduxConstants/constants";
 
-export const getAllPost = (id, token) =>
+export const getAllPost = (id,token) =>
   new Promise((resolve, reject) => {
     try {
       httpService.get(`post/getAllPost/${id}`, token).then((res) => {

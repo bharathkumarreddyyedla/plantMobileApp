@@ -9,9 +9,9 @@ const PlantProgressCard = ({
   onEditClick = () => {
     return;
   },
-  onDeleteClick=()=>{
-    return
-  }
+  onDeleteClick = () => {
+    return;
+  },
 }) => {
   const [imageUrl, setImageUrl] = React.useState("");
   const [showPopup, setShowPopup] = React.useState("");
@@ -86,7 +86,7 @@ const PlantProgressCard = ({
             </Pressable>
             <Pressable
               onPress={() => {
-               onDeleteClick(item);
+                onDeleteClick(item);
               }}
               style={{
                 height: 30,
@@ -142,9 +142,22 @@ const PlantProgressCard = ({
           width: "80%",
         }}
       >
-        <Text>{moment(item?.plantDob || "").format("DD-MM-YYYY")}</Text>
-        <Text>{item?.plantName}</Text>
-        <Text numberOfLines={3}>{item?.plantNotes || "NA"} </Text>
+        <Text style={{ fontSize: 12, fontWeight: "bold", color: "black" }}>
+          {moment(item?.progressDate || "").format("DD-MM-YYYY")}
+        </Text>
+        <Text style={{ fontSize: 12, fontWeight: "500", color: "black" }}>
+          Location: {item?.city ? item?.city + ", " : ""}
+          {item?.state || ""}
+        </Text>
+        <Text style={{ fontSize: 12, fontWeight: "500", color: "black" }}>
+          Position of the plant: {item?.platPosition}
+        </Text>
+        <Text
+          style={{ fontSize: 12, fontWeight: "bold", color: "black" }}
+          numberOfLines={3}
+        >
+          {item?.plantNotes || "NA"}{" "}
+        </Text>
       </View>
     </View>
   );

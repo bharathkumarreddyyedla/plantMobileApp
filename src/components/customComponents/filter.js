@@ -37,7 +37,6 @@ const Filter = (props) => {
         height: "100%",
         paddingHorizontal: 20,
         marginTop: 20,
-        marginBottom: 40,
       }}
     >
       <ScrollView>

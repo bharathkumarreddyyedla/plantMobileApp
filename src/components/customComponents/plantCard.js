@@ -33,9 +33,8 @@ const PlantCard = ({
   );
   React.useEffect(() => {
     fetchImage();
-  }, [item]);
+  }, []);
   const fetchImage = async () => {
-    console.log("item?.favouritePlants[0].plantPicture", screen);
     try {
       const response = await fetch(
         screen ? item?.plantPicture : item?.default_image?.medium_url

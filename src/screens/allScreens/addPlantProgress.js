@@ -14,14 +14,18 @@ import CustomCamera from "../../components/customComponents/camera";
 import { Magnetometer } from "expo-sensors";
 import { Button, CheckBox, Input } from "react-native-elements";
 import { UserContext } from "../../configs/contexts";
-import { savePlantProgress } from "../../services/redux/reduxActions/plantActions";
+import {
+  savePlantProgress,
+  saveToProgress,
+  updateToProgress,
+} from "../../services/redux/reduxActions/plantActions";
 import { validateInput } from "../../configs/Validations";
 import { Constants } from "../../configs/constants";
 
 const AddPlantProgress = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
-  const { editDetails = {} } = route?.params || {};
+  const { editDetails = {}, plantID = "" } = route?.params || {};
   const [imageUrl, setImageUrl] = React.useState("");
   const { myPlantDetails } = useSelector((state) => state?.plants);
   const { userLocation, userAddress } = useSelector((state) => state.home);
@@ -35,6 +39,8 @@ const AddPlantProgress = ({ navigation, route }) => {
   const [plantLocationErrorMessage, setPlantLocationErrorMessage] =
     React.useState("");
   const [progressData, setProgressData] = React.useState({
+    _id: editDetails?._id,
+    plantId: editDetails?.plantId,
     picture: editDetails?.picture || "",
     plantDob: editDetails?.plantDob || new Date(),
     perenulaPlantId:
@@ -45,8 +51,8 @@ const AddPlantProgress = ({ navigation, route }) => {
     platPosition: "",
     plantLat: editDetails?.plantLat || "",
     plantLong: editDetails?.plantLong || "",
-    city: editDetails?.city || "",
-    state: editDetails?.state || "",
+    city: "",
+    state: "",
   });
   const addPlantProgressForm = {
     plantNotes: {
@@ -136,7 +142,6 @@ const AddPlantProgress = ({ navigation, route }) => {
     });
   };
   const setFormErrorMessage = (errors) => {
-    console.log("errors", errors);
     if (errors.plantNotes) {
       setPlantNotesErrorMessage(errors.plantNotes);
     }
@@ -153,17 +158,50 @@ const AddPlantProgress = ({ navigation, route }) => {
       if (!valid) {
         setFormErrorMessage(errors);
       } else {
-        let plantD = myPlantDetails;
-        let arr = [...(myPlantDetails?.plantProgress || [])];
+        let obj = {
+          userId: user?._id,
+          plantId: plantID || progressData?.plantId,
+          plantName: progressData.plantName,
+          plantNotes: progressData?.plantNotes,
+          picture: progressData?.picture,
+          perenulaPlantId: progressData?.perenulaPlantId,
+          share: progressData?.share,
+          platPosition: progressData?.platPosition,
+          plantLat: progressData?.plantLat,
+          plantLong: progressData?.plantLong,
+          city: userAddress?.split(",")[1]?.trim() || "",
+          state: userAddress?.split(",")[2]?.trim() || "",
+        };
         if (Object.keys(editDetails).length > 0) {
-          const index = arr?.findIndex((i) => i?._id === editDetails?._id);
-          arr[index] = progressData;
+          updateToProgress(progressData?._id, obj, token)
+            .then((progressRes) => {
+              // setPlantMessage(res?.message);
+              navigation.navigate("homeScreen");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
-          arr?.push(progressData);
+          saveToProgress(obj, token)
+            .then((progressRes) => {
+              // setPlantMessage(res?.message);
+              navigation.navigate("homeScreen");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
-        plantD.plantProgress = arr;
-        savePlantProgress(plantD?._id, plantD, token);
-        navigation.navigate("homeScreen");
+        // let plantD = myPlantDetails;
+        // let arr = [...(myPlantDetails?.plantProgress || [])];
+        // if (Object.keys(editDetails).length > 0) {
+        //   const index = arr?.findIndex((i) => i?._id === editDetails?._id);
+        //   arr[index] = progressData;
+        // } else {
+        //   arr?.push(progressData);
+        // }
+        // plantD.plantProgress = arr;
+        // savePlantProgress(plantD?._id, plantD, token);
+        // navigation.navigate("homeScreen");
       }
     } catch (err) {
       console.log(err);
