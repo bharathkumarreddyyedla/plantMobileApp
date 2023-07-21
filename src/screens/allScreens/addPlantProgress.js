@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import Header from "../../components/customComponents/header";
 import { appImages } from "../../configs/appImages";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomCamera from "../../components/customComponents/camera";
 import { Magnetometer } from "expo-sensors";
 import { Button, CheckBox, Input } from "react-native-elements";
@@ -21,11 +21,16 @@ import {
 } from "../../services/redux/reduxActions/plantActions";
 import { validateInput } from "../../configs/Validations";
 import { Constants } from "../../configs/constants";
+import { bindActionCreators } from "redux";
+import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
+import { getAllPost } from "../../services/redux/reduxActions/postActions";
 
 const AddPlantProgress = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
-  const { editDetails = {}, plantID = "" } = route?.params || {};
+  const { editDetails = {}, plantID = "", screen = "" } = route?.params || {};
+  const dispatch = useDispatch();
+  const { setPlantMessage } = bindActionCreators(plantActions, dispatch);
   const [imageUrl, setImageUrl] = React.useState("");
   const { myPlantDetails } = useSelector((state) => state?.plants);
   const { userLocation, userAddress } = useSelector((state) => state.home);
@@ -175,8 +180,13 @@ const AddPlantProgress = ({ navigation, route }) => {
         if (Object.keys(editDetails).length > 0) {
           updateToProgress(progressData?._id, obj, token)
             .then((progressRes) => {
-              // setPlantMessage(res?.message);
-              navigation.navigate("homeScreen");
+              setPlantMessage(progressRes?.message);
+              if (screen && share) {
+                getAllPost(user?._id, token);
+                navigation.navigate("communityScreen");
+              } else {
+                navigation.navigate("homeScreen");
+              }
             })
             .catch((err) => {
               console.log(err);
@@ -184,8 +194,12 @@ const AddPlantProgress = ({ navigation, route }) => {
         } else {
           saveToProgress(obj, token)
             .then((progressRes) => {
-              // setPlantMessage(res?.message);
-              navigation.navigate("homeScreen");
+              setPlantMessage(progressRes?.message);
+              if (screen) {
+                navigation.navigate("communityScreen");
+              } else {
+                navigation.navigate("homeScreen");
+              }
             })
             .catch((err) => {
               console.log(err);

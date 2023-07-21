@@ -609,6 +609,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                     onPress={() => {
                       navigation.navigate("addPlantProgress", {
                         plantID: myPlantDetails?._id,
+                        screen:screen
                       });
                     }}
                     buttonStyle={{
