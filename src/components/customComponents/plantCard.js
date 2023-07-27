@@ -66,7 +66,7 @@ const PlantCard = ({
     saveMyPlantData(item);
     navigation.navigate("plantProgressScreen");
   };
-  // if (imageUrl) {
+  if (imageUrl) {
   return (
     <Pressable
       onPress={async () => {
@@ -164,9 +164,9 @@ const PlantCard = ({
       </View>
     </Pressable>
   );
-  // } else {
-  //   return <></>;
-  // }
+  } else {
+    return <></>;
+  }
 };
 
 export default PlantCard;

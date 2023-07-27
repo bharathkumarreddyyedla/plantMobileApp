@@ -45,7 +45,7 @@ const SeasonPlants = ({ navigation }) => {
   }, []);
   const getAllPlantsList = async () => {
     try {
-      await getSeasonPlants(1, 1, token)
+      await getSeasonPlants(2, 1, token)
         .then((res) => {
           console.log("res", res);
           setPlantsList(res?.data?.slice(0, 5));

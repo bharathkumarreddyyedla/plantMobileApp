@@ -20,14 +20,15 @@ const SignInScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId:
-      "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
-    androidClientId:
-      "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
-  });
-  const [token, setToken] = React.useState("");
-  const [userInfo, setUserInfo] = React.useState(null);
+  // const [request, response, promptAsync] = Google.useAuthRequest({
+  //   iosClientId:
+  //     "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
+  //   androidClientId:
+  //     "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
+  //   expoClientId: "https://auth.expo.io/@leafy/leafy",
+  // });
+  // const [token, setToken] = React.useState("");
+  // const [userInfo, setUserInfo] = React.useState(null);
   const loginForm = {
     email: {
       value: loginData?.email,
@@ -52,55 +53,55 @@ const SignInScreen = ({ navigation }) => {
       ],
     },
   };
-  React.useEffect(() => {
-    handleEffect();
-  }, [response, token]);
+  // React.useEffect(() => {
+  //   handleEffect();
+  // }, [response, token]);
 
-  async function handleEffect() {
-    const user = await getLocalUser();
-    console.log("user", user);
-    if (!user) {
-      if (response?.type === "success") {
-        // setToken(response.authentication.accessToken);
-        getUserInfo(response.authentication.accessToken);
-      }
-    } else {
-      setUserInfo(user);
-      setLoginData({
-        ...loginData,
-        email: user?.email,
-      });
-      console.log("loaded locally");
-    }
-  }
-  const getLocalUser = async () => {
-    const data = await AsyncStorage.getItem("@googleUserInfo");
-    if (!data) return null;
-    return JSON.parse(data);
-  };
+  // async function handleEffect() {
+  //   const user = await getLocalUser();
+  //   console.log("user", user);
+  //   if (!user) {
+  //     if (response?.type === "success") {
+  //       // setToken(response.authentication.accessToken);
+  //       getUserInfo(response.authentication.accessToken);
+  //     }
+  //   } else {
+  //     setUserInfo(user);
+  //     setLoginData({
+  //       ...loginData,
+  //       email: user?.email,
+  //     });
+  //     console.log("loaded locally");
+  //   }
+  // }
+  // const getLocalUser = async () => {
+  //   const data = await AsyncStorage.getItem("@googleUserInfo");
+  //   if (!data) return null;
+  //   return JSON.parse(data);
+  // };
 
-  const getUserInfo = async (token) => {
-    if (!token) return;
-    try {
-      console.log("google token", token);
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+  // const getUserInfo = async (token) => {
+  //   if (!token) return;
+  //   try {
+  //     console.log("google token", token);
+  //     const response = await fetch(
+  //       "https://www.googleapis.com/userinfo/v2/me",
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
 
-      const user = await response.json();
-      await AsyncStorage.setItem("@googleUserInfo", JSON.stringify(user));
-      setUserInfo(user);
-      setLoginData({
-        ...loginData,
-        email: user?.email,
-      });
-    } catch (error) {
-      // Add your own error handler here
-    }
-  };
+  //     const user = await response.json();
+  //     await AsyncStorage.setItem("@googleUserInfo", JSON.stringify(user));
+  //     setUserInfo(user);
+  //     setLoginData({
+  //       ...loginData,
+  //       email: user?.email,
+  //     });
+  //   } catch (error) {
+  //     // Add your own error handler here
+  //   }
+  // };
   const onEmailChange = (emailVal) => {
     setLoginData({
       ...loginData,
@@ -305,9 +306,9 @@ const SignInScreen = ({ navigation }) => {
                     resizeMode="cover"
                   />
                 }
-                onPress={() => {
-                  promptAsync();
-                }}
+                // onPress={() => {
+                //   promptAsync();
+                // }}
                 buttonStyle={{
                   backgroundColor: "white",
                   borderRadius: 20,

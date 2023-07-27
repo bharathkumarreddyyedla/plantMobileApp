@@ -150,7 +150,10 @@ const PlantDetailsScreen = ({ navigation }) => {
             </Text>
           </View>
           <View style={{ marginVertical: 10 }}>
-            <Text>Care Details</Text>
+            <Text style={{fontSize: 14,
+                fontWeight: "bold",
+                color: "black",
+                lineHeight: 30,}}>Care Details</Text>
             <View
               style={{
                 backgroundColor: "white",
@@ -217,7 +220,7 @@ const PlantDetailsScreen = ({ navigation }) => {
               >
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Image
-                    source={appImages.heightLogo}
+                    source={appImages.edibleLogo}
                     style={{ height: 20, width: 20 }}
                     resizeMode="contain"
                   />
@@ -281,11 +284,32 @@ const PlantDetailsScreen = ({ navigation }) => {
                     style={{ height: 20, width: 20 }}
                     resizeMode="contain"
                   />
-                  <Text style={{ alignItems: "center" }}> Maintanece</Text>
+                  <Text style={{ alignItems: "center" }}> Maintenance</Text>
                 </View>
 
                 <Text>{plantDetails?.maintenance || "NA"}</Text>
               </View>
+              <View
+                    style={{
+                      height: 50,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingHorizontal: 10,
+                    }}
+                  >
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <Image
+                        source={appImages.cycleLogo}
+                        style={{ height: 20, width: 20 }}
+                        resizeMode="contain"
+                      />
+                      <Text style={{ alignItems: "center" }}> Cycle</Text>
+                    </View>
+                    <Text>{plantDetails?.cycle || "NA"}</Text>
+                  </View>
             </View>
             <View
               style={{

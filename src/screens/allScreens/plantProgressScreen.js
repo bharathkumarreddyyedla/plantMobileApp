@@ -3,6 +3,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -212,11 +213,12 @@ const PlantProgressScreen = ({ navigation, route }) => {
             width: "100%",
             backgroundColor: "black",
             opacity: 0.5,
-            bottom: 0,
+            bottom: 10,
             paddingHorizontal: 20,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+
           }}
         >
           <Text
@@ -257,13 +259,13 @@ const PlantProgressScreen = ({ navigation, route }) => {
       >
         <Header title={""} navigation={navigation} arrowColor={"white"} />
       </View>
-      <View style={{ flex: 1, top: -5 }}>
+      <View style={{ flex: 1, top: -20 }}>
         <View
           style={{
             height: 60,
             width: "100%",
             flexDirection: "row",
-            backgroundColor: "grey",
+            backgroundColor: colors.backdrop,
           }}
         >
           <Pressable
@@ -522,7 +524,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                         style={{ height: 20, width: 20 }}
                         resizeMode="contain"
                       />
-                      <Text style={{ alignItems: "center" }}> Maintanece</Text>
+                      <Text style={{ alignItems: "center" }}> Maintenance</Text>
                     </View>
 
                     <Text>{myPlantDetails?.maintenance || "NA"}</Text>
@@ -726,7 +728,6 @@ const PlantProgressScreen = ({ navigation, route }) => {
               style={{
                 // height: Dimensions.get("window").height,
                 width: "100%",
-                paddingHorizontal: 20,
                 flexWrap: "wrap",
                 flexDirection: "row",
               }}
@@ -738,11 +739,11 @@ const PlantProgressScreen = ({ navigation, route }) => {
                   }}
                   style={{
                     height: 500,
-                    // backgroundColor: colors.backdrop,
+                    backgroundColor: colors.backdrop,
                     width: "100%",
                     position: "absolute",
                     zIndex: 1000,
-                    marginLeft: 20,
+                    // marginLeft: 20,
                     alignItems: "center",
                     justifyContent: "center",
                     // opacity: 0.5,
@@ -757,7 +758,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                       opacity: 1,
                     }}
                   />
-                  <Text
+                  {/* <Text
                     style={{
                       position: "absolute",
                       fontSize: 11,
@@ -768,7 +769,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                     }}
                   >
                     {moment(enlargedPicture?.plantDob).format("DD-MM-YYYY")}
-                  </Text>
+                  </Text> */}
                 </Pressable>
               ) : (
                 <View />
@@ -779,6 +780,9 @@ const PlantProgressScreen = ({ navigation, route }) => {
                 scrollEnabled={false}
                 numColumns={numColumns}
                 showsHorizontalScrollIndicator={false}
+                style={{
+                  paddingHorizontal: 20,
+                }}
                 keyExtractor={(item) => item?._id}
                 renderItem={({ item, index }) => (
                   <PlantGalleryCard

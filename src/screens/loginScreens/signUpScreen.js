@@ -35,16 +35,16 @@ const SignUpScreen = () => {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] =
     React.useState("");
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId:
-      "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
-    androidClientId:
-      "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
-  });
-  const [token, setToken] = React.useState("");
-  React.useEffect(() => {
-    handleEffect();
-  }, [response, token]);
+  // const [request, response, promptAsync] = Google.useAuthRequest({
+  //   iosClientId:
+  //     "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
+  //   androidClientId:
+  //     "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
+  // });
+  // const [token, setToken] = React.useState("");
+  // React.useEffect(() => {
+  //   handleEffect();
+  // }, [response, token]);
   const registrationForm = {
     firstName: {
       value: registerData?.firstName,
@@ -115,52 +115,52 @@ const SignUpScreen = () => {
       ],
     },
   };
-  async function handleEffect() {
-    const user = await getLocalUser();
-    console.log("user", user);
-    if (!user) {
-      if (response?.type === "success") {
-        // setToken(response.authentication.accessToken);
-        getUserInfo(response.authentication.accessToken);
-      }
-    } else {
-      // setUserInfo(user);
-      setRegisterData({
-        ...registerData,
-        email: user.email,
-        firstName: user?.name,
-      });
-      console.log("loaded locally");
-    }
-  }
-  const getLocalUser = async () => {
-    const data = await AsyncStorage.getItem("@googleUserInfo");
-    if (!data) return null;
-    return JSON.parse(data);
-  };
+  // async function handleEffect() {
+  //   const user = await getLocalUser();
+  //   console.log("user", user);
+  //   if (!user) {
+  //     if (response?.type === "success") {
+  //       // setToken(response.authentication.accessToken);
+  //       getUserInfo(response.authentication.accessToken);
+  //     }
+  //   } else {
+  //     // setUserInfo(user);
+  //     setRegisterData({
+  //       ...registerData,
+  //       email: user.email,
+  //       firstName: user?.name,
+  //     });
+  //     console.log("loaded locally");
+  //   }
+  // }
+  // const getLocalUser = async () => {
+  //   const data = await AsyncStorage.getItem("@googleUserInfo");
+  //   if (!data) return null;
+  //   return JSON.parse(data);
+  // };
 
-  const getUserInfo = async (token) => {
-    if (!token) return;
-    try {
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+  // const getUserInfo = async (token) => {
+  //   if (!token) return;
+  //   try {
+  //     const response = await fetch(
+  //       "https://www.googleapis.com/userinfo/v2/me",
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
 
-      const user = await response.json();
-      await AsyncStorage.setItem("@googleUserInfo", JSON.stringify(user));
-      // setUserInfo(user);
-      setRegisterData({
-        ...registerData,
-        email: user.email,
-        firstName: user?.name,
-      });
-    } catch (error) {
-      // Add your own error handler here
-    }
-  };
+  //     const user = await response.json();
+  //     await AsyncStorage.setItem("@googleUserInfo", JSON.stringify(user));
+  //     // setUserInfo(user);
+  //     setRegisterData({
+  //       ...registerData,
+  //       email: user.email,
+  //       firstName: user?.name,
+  //     });
+  //   } catch (error) {
+  //     // Add your own error handler here
+  //   }
+  // };
   const onFirstNameChange = (firstName) => {
     setRegisterData({
       ...registerData,
@@ -522,9 +522,9 @@ const SignUpScreen = () => {
                       resizeMode="cover"
                     />
                   }
-                  onPress={() => {
-                    promptAsync();
-                  }}
+                  // onPress={() => {
+                  //   promptAsync();
+                  // }}
                   buttonStyle={{
                     backgroundColor: "white",
                     borderRadius: 20,
