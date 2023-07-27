@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import { HelperText, useTheme } from "react-native-paper";
 import RequiredTag from "./requiredTag";
+import { commonStyles } from "../../styles/commonStyles";
 
 const CustomDropdown = (props) => {
   const {
@@ -18,9 +19,9 @@ const CustomDropdown = (props) => {
     multiSelect = false,
     labelField = "label",
     valueField = "label",
-    color = "grey",
+    color = "black",
     dropDownStyle = {},
-    placeholderStyle = { fontSize: 11, color: "grey", fontWeight: "bold" },
+    placeholderStyle = { fontSize: 14, color: "#5A5A5F", fontWeight: "400" },
     disabled = false,
     background = "white",
   } = props;
@@ -49,7 +50,7 @@ const CustomDropdown = (props) => {
           }}
           selectedTextStyle={{
             fontSize: 14,
-            fontWeight: "bold",
+            fontWeight: "400",
             color: "#000",
           }}
           inputSearchStyle={{ height: 30, fontSize: 16 }}
@@ -80,29 +81,29 @@ const CustomDropdown = (props) => {
           placeholderStyle={placeholderStyle}
           maxHeight={300}
           itemTextStyle={{
-            fontSize: 10,
-            fontWeight: "bold",
+            fontSize: 14,
+            fontWeight: "400",
             color: color,
             textTransform: "capitalize",
           }}
           confirmSelectItem={true}
           itemContainerStyle={{ backgroundColor: "white" }}
           selectedTextStyle={{
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: "bold",
             color: color,
             textTransform: "capitalize",
           }}
+          iconStyle={{ height: 10, width: 40, tintColor: "#3A3939" }}
           iconColor={color}
           style={[
-            // commonStyles.dropdownShadowEffect,
             {
               paddingHorizontal: 10,
               backgroundColor: "white",
-              borderWidth: 1,
-              borderRadius: 5,
+              borderWidth: 0.3,
+              borderRadius: 15,
               borderColor: "grey",
-              height: dropDownStyle?.height || 40,
+              height: dropDownStyle?.height || 50,
               width: "100%",
               marginVertical: 5,
             },

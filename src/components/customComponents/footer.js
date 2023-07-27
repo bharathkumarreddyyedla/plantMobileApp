@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, Image, Pressable, Text, View } from "react-native";
+import { FlatList, Image, Platform, Pressable, Text, View } from "react-native";
 import { NativeIcon } from "../../icons/NativeIcons";
 import { appImages } from "../../configs/appImages";
 
@@ -33,7 +33,7 @@ const Footer = ({ navigation }) => {
   return (
     <View
       style={{
-        height: 80,
+        height: Platform.OS === "ios" ? 80 : 60,
         width: "100%",
         backgroundColor: "#4D3B26",
         borderTopLeftRadius: 20,

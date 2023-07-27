@@ -14,12 +14,15 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { NativeIcon } from "../../icons/NativeIcons";
 import { Constants } from "../../configs/constants";
 import { validateInput } from "../../configs/Validations";
+import { appImages } from "../../configs/appImages";
+import * as Google from "expo-auth-session/providers/google";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignUpScreen = () => {
   const { register } = React.useContext(AuthContext);
   const [registerData, setRegisterData] = React.useState({
     firstName: "",
-    surName: "",
+    // surName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -27,11 +30,21 @@ const SignUpScreen = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [firstNameErrorMessage, setFirstNameErrorMessage] = React.useState("");
-  const [surNameErrorMessage, setSurNameErrorMessage] = React.useState("");
+  // const [surNameErrorMessage, setSurNameErrorMessage] = React.useState("");
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] =
     React.useState("");
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId:
+      "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
+    androidClientId:
+      "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
+  });
+  const [token, setToken] = React.useState("");
+  React.useEffect(() => {
+    handleEffect();
+  }, [response, token]);
   const registrationForm = {
     firstName: {
       value: registerData?.firstName,
@@ -47,20 +60,20 @@ const SignUpScreen = () => {
         },
       ],
     },
-    surName: {
-      value: registerData?.surName,
-      validations: [
-        {
-          type: Constants.VALIDATIONS_TYPE.MINLENGTH,
-          message: Constants.ErrorMessage.MINLENGTH_REQUIRED,
-          length: 3,
-        },
-        {
-          type: Constants.VALIDATIONS_TYPE.REQ,
-          message: Constants.ErrorMessage.NAME_REQUIRED,
-        },
-      ],
-    },
+    // surName: {
+    //   value: registerData?.surName,
+    //   validations: [
+    //     {
+    //       type: Constants.VALIDATIONS_TYPE.MINLENGTH,
+    //       message: Constants.ErrorMessage.MINLENGTH_REQUIRED,
+    //       length: 3,
+    //     },
+    //     {
+    //       type: Constants.VALIDATIONS_TYPE.REQ,
+    //       message: Constants.ErrorMessage.NAME_REQUIRED,
+    //     },
+    //   ],
+    // },
 
     email: {
       value: registerData?.email,
@@ -102,6 +115,52 @@ const SignUpScreen = () => {
       ],
     },
   };
+  async function handleEffect() {
+    const user = await getLocalUser();
+    console.log("user", user);
+    if (!user) {
+      if (response?.type === "success") {
+        // setToken(response.authentication.accessToken);
+        getUserInfo(response.authentication.accessToken);
+      }
+    } else {
+      // setUserInfo(user);
+      setRegisterData({
+        ...registerData,
+        email: user.email,
+        firstName: user?.name,
+      });
+      console.log("loaded locally");
+    }
+  }
+  const getLocalUser = async () => {
+    const data = await AsyncStorage.getItem("@googleUserInfo");
+    if (!data) return null;
+    return JSON.parse(data);
+  };
+
+  const getUserInfo = async (token) => {
+    if (!token) return;
+    try {
+      const response = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const user = await response.json();
+      await AsyncStorage.setItem("@googleUserInfo", JSON.stringify(user));
+      // setUserInfo(user);
+      setRegisterData({
+        ...registerData,
+        email: user.email,
+        firstName: user?.name,
+      });
+    } catch (error) {
+      // Add your own error handler here
+    }
+  };
   const onFirstNameChange = (firstName) => {
     setRegisterData({
       ...registerData,
@@ -129,33 +188,33 @@ const SignUpScreen = () => {
       }
     }
   };
-  const onSurNameChange = (surName) => {
-    setRegisterData({
-      ...registerData,
-      surName: surName,
-    });
-    if (surName === "") {
-      setSurNameErrorMessage("");
-    }
-    if (surName) {
-      if (surName.startsWith(" ")) {
-        setRegisterData({
-          ...registerData,
-          surName: "",
-        });
-      } else {
-        registrationForm.surName.value = surName;
-        const { errors, valid } = validateInput({
-          surName: registrationForm.surName,
-        });
-        if (!valid) {
-          setSurNameErrorMessage(errors.surName);
-        } else {
-          setSurNameErrorMessage("");
-        }
-      }
-    }
-  };
+  // const onSurNameChange = (surName) => {
+  //   setRegisterData({
+  //     ...registerData,
+  //     surName: surName,
+  //   });
+  //   if (surName === "") {
+  //     setSurNameErrorMessage("");
+  //   }
+  //   if (surName) {
+  //     if (surName.startsWith(" ")) {
+  //       setRegisterData({
+  //         ...registerData,
+  //         surName: "",
+  //       });
+  //     } else {
+  //       registrationForm.surName.value = surName;
+  //       const { errors, valid } = validateInput({
+  //         surName: registrationForm.surName,
+  //       });
+  //       if (!valid) {
+  //         setSurNameErrorMessage(errors.surName);
+  //       } else {
+  //         setSurNameErrorMessage("");
+  //       }
+  //     }
+  //   }
+  // };
   const onEmailChange = (emailVal) => {
     setRegisterData({
       ...registerData,
@@ -234,9 +293,9 @@ const SignUpScreen = () => {
     if (errors.firstName) {
       setFirstNameErrorMessage(errors.firstName);
     }
-    if (errors.surName) {
-      setSurNameErrorMessage(errors.surName);
-    }
+    // if (errors.surName) {
+    //   setSurNameErrorMessage(errors.surName);
+    // }
     if (errors.email) {
       setEmailErrorMessage(errors.email);
     }
@@ -259,7 +318,7 @@ const SignUpScreen = () => {
       } else {
         const registerResponse = await register(
           registerData.firstName,
-          registerData.surName,
+          // registerData.surName,
           registerData?.email,
           registerData.password
         );
@@ -275,38 +334,41 @@ const SignUpScreen = () => {
         <KeyboardAwareScrollView>
           <Image
             source={require("../../../assets/images/leafySignInLogo.png")}
-            style={{ height: 300, width: "100%" }}
+            style={{ height: 250, width: "100%" }}
             resizeMode="stretch"
           />
-          <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 20 }}>
+          <View style={{ flex: 1, paddingHorizontal: 20, marginTop: 30 }}>
             <View style={{ minHeight: 70, width: "100%" }}>
               <Image
                 source={require("../../../assets/images/leafLogo.png")}
                 style={{
-                  height: 40,
+                  height: 50,
                   width: "100%",
                   position: "absolute",
-                  right: 73,
-                  bottom: 53,
+                  right: 70,
+                  bottom: 55,
                 }}
                 resizeMode="contain"
               />
 
-              <Text style={{ fontSize: 24, fontWeight: "bold" }}>Sign up</Text>
+              <Text style={{ fontSize: 24, fontWeight: "600" }}>Sign up</Text>
             </View>
-            <View style={{}}>
+            <View style={{ paddingHorizontal: 30 }}>
               <Input
                 placeholder="Full name"
                 autoCapitalize="none"
                 value={registerData?.firstName}
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
+                // style={{}}
+                // inputStyle={{ fontSize: 13 }}
+                containerStyle={{ height: 60 }}
                 errorMessage={firstNameErrorMessage || ""}
                 onChangeText={(val) => {
                   onFirstNameChange(val);
                 }}
               />
-              <Input
+              {/* <Input
                 placeholder="Sur name"
                 autoCapitalize="none"
                 value={registerData?.surName}
@@ -316,12 +378,13 @@ const SignUpScreen = () => {
                 onChangeText={(val) => {
                   onSurNameChange(val)
                 }}
-              />
+              /> */}
               <Input
                 placeholder="Email"
                 autoCapitalize="none"
                 textContentType="emailAddress"
                 value={registerData?.email}
+                containerStyle={{ height: 60 }}
                 placeholderTextColor={"grey"}
                 errorStyle={{ color: "red" }}
                 errorMessage={emailErrorMessage || ""}
@@ -333,6 +396,7 @@ const SignUpScreen = () => {
                 placeholder="Password"
                 autoCapitalize="none"
                 textContentType="password"
+                containerStyle={{ height: 60 }}
                 secureTextEntry={!showPassword}
                 rightIcon={
                   showPassword ? (
@@ -386,6 +450,7 @@ const SignUpScreen = () => {
                 placeholder="Confirm password"
                 autoCapitalize="none"
                 value={registerData?.confirmPassword}
+                containerStyle={{ height: 60 }}
                 textContentType="password"
                 secureTextEntry={!showConfirmPassword}
                 rightIcon={
@@ -445,25 +510,26 @@ const SignUpScreen = () => {
                     backgroundColor: "#56A434",
                     borderRadius: 20,
                     marginVertical: 10,
-                    height: 40,
+                    height: 50,
                   }}
                 />
                 <Button
                   title={"Sign up with Google"}
                   icon={
-                    <Icon
-                      name="google"
-                      type="font-awesome-5"
-                      size={20}
-                      color={"blue"}
-                      style={{ marginRight: 10 }}
+                    <Image
+                      source={appImages.googleLogo}
+                      style={{ height: 25, width: 25, marginRight: 5 }}
+                      resizeMode="cover"
                     />
                   }
+                  onPress={() => {
+                    promptAsync();
+                  }}
                   buttonStyle={{
                     backgroundColor: "white",
                     borderRadius: 20,
                     marginVertical: 10,
-                    height: 40,
+                    height: 50,
                     borderWidth: 1,
                     borderColor: "black",
                   }}

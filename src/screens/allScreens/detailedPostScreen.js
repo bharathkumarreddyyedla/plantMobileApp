@@ -3,6 +3,7 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -42,8 +43,17 @@ const DetailedPostScreen = ({ navigation }) => {
     try {
       const response = await fetch(postDetails?.plant?.plantPicture);
       const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
-      setImageUrl(uri);
+      if (Platform.OS === "ios") {
+        const uri = URL.createObjectURL(blob);
+        setImageUrl(uri);
+      } else {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          setImageUrl(dataUrl);
+        };
+        reader.readAsDataURL(blob);
+      }
     } catch (error) {
       console.error("Error fetching image:", error);
     }
@@ -137,7 +147,11 @@ const DetailedPostScreen = ({ navigation }) => {
       </View>
 
       <View
-        style={{ position: "absolute", marginTop: 50, paddingHorizontal: 20 }}
+        style={{
+          position: "absolute",
+          marginTop: Platform.OS === "ios" ? 50 : 0,
+          paddingHorizontal: 20,
+        }}
       >
         <Header title={""} navigation={navigation} arrowColor={"white"} />
       </View>

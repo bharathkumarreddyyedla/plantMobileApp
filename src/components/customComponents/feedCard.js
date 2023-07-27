@@ -12,6 +12,7 @@ import {
 } from "../../services/redux/reduxActions/exportAllActions";
 import { UserContext } from "../../configs/contexts";
 import { getMyPlantsById } from "../../services/redux/reduxActions/plantActions";
+import { Platform } from "react-native";
 
 const FeedCard = ({
   item,
@@ -39,10 +40,27 @@ const FeedCard = ({
   }, []);
   const fetchImage = async () => {
     try {
+      console.log(
+        "item?.picture?.include('base64')",
+        item?.picture?.include("base64")
+      );
+      // if (item?.picture?.include("base64")) {
       const response = await fetch(item?.picture);
       const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
-      setImageUrl(uri);
+      if (Platform.OS === "ios") {
+        const uri = URL.createObjectURL(blob);
+        setImageUrl(uri);
+      } else {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          setImageUrl(dataUrl);
+        };
+        reader.readAsDataURL(blob);
+      }
+      // } else {
+      //   setImageUrl(item?.picture);
+      // }
     } catch (error) {
       console.error("Error fetching image:", error);
     }
@@ -73,15 +91,16 @@ const FeedCard = ({
   return (
     <Pressable
       onPress={async () => {
-        if (user?._id === item?.userId) {
-          getPlantData();
-        } else {
-          await onClick().then((res) => {
-            if (res) {
-              navigation.navigate("plantDetailsScreen");
-            }
-          });
-        }
+        getPlantData();
+        // if (user?._id === item?.userId) {
+        //   getPlantData();
+        // } else {
+        //   await onClick().then((res) => {
+        //     if (res) {
+        //       navigation.navigate("plantDetailsScreen");
+        //     }
+        //   });
+        // }
       }}
       key={index}
       style={{

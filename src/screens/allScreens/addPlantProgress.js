@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Image,
+  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -24,6 +25,7 @@ import { Constants } from "../../configs/constants";
 import { bindActionCreators } from "redux";
 import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
 import { getAllPost } from "../../services/redux/reduxActions/postActions";
+import PopupCard from "../../components/customComponents/PopupCard";
 
 const AddPlantProgress = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -58,6 +60,16 @@ const AddPlantProgress = ({ navigation, route }) => {
     plantLong: editDetails?.plantLong || "",
     city: "",
     state: "",
+  });
+  const [popupData, setPopupData] = React.useState({
+    message: "",
+    title: "",
+    onSubmit: () => {
+      return;
+    },
+    onCancel: () => {
+      return;
+    },
   });
   const addPlantProgressForm = {
     plantNotes: {
@@ -180,13 +192,13 @@ const AddPlantProgress = ({ navigation, route }) => {
         if (Object.keys(editDetails).length > 0) {
           updateToProgress(progressData?._id, obj, token)
             .then((progressRes) => {
-              setPlantMessage(progressRes?.message);
-              if (screen && share) {
-                getAllPost(user?._id, token);
-                navigation.navigate("communityScreen");
-              } else {
-                navigation.navigate("homeScreen");
-              }
+              // setPlantMessage(progressRes?.message);
+              setPopupData({
+                ...popupData,
+                title: "Saved!",
+                message:
+                  "The plant progress has been saved and added to the feed",
+              });
             })
             .catch((err) => {
               console.log(err);
@@ -194,12 +206,18 @@ const AddPlantProgress = ({ navigation, route }) => {
         } else {
           saveToProgress(obj, token)
             .then((progressRes) => {
-              setPlantMessage(progressRes?.message);
-              if (screen) {
-                navigation.navigate("communityScreen");
-              } else {
-                navigation.navigate("homeScreen");
-              }
+              // setPlantMessage(progressRes?.message);
+              setPopupData({
+                ...popupData,
+                title: "Saved!",
+                message:
+                  "The plant progress has been saved and added to the feed",
+              });
+              // if (screen) {
+              //   navigation.navigate("communityScreen");
+              // } else {
+              //   navigation.navigate("homeScreen");
+              // }
             })
             .catch((err) => {
               console.log(err);
@@ -296,16 +314,61 @@ const AddPlantProgress = ({ navigation, route }) => {
       console.log(err);
     }
   };
+  const onActionPopUp = () => {
+    try {
+      setPopupData({
+        ...popupData,
+        message: "",
+      });
+      if (screen && progressData?.share) {
+        getAllPost(user?._id, token);
+        navigation.navigate("communityScreen");
+      } else {
+        navigation.navigate("homeScreen");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      {popupData?.message ? (
+        <PopupCard
+          title={popupData?.title}
+          message={popupData?.message}
+          buttons={[
+            {
+              action: onActionPopUp,
+              title: "Go to My plant",
+              backgroundColor: "green",
+              color: "white",
+            },
+          ]}
+        />
+      ) : (
+        <View />
+      )}
       {showCamera && (
         <CustomCamera
           setShowCamera={setShowCamera}
           setCameraBase64={setCameraBase64}
         />
       )}
-      <View style={{ flex: 1, marginTop: 50, paddingHorizontal: 20 }}>
-        <Header title={"Progress"} navigation={navigation} />
+      <View
+        style={{
+          flex: 1,
+          marginTop: Platform.OS === "ios" ? 50 : 0,
+          paddingHorizontal: 20,
+        }}
+      >
+        <Header
+          title={
+            Object.keys(editDetails).length > 0
+              ? "Edit Plant Progress"
+              : "Add Plant Progress"
+          }
+          navigation={navigation}
+        />
         <ScrollView>
           <View style={{ flex: 1 }}>
             <View
@@ -546,20 +609,55 @@ const AddPlantProgress = ({ navigation, route }) => {
                 }}
               />
             </View>
-            <Button
-              onPress={() => {
-                onSaveProgress();
-              }}
-              buttonStyle={{
-                height: 40,
-                width: "70%",
-                backgroundColor: "#56A434",
-                alignSelf: "center",
+            <View
+              style={{
+                width: "100%",
                 marginVertical: 10,
-                borderRadius: 10,
+                flexDirection: "row",
+                // paddingHorizontal:30,
+                justifyContent:
+                  Object.keys(editDetails).length > 0 ? "center" : "center",
               }}
-              title={Object.keys(editDetails).length > 0 ? "update" : "Proceed"}
-            />
+            >
+              {Object.keys(editDetails).length > 0 && (
+                <Button
+                  title={"Cancel"}
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                  buttonStyle={{
+                    height: 40,
+                    width: 120,
+                    backgroundColor: "transparent",
+                    // alignSelf: "center",
+                    borderWidth: 1,
+                    borderColor: "black",
+                    borderRadius: 10,
+                    paddingHorizontal: 30,
+                    paddingVertical: 0,
+                    margin: 0,
+                  }}
+                  titleStyle={{ color: "black", textAlign: "center" }}
+                />
+              )}
+              <Button
+                onPress={() => {
+                  onSaveProgress();
+                }}
+                buttonStyle={{
+                  height: 40,
+                  width: 120,
+                  backgroundColor: "#56A434",
+                  // alignSelf: "center",
+                  borderRadius: 10,
+                  // paddingHorizontal: 0,
+                  marginLeft: 10,
+                  paddingVertical: 0,
+                  margin: 0,
+                }}
+                title={Object.keys(editDetails).length > 0 ? "Save" : "Proceed"}
+              />
+            </View>
           </View>
         </ScrollView>
       </View>

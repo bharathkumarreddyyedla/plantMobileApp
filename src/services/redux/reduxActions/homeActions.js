@@ -87,7 +87,7 @@ export const saveUserLocation = () => {
       if (res?.status === "granted") {
         Location.getCurrentPositionAsync({}).then((res) => {
           console.log("res", res);
-          const API_KEY = "AIzaSyA_8q4Mt9yANU_Pvksy1-c7MZIjen1UEXE";
+          const API_KEY = "AIzaSyAvOGsY7x7th-qbVCLyfx2WTK0dqEmRDio";
           const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${res?.coords?.latitude},${res?.coords?.longitude}&key=${API_KEY}`;
           axios.get(url).then((response) => {
             console.log("response add", response);

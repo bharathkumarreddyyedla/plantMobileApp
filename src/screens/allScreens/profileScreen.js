@@ -110,7 +110,13 @@ const ProfileScreen = ({ navigation }) => {
           setCameraBase64={setCameraBase64}
         />
       )}
-      <View style={{ flex: 1, marginTop: 50, paddingHorizontal: 20 }}>
+      <View
+        style={{
+          flex: 1,
+          marginTop: Platform.OS === "ios" ? 50 : 0,
+          paddingHorizontal: 20,
+        }}
+      >
         <Header
           title={"Profile"}
           navigation={navigation}

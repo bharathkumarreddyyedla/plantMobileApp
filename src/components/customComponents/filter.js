@@ -35,7 +35,6 @@ const Filter = (props) => {
     <View
       style={{
         height: "100%",
-        paddingHorizontal: 20,
         marginTop: 20,
       }}
     >
@@ -45,9 +44,10 @@ const Filter = (props) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
+            paddingHorizontal: 20,
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Filters</Text>
+          <Text style={{ fontSize: 20, fontWeight: "600" }}>Filters</Text>
           <Pressable
             onPress={() => {
               onPressToggle(false);
@@ -61,8 +61,8 @@ const Filter = (props) => {
             />
           </Pressable>
         </View>
-        <View>
-          <View style={{ marginVertical: 5 }}>
+        <View style={{ paddingHorizontal: 20 }}>
+          <View style={{ marginVertical: 5, width: "100%" }}>
             <CustomDropdown
               data={plantCycleList}
               value={filterValues?.cycle}
@@ -104,7 +104,7 @@ const Filter = (props) => {
               placeholder={"Select"}
             />
           </View>
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>Poisonous</Text>
+          <Text style={{ fontSize: 16 }}>Poisonous</Text>
           <View style={{ flexDirection: "row" }}>
             {yesOrNO?.map((item, index) => {
               return (
@@ -124,7 +124,7 @@ const Filter = (props) => {
             })}
           </View>
           {console.log("filterValues", filterValues)}
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>Indoor </Text>
+          <Text style={{ fontSize: 16 }}>Indoor </Text>
           <View style={{ flexDirection: "row" }}>
             {yesOrNO?.map((item, index) => {
               return (
@@ -142,7 +142,7 @@ const Filter = (props) => {
               );
             })}
           </View>
-          <Text style={{ fontSize: 16, fontWeight: "bold" }}>Edible</Text>
+          <Text style={{ fontSize: 16 }}>Edible</Text>
           <View style={{ flexDirection: "row" }}>
             {yesOrNO?.map((item, index) => {
               return (
@@ -163,8 +163,8 @@ const Filter = (props) => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
-            marginvertical: 10,
+            justifyContent: "center",
+            marginVertical: 40,
           }}
         >
           <Button
@@ -179,12 +179,16 @@ const Filter = (props) => {
                 edible: 0,
               });
             }}
+            titleStyle={{ color: "#4B4848" }}
             buttonStyle={{
               height: 40,
-              width: 100,
-              backgroundColor: "#56A434",
+              // width: 100,
+              backgroundColor: "transparent",
               alignSelf: "flex-start",
-              borderRadius: 4,
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: "#4B4848",
+              paddingHorizontal: 40,
             }}
           />
           <Button
@@ -194,10 +198,14 @@ const Filter = (props) => {
             }}
             buttonStyle={{
               height: 40,
-              width: 100,
+              // width: 100,
               backgroundColor: "#56A434",
               alignSelf: "flex-end",
-              borderRadius: 4,
+              borderRadius: 20,
+              paddingHorizontal: 40,
+            }}
+            containerStyle={{
+              paddingHorizontal: 10,
             }}
           />
         </View>

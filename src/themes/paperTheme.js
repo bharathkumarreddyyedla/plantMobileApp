@@ -136,7 +136,7 @@ export const PaperTheme = {
     textUnderline: "#DFDFDF",
     labUploadIcon: "#45B2C0",
     resceduleText: "#006655",
-    lightGrey: "#ECEDF1",
+    lightGrey: "#4B4848",
     title: "#38949F",
     sendChatMesg: "#16646E",
     symptomsInput: "#7d7d7c",

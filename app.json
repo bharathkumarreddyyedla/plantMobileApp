@@ -55,7 +55,7 @@
 ],
     "splash": {
       "image": "./assets/images/Splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
@@ -70,7 +70,12 @@
           "remote-notification"
         ],
         "NSCameraUsageDescription": "Allow access to the camera",
-    "NSPhotoLibraryUsageDescription": "Allow access to the photo library"
+        "NSPhotoLibraryUsageDescription": "Allow access to the photo library",
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": ["com.googleusercontent.apps.221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44"]
+          }
+        ]
       },
       "supportsTablet": true
     },
@@ -112,6 +117,7 @@
         "projectId": "cbf6937f-23fc-4c72-9db7-abe1e33bd775"
       }
     },
-    "owner": "bharathreddy"
+    "owner": "bharathreddy",
+    "scheme":"leafy"
   }
 }

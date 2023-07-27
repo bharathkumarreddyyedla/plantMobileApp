@@ -52,62 +52,63 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      <ScrollView>
-        <View
+      <View
+        style={{
+          height: 60,
+          position: "absolute",
+          left: 20,
+          top: 60,
+          zIndex: 1000,
+        }}
+      >
+        <Text style={{ color: "white", fontSize: 10 }}>Hello</Text>
+        <Image
+          source={appImages.leafLogoWhite}
           style={{
-            height: 60,
+            height: 13,
+            width: 20,
             position: "absolute",
             left: 20,
-            top: 60,
-            zIndex: 1000,
+            top: -8,
           }}
-        >
-          <Text style={{ color: "white", fontSize: 10 }}>Hello</Text>
-          <Image
-            source={appImages.leafLogoWhite}
-            style={{
-              height: 13,
-              width: 20,
-              position: "absolute",
-              left: 20,
-              top: -8,
-            }}
-            resizeMode="contain"
-          />
-          <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
-            Welcome back!
-          </Text>
-        </View>
-
-        <Image
-          source={appImages.greeBackground}
-          style={{ height: 150, width: "100%" }}
-          resizeMode="stretch"
+          resizeMode="contain"
         />
-        <Pressable
+        <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
+          Welcome back!
+        </Text>
+      </View>
+
+      <Image
+        source={appImages.greeBackground}
+        style={{ height: 150, width: "100%" }}
+        resizeMode="stretch"
+      />
+      <Pressable
+        style={{
+          position: "absolute",
+          right: 40,
+          top: 90,
+        }}
+        onPress={() => {
+          navigation.navigate("notificationScreen");
+        }}
+      >
+        <Image
+          source={appImages.bellLogo}
           style={{
-            position: "absolute",
-            right: 40,
-            top: 90,
+            height: 25,
+            width: 25,
           }}
-          onPress={() => {
-            navigation.navigate("notificationScreen");
-          }}
-        >
-          <Image
-            source={appImages.bellLogo}
-            style={{
-              height: 25,
-              width: 25,
-            }}
-            resizeMode="contain"
-          />
-        </Pressable>
-        <View style={{ flex: 1 }}>
-          <CustomSearchBar
-            onSearchClick={onSearchClick}
-            onFilterClick={onSearchClick}
-          />
+          resizeMode="contain"
+        />
+      </Pressable>
+
+      <View style={{ flex: 1 }}>
+        <CustomSearchBar
+          onSearchClick={onSearchClick}
+          onFilterClick={onSearchClick}
+        />
+        <ScrollView>
           <MyPlants navigation={navigation} />
           <View
             style={{
@@ -143,8 +144,8 @@ const HomeScreen = ({ navigation }) => {
               onPress={() => {}}
             />
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
       <View style={{ bottom: 0 }}>
         <Footer navigation={navigation} />
       </View>

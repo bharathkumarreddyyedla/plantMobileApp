@@ -35,7 +35,7 @@ const SettingsScreen = ({ navigation }) => {
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      <View style={{ flex: 1, marginTop: 50, paddingHorizontal: 20 }}>
+      <View style={{ flex: 1, marginTop: Platform.OS === "ios" ? 50 : 0, paddingHorizontal: 20 }}>
         <Header title={"Settings"} navigation={navigation} />
         <View
           style={{

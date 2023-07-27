@@ -1,5 +1,13 @@
 import React from "react";
-import { Alert, Dimensions, Image, ScrollView, Text, View } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import Header from "../../components/customComponents/header";
 import { appImages } from "../../configs/appImages";
 import { NativeIcon } from "../../icons/NativeIcons";
@@ -31,9 +39,17 @@ const PlantDetailsScreen = ({ navigation }) => {
     try {
       const response = await fetch(plantDetails?.default_image?.medium_url);
       const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
-
-      setImageUrl(uri);
+      if (Platform.OS === "ios") {
+        const uri = URL.createObjectURL(blob);
+        setImageUrl(uri);
+      } else {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          setImageUrl(dataUrl);
+        };
+        reader.readAsDataURL(blob);
+      }
     } catch (error) {
       console.error("Error fetching image:", error);
     }
@@ -63,7 +79,6 @@ const PlantDetailsScreen = ({ navigation }) => {
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      {console.log("plantDetails", plantDetails, user?._id)}
       <View
         style={{
           height: Dimensions.get("screen").height / 3,
@@ -101,7 +116,11 @@ const PlantDetailsScreen = ({ navigation }) => {
         </View>
       </View>
       <View
-        style={{ position: "absolute", marginTop: 50, paddingHorizontal: 20 }}
+        style={{
+          position: "absolute",
+          marginTop: Platform.OS === "ios" ? 50 : 0,
+          paddingHorizontal: 20,
+        }}
       >
         <Header title={""} navigation={navigation} arrowColor={"white"} />
       </View>
@@ -120,8 +139,8 @@ const PlantDetailsScreen = ({ navigation }) => {
             </Text>
             <Text
               style={{
-                fontSize: 14,
-                fontWeight: "500",
+                fontSize: 13,
+                fontWeight: "400",
                 color: "black",
                 textAlign: "left",
                 lineHeight: 20,

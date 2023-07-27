@@ -249,7 +249,11 @@ const PlantProgressScreen = ({ navigation, route }) => {
       </View>
 
       <View
-        style={{ position: "absolute", marginTop: 50, paddingHorizontal: 20 }}
+        style={{
+          position: "absolute",
+          marginTop: Platform.OS === "ios" ? 50 : 0,
+          paddingHorizontal: 20,
+        }}
       >
         <Header title={""} navigation={navigation} arrowColor={"white"} />
       </View>
@@ -353,18 +357,28 @@ const PlantProgressScreen = ({ navigation, route }) => {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: "500",
                     color: "black",
-                    textAlign: "left",
+                    textAlign: "justify",
                     lineHeight: 20,
+                    paddingRight: 2,
                   }}
                 >
                   {myPlantDetails?.plantDescription || "NA"}
                 </Text>
               </View>
               <View style={{ marginVertical: 10 }}>
-                <Text>Care Details</Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    color: "black",
+                    lineHeight: 30,
+                  }}
+                >
+                  Care Details
+                </Text>
                 <View
                   style={{
                     backgroundColor: "white",
@@ -526,7 +540,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                       style={{ flexDirection: "row", alignItems: "center" }}
                     >
                       <Image
-                        source={appImages.heightLogo}
+                        source={appImages.cycleLogo}
                         style={{ height: 20, width: 20 }}
                         resizeMode="contain"
                       />
@@ -566,60 +580,121 @@ const PlantProgressScreen = ({ navigation, route }) => {
                     marginVertical: 10,
                   }}
                 >
-                  <Button
-                    title={"Edit plant"}
-                    onPress={() => {
-                      // if (screen) {
-                      //   onAddFavourite();
-                      // } else {
-                      navigation.navigate("addPlantScreen", {
-                        editPlantDetails: myPlantDetails,
-                      });
-                      // }
-                    }}
-                    // iconPosition="left"
-                    // icon={() => {
-                    //   if (screen) {
-                    //     return (
-                    //       <Image
-                    //         source={
-                    //           favPlant
-                    //             ? appImages?.filledFavouritesLogo
-                    //             : appImages.whishlistLogo
-                    //         }
-                    //         style={{ height: 20, width: 20, right: 5 }}
-                    //         resizeMode="contain"
-                    //       />
-                    //     );
-                    //   }
-                    // }}
-                    buttonStyle={{
-                      height: 40,
-                      width: 130,
-                      backgroundColor: "transparent",
-                      paddingHorizontal: 10,
-                      borderWidth: 1,
-                      borderRadius: 10,
-                      borderColor: "black",
-                    }}
-                    titleStyle={{ color: "black" }}
-                  />
-                  <Button
-                    title={"Add Progress"}
-                    onPress={() => {
-                      navigation.navigate("addPlantProgress", {
-                        plantID: myPlantDetails?._id,
-                        screen:screen
-                      });
-                    }}
-                    buttonStyle={{
-                      height: 40,
-                      width: 130,
-                      backgroundColor: "#56A434",
-                      borderRadius: 10,
-                    }}
-                    titleStyle={{ color: "white" }}
-                  />
+                  {screen === "feed" ? (
+                    <Button
+                      title={"Wishlist"}
+                      onPress={() => {
+                        onAddFavourite();
+                      }}
+                      iconPosition="left"
+                      icon={() => {
+                        return (
+                          <Image
+                            source={
+                              myPlantDetails?.favourite
+                                ? appImages?.filledFavouritesLogo
+                                : appImages.whishlistLogo
+                            }
+                            style={{ height: 20, width: 20, right: 5 }}
+                            resizeMode="contain"
+                          />
+                        );
+                      }}
+                      buttonStyle={{
+                        height: 40,
+                        width: 130,
+                        backgroundColor: "transparent",
+                        paddingHorizontal: 10,
+                        borderWidth: 1,
+                        borderRadius: 10,
+                        borderColor: "black",
+                      }}
+                      titleStyle={{ color: "black" }}
+                    />
+                  ) : (
+                    <Button
+                      title={"Edit Plant"}
+                      onPress={() => {
+                        // if (screen) {
+                        //   onAddFavourite();
+                        // } else {
+                        navigation.navigate("addPlantScreen", {
+                          editPlantDetails: myPlantDetails,
+                        });
+                        // }
+                      }}
+                      // iconPosition="left"
+                      // icon={() => {
+                      //   if (screen) {
+                      //     return (
+                      //       <Image
+                      //         source={
+                      //           favPlant
+                      //             ? appImages?.filledFavouritesLogo
+                      //             : appImages.whishlistLogo
+                      //         }
+                      //         style={{ height: 20, width: 20, right: 5 }}
+                      //         resizeMode="contain"
+                      //       />
+                      //     );
+                      //   }
+                      // }}
+                      buttonStyle={{
+                        height: 40,
+                        width: 130,
+                        backgroundColor: "transparent",
+                        paddingHorizontal: 10,
+                        paddingVertical: 0,
+                        margin: 0,
+                        borderWidth: 1,
+                        borderRadius: 15,
+                        borderColor: "black",
+                      }}
+                      titleStyle={{ color: "black", textAlign: "center" }}
+                    />
+                  )}
+                  {screen === "feed" ? (
+                    <Button
+                      title={"My Plants"}
+                      iconPosition="left"
+                      onPress={() => {
+                        navigation.navigate("addPlantScreen");
+                      }}
+                      icon={() => {
+                        return (
+                          <Image
+                            source={appImages.addCircleLogo}
+                            style={{ height: 20, width: 20, right: 5 }}
+                            resizeMode="contain"
+                          />
+                        );
+                      }}
+                      buttonStyle={{
+                        height: 40,
+                        width: 130,
+                        backgroundColor: "#56A434",
+                        borderRadius: 10,
+                      }}
+                      titleStyle={{ color: "white" }}
+                    />
+                  ) : (
+                    <Button
+                      title={"Add Progress"}
+                      onPress={() => {
+                        navigation.navigate("addPlantProgress", {
+                          plantID: myPlantDetails?._id,
+                          screen: screen,
+                        });
+                      }}
+                      buttonStyle={{
+                        height: 40,
+                        width: 130,
+                        backgroundColor: "#56A434",
+                        borderRadius: 15,
+                      }}
+                      titleStyle={{ color: "white" }}
+                    />
+                  )}
                 </View>
               </View>
             </View>

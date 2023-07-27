@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import Header from "../../components/customComponents/header";
 import { appImages } from "../../configs/appImages";
@@ -26,6 +27,7 @@ import { bindActionCreators } from "redux";
 import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
 import CustomCamera from "../../components/customComponents/camera";
 import { validateInput } from "../../configs/Validations";
+import PopupCard from "../../components/customComponents/PopupCard";
 
 const AddPlantScreen = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -72,6 +74,16 @@ const AddPlantScreen = ({ navigation, route }) => {
     plantPicture: "",
     plantProgress: editPlantDetails?.plantProgress || [],
     reminders: editPlantDetails?.reminders || "DAILY",
+  });
+  const [popupData, setPopupData] = React.useState({
+    message: "",
+    title: "",
+    onSubmit: () => {
+      return;
+    },
+    onCancel: () => {
+      return;
+    },
   });
   const addPlantForm = {
     plantName: {
@@ -142,11 +154,6 @@ const AddPlantScreen = ({ navigation, route }) => {
       setShowCamera(false);
     }
   }, [cameraBase64]);
-  // React.useEffect(() => {
-  //   if (direction) {
-
-  //   }
-  // }, [direction]);
   const subscribeToCompass = async () => {
     const { status } = await Magnetometer.requestPermissionsAsync();
     if (status !== "granted") {
@@ -182,9 +189,17 @@ const AddPlantScreen = ({ navigation, route }) => {
           : plantDetails?.default_image?.medium_url
       );
       const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
-
-      setImageUrl(uri);
+      if (Platform.OS === "ios") {
+        const uri = URL.createObjectURL(blob);
+        setImageUrl(uri);
+      } else {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          setImageUrl(dataUrl);
+        };
+        reader.readAsDataURL(blob);
+      }
       setPlantData({
         ...plantData,
         plantName: editPlantDetails?.plantName || plantDetails?.common_name,
@@ -195,20 +210,8 @@ const AddPlantScreen = ({ navigation, route }) => {
         plantPicture:
           editPlantDetails?.plantPicture ||
           plantDetails?.default_image?.medium_url,
-        // plantProgress: editPlantDetails?.plantProgress || [
-        //   {
-        //     picture: plantDetails?.default_image?.medium_url,
-        //     plantDob: new Date(),
-        //     perenulaPlantId: plantDetails?.id,
-        //     plantName: plantDetails?.common_name,
-        //     plantNotes: "It’s my plant birthday, let us celebrate it!!",
-        //     city: userAddress?.split(",")[1]?.trim() || "",
-        //     state: userAddress?.split(",")[2]?.trim() || "",
-        //   },
-        // ],
       });
       setImageFetched(true);
-      // setLoading(false);
     } catch (error) {
       console.error("Error fetching image:", error);
     }
@@ -223,7 +226,6 @@ const AddPlantScreen = ({ navigation, route }) => {
       } else {
         setDatePicker(false);
       }
-      // setDate(dates)
       setPlantData({
         ...plantData,
         plantDob: moment(dates).format("YYYY-MM-DD"),
@@ -237,32 +239,14 @@ const AddPlantScreen = ({ navigation, route }) => {
         setFormErrorMessage(errors);
       } else {
         if (Object.keys(editPlantDetails).length > 0) {
-          // console.log("edit", editPlantDetails, "plant data", plantData);
           savePlantProgress(editPlantDetails?._id, plantData, token).then(
             (res) => {
               if (res) {
-                // let obj = {
-                //   userId: user?._id,
-                //   plantId: res?.plantId,
-                //   plantName: plantData?.plantName,
-                //   plantNotes: "It’s my plant birthday, let us celebrate it!!",
-                //   picture: plantData?.plantPicture,
-                //   perenulaPlantId: plantDetails?.id,
-                //   share: plantData?.share,
-                //   platPosition: plantData?.platPosition,
-                //   plantLat: plantData?.plantLat,
-                //   plantLong: plantData?.plantLong,
-                //   city: userAddress?.split(",")[1]?.trim() || "",
-                //   state: userAddress?.split(",")[2]?.trim() || "",
-                // };
-                // saveToProgress(obj, token)
-                //   .then((progressRes) => {
-                setPlantMessage(res?.message);
-                navigation.navigate("homeScreen");
-                // })
-                // .catch((err) => {
-                //   console.log(err);
-                // });
+                setPopupData({
+                  ...popupData,
+                  title: "Congratulations",
+                  message: "Your plant have been added successfully.",
+                });
               }
             }
           );
@@ -285,8 +269,11 @@ const AddPlantScreen = ({ navigation, route }) => {
               };
               saveToProgress(obj, token)
                 .then((progressRes) => {
-                  setPlantMessage(progressRes?.message);
-                  navigation.navigate("homeScreen");
+                  setPopupData({
+                    ...popupData,
+                    title: "Congratulations",
+                    message: "Your plant have been added successfully.",
+                  });
                 })
                 .catch((err) => {
                   console.log(err);
@@ -380,15 +367,48 @@ const AddPlantScreen = ({ navigation, route }) => {
       console.log(err);
     }
   };
+  const onActionPopUp = () => {
+    try {
+      setPopupData({
+        ...popupData,
+        message: "",
+      });
+      navigation.navigate("plantsScreen",{screen:'addPlant'});
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      {popupData?.message ? (
+        <PopupCard
+          title={popupData?.title}
+          message={popupData?.message}
+          buttons={[
+            {
+              action: onActionPopUp,
+              title: "Go to My plant",
+              backgroundColor: "green",
+              color: "white",
+            },
+          ]}
+        />
+      ) : (
+        <View />
+      )}
       {showCamera && (
         <CustomCamera
           setShowCamera={setShowCamera}
           setCameraBase64={setCameraBase64}
         />
       )}
-      <View style={{ flex: 1, marginTop: 50, paddingHorizontal: 20 }}>
+      <View
+        style={{
+          flex: 1,
+          marginTop: Platform.OS === "ios" ? 50 : 0,
+          paddingHorizontal: 20,
+        }}
+      >
         <Header title={"Plants"} navigation={navigation} />
         <ScrollView>
           <View style={{ flex: 1 }}>
@@ -418,13 +438,15 @@ const AddPlantScreen = ({ navigation, route }) => {
                   backgroundColor: "white",
                   position: "absolute",
                   bottom: 30,
-                  right: 110,
-                  borderRadius: 15,
+                  right: Platform.OS === "ios" ? 110 : 90,
+                  borderRadius: 25,
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <Image
                   source={appImages?.cameraOutlinedLogo}
-                  style={{ height: 40, width: 40, alignSelf: "center" }}
+                  style={{ height: 30, width: 30, alignSelf: "center" }}
                 />
               </View>
             </View>
@@ -432,7 +454,7 @@ const AddPlantScreen = ({ navigation, route }) => {
               style={{
                 minHeight: 40,
                 width: "100%",
-                marginTop: 10,
+                // marginTop: 0,
               }}
             >
               <Text
@@ -447,6 +469,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 placeholder="Plant name"
                 errorMessage={plantNameErrorMessage || ""}
                 placeholderTextColor={"#A39E9E"}
+                containerStyle={{ height: 70 }}
                 style={{
                   borderWidth: 1,
                   borderRadius: 15,
@@ -486,6 +509,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 autoComplete="off"
                 placeholder="Select date"
                 placeholderTextColor={"#A39E9E"}
+                containerStyle={{ height: 70 }}
                 rightIcon={() => {
                   return (
                     <Pressable
@@ -537,6 +561,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 }`}
                 autoComplete="off"
                 errorMessage={plantLocationErrorMessage || ""}
+                containerStyle={{ height: 70 }}
                 placeholder="Select your location"
                 placeholderTextColor={"#A39E9E"}
                 rightIcon={() => {
@@ -598,6 +623,7 @@ const AddPlantScreen = ({ navigation, route }) => {
               <Input
                 autoCorrect={false}
                 value={plantData?.platPosition || ""}
+                containerStyle={{ height: 70 }}
                 autoComplete="off"
                 // disabled={true}
                 errorMessage={plantPositionErrorMessage || ""}
@@ -716,6 +742,34 @@ const AddPlantScreen = ({ navigation, route }) => {
                 ]}
               />
             </View>
+            <View
+              style={{
+                width: "100%",
+                marginVertical: 10,
+                flexDirection: "row",
+                justifyContent:
+                  Object.keys(editPlantDetails).length > 0
+                    ? "space-between"
+                    : "center",
+              }}
+            >
+            {Object.keys(editPlantDetails).length > 0 && (
+                <Button
+                  title={"Cancel"}
+                  onPress={()=>{navigation.goBack()}}
+                  buttonStyle={{
+                    height: 40,
+                    // width: !Object.keys(editDetails).length > 0 ? "50%" : "70%",
+                    backgroundColor: "transparent",
+                    // alignSelf: "center",
+                    borderWidth: 1,
+                    borderColor: "black",
+                    borderRadius: 10,
+                    paddingHorizontal: 20,
+                  }}
+                  titleStyle={{ color: "black" }}
+                />
+              )}
             <Button
               onPress={() => {
                 onProceed();
@@ -729,9 +783,10 @@ const AddPlantScreen = ({ navigation, route }) => {
                 borderRadius: 10,
               }}
               title={
-                Object.keys(editPlantDetails)?.length > 0 ? "Update" : "Proceed"
+                Object.keys(editPlantDetails)?.length > 0 ? "Save" : "Proceed"
               }
             />
+            </View>
           </View>
         </ScrollView>
       </View>

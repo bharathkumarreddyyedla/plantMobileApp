@@ -29,7 +29,7 @@ const CommunityScreen = ({ navigation }) => {
     },
     {
       id: 2,
-      label: "liked",
+      label: "Liked",
     },
   ];
   const [feeds, setFeeds] = React.useState([]);
@@ -98,7 +98,12 @@ const CommunityScreen = ({ navigation }) => {
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      <View style={{ marginTop: 50, paddingHorizontal: 20 }}>
+      <View
+        style={{
+          marginTop: Platform.OS === "ios" ? 50 : 0,
+          paddingHorizontal: 20,
+        }}
+      >
         <Header
           title={"Feed"}
           navigation={navigation}

@@ -1,6 +1,6 @@
 import moment from "moment";
 import React from "react";
-import { Dimensions, Image, Pressable, Text, View } from "react-native";
+import { Dimensions, Image, Platform, Pressable, Text, View } from "react-native";
 import { NativeIcon } from "../../icons/NativeIcons";
 
 const PlantProgressCard = ({
@@ -24,9 +24,17 @@ const PlantProgressCard = ({
     try {
       const response = await fetch(item?.picture);
       const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
-
-      setImageUrl(uri);
+     if (Platform.OS === "ios") {
+       const uri = URL.createObjectURL(blob);
+       setImageUrl(uri);
+     } else {
+       const reader = new FileReader();
+       reader.onload = () => {
+         const dataUrl = reader.result;
+         setImageUrl(dataUrl);
+       };
+       reader.readAsDataURL(blob);
+     }
     } catch (error) {
       console.error("Error fetching image:", error);
     }

@@ -39,9 +39,16 @@ const PlantCard = ({
       const response = await fetch(
         screen ? item?.plantPicture : item?.default_image?.medium_url
       );
+      console.log("responnn", response);
       const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
-      setImageUrl(uri);
+      console.log("blob", blob);
+      // const uri = URL.createObjectURL(blob);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        setImageUrl(dataUrl);
+      };
+      reader.readAsDataURL(blob);
     } catch (error) {
       console.error("Error fetching image:", error);
     }
@@ -59,6 +66,7 @@ const PlantCard = ({
     saveMyPlantData(item);
     navigation.navigate("plantProgressScreen");
   };
+  // if (imageUrl) {
   return (
     <Pressable
       onPress={async () => {
@@ -82,7 +90,7 @@ const PlantCard = ({
       key={index}
       style={{
         height: 190,
-        width: 160,
+        width: 140,
         marginLeft: marginValue,
         marginBottom: 12,
       }}
@@ -114,7 +122,7 @@ const PlantCard = ({
         ]}
       >
         <FastImage
-          source={{ uri: imageUrl }}
+          source={imageUrl ? { uri: imageUrl } : appImages.leafLogo}
           resizeMode="cover"
           style={{
             height: "100%",
@@ -156,6 +164,9 @@ const PlantCard = ({
       </View>
     </Pressable>
   );
+  // } else {
+  //   return <></>;
+  // }
 };
 
 export default PlantCard;

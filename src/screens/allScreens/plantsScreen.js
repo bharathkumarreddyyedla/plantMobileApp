@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text } from "react-native";
+import { Platform, ScrollView, Text } from "react-native";
 import { View } from "react-native";
 import { UserContext } from "../../configs/contexts";
 import { getMyPlants } from "../../services/redux/reduxActions/plantActions";
@@ -7,7 +7,7 @@ import PlantCard from "../../components/customComponents/plantCard";
 import Header from "../../components/customComponents/header";
 
 const PlantsScreen = ({ navigation, route }) => {
-  //   const [id = ""] = route?.params || {};
+  const {screen = ""} = route?.params || {};
   const { userState = {} } = React.useContext(UserContext) || {};
   const { token = "", user = {} } = userState || {};
   const [plants, setPlants] = React.useState([]);
@@ -22,8 +22,17 @@ const PlantsScreen = ({ navigation, route }) => {
   }, []);
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      <View style={{ marginTop: 50, paddingHorizontal: 20 }}>
-        <Header title={"My Plants"} navigation={navigation} />
+      <View
+        style={{
+          marginTop: Platform.OS === "ios" ? 50 : 0,
+          paddingHorizontal: 20,
+        }}
+      >
+        <Header title={"My Plants"} navigation={navigation} onGoback={()=>{if(screen  === 'addPlant'){
+          navigation.navigate('homeScreen')
+        }else{
+          navigation.goBack()
+        }}} />
       </View>
       <View style={{ flex: 1, paddingHorizontal: 20, marginVertical: 10 }}>
         <Text

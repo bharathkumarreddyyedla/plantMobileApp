@@ -117,7 +117,7 @@ const SearchScreen = ({ navigation }) => {
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
-      <View style={{ marginTop: 50 }}>
+      <View style={{ marginTop: Platform.OS === "ios" ? 50 : 0 }}>
         <View style={{ paddingHorizontal: 20 }}>
           <Header title={"Search"} navigation={navigation} />
         </View>
@@ -149,7 +149,7 @@ const SearchScreen = ({ navigation }) => {
                   <PlantCard
                     item={item}
                     index={index}
-                    marginValue={index % 2 ? 16 : 0}
+                    marginValue={16}
                     navigation={navigation}
                   />
                 );
@@ -168,7 +168,7 @@ const SearchScreen = ({ navigation }) => {
           width: "100%",
           transform: [{ translateY: bounceValue }],
           justifyContent: "flex-end",
-          paddingHorizontal: 20,
+          // paddingHorizontal: 20,
         }}
       >
         <Pressable

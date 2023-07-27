@@ -26,7 +26,7 @@ const MyPlantsScreen = ({ navigation }) => {
       <View style={{ marginTop: 50 }}>
         <Header title={"Plants"} navigation={navigation} />
       </View>
-      {console.log("faqPlantData", faqPlantData)}
+      {/* {console.log("faqPlantData", faqPlantData)} */}
       <ScrollView>
         <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>
           {faqPlantData?.length > 0 &&

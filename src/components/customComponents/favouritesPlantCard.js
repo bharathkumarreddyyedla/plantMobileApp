@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
 import { commonStyles } from "../../styles/commonStyles";
 import ExpoFastImage from "expo-fast-image";
-import { Text } from "react-native";
+import { Platform, Text } from "react-native";
 
 const FavouritesPlantCard = ({ item, index }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -20,8 +20,17 @@ const FavouritesPlantCard = ({ item, index }) => {
     try {
       const response = await fetch(item?.plantPicture);
       const blob = await response.blob();
-      const uri = URL.createObjectURL(blob);
-      setImageUrl(uri);
+      if (Platform.OS === "ios") {
+        const uri = URL.createObjectURL(blob);
+        setImageUrl(uri);
+      } else {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          setImageUrl(dataUrl);
+        };
+        reader.readAsDataURL(blob);
+      }
     } catch (error) {
       console.error("Error fetching image:", error);
     }

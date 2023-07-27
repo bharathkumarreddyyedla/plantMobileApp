@@ -41,7 +41,9 @@ const CustomCheckBox = (props) => {
           justifyContent: "center",
         }}
       >
-        <Text style={{ fontSize: 13, fontWeight: "bold" }}>{label}</Text>
+        <Text style={{ fontSize: 13, fontWeight: "500", color: "#5A5A5F" }}>
+          {label}
+        </Text>
       </View>
     </Pressable>
   );
