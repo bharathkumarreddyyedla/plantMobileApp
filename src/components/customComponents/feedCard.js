@@ -40,11 +40,15 @@ const FeedCard = ({
   }, []);
   const fetchImage = async () => {
     try {
-      console.log(
-        "item?.picture?.include('base64')",
-        item?.picture?.include("base64")
-      );
-      // if (item?.picture?.include("base64")) {
+      // console.log(
+      //   "item?.picture",
+      //   item?.picture?.includes("data:image/jpeg;base64,")
+      // );
+      // if (
+      //   item?.picture?.include("data:image/jpeg;base64,") === false &&
+      //   item?.picture !== ""
+      // ) {
+      console.log("picture", item?.picture);
       const response = await fetch(item?.picture);
       const blob = await response.blob();
       if (Platform.OS === "ios") {
@@ -59,6 +63,7 @@ const FeedCard = ({
         reader.readAsDataURL(blob);
       }
       // } else {
+      //   console.log("fffffff");
       //   setImageUrl(item?.picture);
       // }
     } catch (error) {
@@ -79,9 +84,14 @@ const FeedCard = ({
     getMyPlantsById(item?.userId, item?.plantId, token).then((res) => {
       if (res) {
         console.log("plantttttt", res);
+        if (user?._id !== item?.userId) {
+          savePlantDetailedData(item?.perenulaPlantId, user?._id, token);
+        }
         saveMyPlantData(res);
+
         navigation.navigate("plantProgressScreen", {
           screen: "feed",
+          showAddPlant: user?._id === item?.userId ? false : true,
           userDetails: item,
           favourite: item?.favourite,
         });
@@ -143,10 +153,10 @@ const FeedCard = ({
             justifyContent: "center",
           }}
         >
-          <Text style={{ fontSize: 16, fontWeight: "bold", color: "black" }}>
+          <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
             {item?.firstName || ""}
           </Text>
-          <Text style={{ fontSize: 11, fontWeight: "500", color: "black" }}>
+          <Text style={{ fontSize: 11, fontFamily: "MR", color: "black" }}>
             {item?.city || ""}, {item?.state || ""}
           </Text>
         </View>
@@ -164,12 +174,13 @@ const FeedCard = ({
             iconSize={20}
             iconColor={"black"}
           />
-          <Text style={{ fontSize: 9, fontWeight: "500", color: "black" }}>
+          <Text style={{ fontSize: 9, fontFamily: "MR", color: "black" }}>
             {moment.duration(moment().diff(item?.progressDate)).humanize()} ago
           </Text>
         </View>
       </View>
       <View style={{ height: 180, width: "100%", backgroundColor: "red" }}>
+        {console.log("image url", imageUrl)}
         <ExpoFastImage
           source={{ uri: imageUrl }}
           resizeMode="cover"
@@ -215,7 +226,7 @@ const FeedCard = ({
           style={{ height: "100%", width: "85%", justifyContent: "center" }}
         >
           <Text
-            style={{ fontSize: 11, fontWeight: "500", color: "black" }}
+            style={{ fontSize: 11, fontFamily: "MR", color: "black" }}
             numberOfLines={2}
           >
             {item?.plantNotes}
@@ -238,7 +249,7 @@ const FeedCard = ({
             iconSize={20}
             iconColor={item?.liked ? "green" : "black"}
           />
-          <Text style={{ fontSize: 11, fontWeight: "500", color: "black" }}>
+          <Text style={{ fontSize: 11, fontFamily: "MR", color: "black" }}>
             {item?.likes} likes
           </Text>
         </TouchableOpacity>

@@ -425,9 +425,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                 width: "100%",
               }}
             >
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
-              >
+              <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
                 Notes
               </Text>
               <Input
@@ -454,7 +452,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                   right: 10,
                   backgroundColor: "white",
                 }}
-                inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
+                inputStyle={{ fontSize: 13, fontFamily: "MM", color: "black" }}
               />
             </View>
             <View
@@ -463,9 +461,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                 width: "100%",
               }}
             >
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
-              >
+              <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
                 Plant location
               </Text>
               <Input
@@ -499,7 +495,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                       <Text
                         style={{
                           fontSize: 14,
-                          fontWeight: "bold",
+                          fontFamily: "MB",
                           color: "white",
                         }}
                       >
@@ -523,7 +519,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                   right: 10,
                   backgroundColor: "white",
                 }}
-                inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
+                inputStyle={{ fontSize: 13, fontFamily: "MM", color: "black" }}
               />
             </View>
             <View
@@ -532,9 +528,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                 width: "100%",
               }}
             >
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
-              >
+              <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
                 Plant direction
               </Text>
               <Input
@@ -563,7 +557,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                       <Text
                         style={{
                           fontSize: 14,
-                          fontWeight: "bold",
+                          fontFamily: "MB",
                           color: "white",
                         }}
                       >
@@ -587,7 +581,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                   right: 10,
                   backgroundColor: "white",
                 }}
-                inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
+                inputStyle={{ fontSize: 13, fontFamily: "MM", color: "black" }}
               />
             </View>
             <View

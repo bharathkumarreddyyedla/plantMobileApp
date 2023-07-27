@@ -21,7 +21,7 @@ const CustomDropdown = (props) => {
     valueField = "label",
     color = "black",
     dropDownStyle = {},
-    placeholderStyle = { fontSize: 14, color: "#5A5A5F", fontWeight: "400" },
+    placeholderStyle = { fontSize: 14, color: "#5A5A5F", fontFamily: "MM" },
     disabled = false,
     background = "white",
   } = props;
@@ -50,7 +50,7 @@ const CustomDropdown = (props) => {
           }}
           selectedTextStyle={{
             fontSize: 14,
-            fontWeight: "400",
+            fontFamily: "MR",
             color: "#000",
           }}
           inputSearchStyle={{ height: 30, fontSize: 16 }}
@@ -82,7 +82,7 @@ const CustomDropdown = (props) => {
           maxHeight={300}
           itemTextStyle={{
             fontSize: 14,
-            fontWeight: "400",
+            fontFamily: "MR",
             color: color,
             textTransform: "capitalize",
           }}
@@ -90,7 +90,7 @@ const CustomDropdown = (props) => {
           itemContainerStyle={{ backgroundColor: "white" }}
           selectedTextStyle={{
             fontSize: 12,
-            fontWeight: "bold",
+            fontFamily: "MB",
             color: color,
             textTransform: "capitalize",
           }}

@@ -67,103 +67,103 @@ const PlantCard = ({
     navigation.navigate("plantProgressScreen");
   };
   if (imageUrl) {
-  return (
-    <Pressable
-      onPress={async () => {
-        if (screen === "favouriteScreen") {
-          setSelectedItem(item);
-          setPopupData({
-            message: "Are you sure you want to remove plant from favourites?",
-            title: "Favourites",
-          });
-          return;
-        } else if (screen === "homeScreen") {
-          onSaveMyPlantData();
-        } else {
-          await onClick().then((res) => {
-            if (res) {
-              navigation.navigate("plantDetailsScreen");
-            }
-          });
-        }
-      }}
-      key={index}
-      style={{
-        height: 190,
-        width: 140,
-        marginLeft: marginValue,
-        marginBottom: 12,
-      }}
-    >
-      {showFavourite && (
-        <Image
-          source={appImages.filledFavouritesLogo}
-          style={{
-            height: 20,
-            width: 20,
-            position: "absolute",
-            zIndex: 100,
-            top: 10,
-            right: 10,
-          }}
-          resizeMode="contain"
-        />
-      )}
-      <View
-        style={[
-          commonStyles.miniCardShadowEffect,
-          {
-            height: "70%",
-            width: "100%",
-            backgroundColor: "#D9D9D9",
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          },
-        ]}
-      >
-        <FastImage
-          source={imageUrl ? { uri: imageUrl } : appImages.leafLogo}
-          resizeMode="cover"
-          style={{
-            height: "100%",
-            width: "100%",
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          }}
-        />
-      </View>
-      <View
+    return (
+      <Pressable
+        onPress={async () => {
+          if (screen === "favouriteScreen") {
+            setSelectedItem(item);
+            setPopupData({
+              message: "Are you sure you want to remove plant from favourites?",
+              title: "Favourites",
+            });
+            return;
+          } else if (screen === "homeScreen") {
+            onSaveMyPlantData();
+          } else {
+            await onClick().then((res) => {
+              if (res) {
+                navigation.navigate("plantDetailsScreen");
+              }
+            });
+          }
+        }}
+        key={index}
         style={{
-          height: "30%",
-          width: "100%",
-          backgroundColor: "white",
-          borderBottomLeftRadius: 10,
-          borderBottomRightRadius: 10,
-          alignItems: "center",
-          justifyContent: "center",
+          height: 190,
+          width: 140,
+          marginLeft: marginValue,
+          marginBottom: 12,
         }}
       >
-        {/* {console.log(
+        {showFavourite && (
+          <Image
+            source={appImages.filledFavouritesLogo}
+            style={{
+              height: 20,
+              width: 20,
+              position: "absolute",
+              zIndex: 100,
+              top: 10,
+              right: 10,
+            }}
+            resizeMode="contain"
+          />
+        )}
+        <View
+          style={[
+            commonStyles.miniCardShadowEffect,
+            {
+              height: "70%",
+              width: "100%",
+              backgroundColor: "#D9D9D9",
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            },
+          ]}
+        >
+          <FastImage
+            source={imageUrl ? { uri: imageUrl } : appImages.leafLogo}
+            resizeMode="cover"
+            style={{
+              height: "100%",
+              width: "100%",
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            }}
+          />
+        </View>
+        <View
+          style={{
+            height: "30%",
+            width: "100%",
+            backgroundColor: "white",
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {/* {console.log(
           "item?.favouritePlants[0].plantName",
           screen === "favouriteScreen" ? item : ""
         )} */}
-        <Text
-          numberOfLines={2}
-          style={{
-            color: "black",
-            fontSize: 13,
-            fontWeight: "500",
-            textAlign: "center",
-          }}
-        >
-          {screen ? item?.plantName : item?.common_name}
-        </Text>
-        <Text style={{ color: "black", fontSize: 11, fontWeight: "300" }}>
-          {item?.cycle}
-        </Text>
-      </View>
-    </Pressable>
-  );
+          <Text
+            numberOfLines={2}
+            style={{
+              color: "black",
+              fontSize: 14,
+              fontFamily: "MB",
+              textAlign: "center",
+            }}
+          >
+            {screen ? item?.plantName : item?.common_name}
+          </Text>
+          <Text style={{ color: "black", fontSize: 12, fontFamily: "ML" }}>
+            {item?.cycle}
+          </Text>
+        </View>
+      </Pressable>
+    );
   } else {
     return <></>;
   }

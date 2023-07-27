@@ -135,7 +135,7 @@ const QuestionaryScreen = ({ navigation }) => {
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
+                  fontFamily: "MB",
                   color: "black",
                   marginVertical: 20,
                 }}
@@ -182,7 +182,7 @@ const QuestionaryScreen = ({ navigation }) => {
                     <Text
                       style={{
                         fontSize: 14,
-                        fontWeight: "500",
+                        fontFamily: "MR",
                         color: "black",
                         lineHeight: 20,
                         textAlign: "center",
@@ -203,7 +203,7 @@ const QuestionaryScreen = ({ navigation }) => {
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
+                  fontFamily: "MB",
                   color: "black",
                   marginVertical: 20,
                 }}
@@ -248,7 +248,7 @@ const QuestionaryScreen = ({ navigation }) => {
                     <Text
                       style={{
                         fontSize: 14,
-                        fontWeight: "500",
+                        fontFamily: "MR",
                         color: faqValues?.includes(item?.value)
                           ? "white"
                           : "black",
@@ -268,7 +268,7 @@ const QuestionaryScreen = ({ navigation }) => {
               <Text
                 style={{
                   fontSize: 16,
-                  fontWeight: "bold",
+                  fontFamily: "MB",
                   color: "black",
                   marginVertical: 20,
                 }}
@@ -313,7 +313,7 @@ const QuestionaryScreen = ({ navigation }) => {
                     <Text
                       style={{
                         fontSize: 14,
-                        fontWeight: "500",
+                        fontFamily: "MR",
                         color: faqValues?.includes(item?.value)
                           ? "white"
                           : "black",

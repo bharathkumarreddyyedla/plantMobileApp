@@ -53,7 +53,7 @@ const Header = (props) => {
         <Text
           style={{
             fontSize: 16,
-            fontWeight: "bold",
+            fontFamily: "MB",
             color: "black",
           }}
         >

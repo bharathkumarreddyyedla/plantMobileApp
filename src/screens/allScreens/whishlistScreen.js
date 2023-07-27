@@ -122,7 +122,7 @@ const WhishlistScreen = ({ navigation }) => {
             <Text
               style={{
                 fontSize: 16,
-                fontWeight: "500",
+                fontFamily: "MR",
                 color: "black",
                 lineHeight: 20,
               }}

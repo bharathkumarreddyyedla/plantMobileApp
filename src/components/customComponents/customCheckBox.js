@@ -41,7 +41,7 @@ const CustomCheckBox = (props) => {
           justifyContent: "center",
         }}
       >
-        <Text style={{ fontSize: 13, fontWeight: "500", color: "#5A5A5F" }}>
+        <Text style={{ fontSize: 13, fontFamily: "MR", color: "#5A5A5F" }}>
           {label}
         </Text>
       </View>

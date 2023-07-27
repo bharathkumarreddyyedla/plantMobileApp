@@ -50,7 +50,7 @@ const NotificationScreen = ({ navigation }) => {
                   <Text
                     style={{
                       fontSize: 13,
-                      fontWeight: "400",
+                      fontFamily: "MR",
                       color: "black",
                       paddingLeft: 10,
                     }}
@@ -58,7 +58,7 @@ const NotificationScreen = ({ navigation }) => {
                     <Text
                       style={{
                         fontSize: 16,
-                        fontWeight: "bold",
+                        fontFamily: "MB",
                         color: "black",
                       }}
                     >

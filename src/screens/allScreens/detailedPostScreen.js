@@ -177,7 +177,7 @@ const DetailedPostScreen = ({ navigation }) => {
               borderTopLeftRadius: 20,
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
+            <Text style={{ fontSize: 16, fontFamily: "MB", color: "white" }}>
               Info
             </Text>
           </Pressable>
@@ -194,7 +194,7 @@ const DetailedPostScreen = ({ navigation }) => {
                 selectedtag === "Journey" ? "#7BC75A" : "#56A434",
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
+            <Text style={{ fontSize: 16, fontFamily: "MB", color: "white" }}>
               Journey
             </Text>
           </Pressable>
@@ -211,7 +211,7 @@ const DetailedPostScreen = ({ navigation }) => {
                 selectedtag === "Gallery" ? "#7BC75A" : "#56A434",
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
+            <Text style={{ fontSize: 16, fontFamily: "MB", color: "white" }}>
               Gallery
             </Text>
           </Pressable>
@@ -228,7 +228,7 @@ const DetailedPostScreen = ({ navigation }) => {
               borderTopRightRadius: 20,
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
+            <Text style={{ fontSize: 16, fontFamily: "MB", color: "white" }}>
               Garden
             </Text>
           </Pressable>
@@ -240,7 +240,7 @@ const DetailedPostScreen = ({ navigation }) => {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontWeight: "bold",
+                    fontFamily: "MB",
                     color: "black",
                     lineHeight: 30,
                   }}
@@ -250,7 +250,7 @@ const DetailedPostScreen = ({ navigation }) => {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontWeight: "500",
+                    fontFamily: "MR",
                     color: "black",
                     textAlign: "left",
                     lineHeight: 20,
@@ -539,7 +539,7 @@ const DetailedPostScreen = ({ navigation }) => {
                     style={{
                       position: "absolute",
                       fontSize: 11,
-                      fontWeight: "500",
+                      fontFamily: "MR",
                       color: "white",
                       alignSelf: "center",
                       paddingTop: 130,

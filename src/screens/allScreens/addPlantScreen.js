@@ -373,7 +373,7 @@ const AddPlantScreen = ({ navigation, route }) => {
         ...popupData,
         message: "",
       });
-      navigation.navigate("plantsScreen",{screen:'addPlant'});
+      navigation.navigate("plantsScreen", { screen: "addPlant" });
     } catch (err) {
       console.log(err);
     }
@@ -457,9 +457,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 // marginTop: 0,
               }}
             >
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
-              >
+              <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
                 Give a name to your Plant
               </Text>
               <Input
@@ -482,7 +480,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                   borderBottomWidth: 0,
                   right: 10,
                 }}
-                inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
+                inputStyle={{ fontSize: 13, fontFamily: "MM", color: "black" }}
                 onChangeText={(val) => {
                   onPlantNameChange(val);
                 }}
@@ -494,9 +492,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 width: "100%",
               }}
             >
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
-              >
+              <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
                 Plant Birthday
               </Text>
               <Input
@@ -540,7 +536,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                   right: 10,
                   backgroundColor: "white",
                 }}
-                inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
+                inputStyle={{ fontSize: 13, fontFamily: "MM", color: "black" }}
               />
             </View>
             <View
@@ -549,9 +545,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 width: "100%",
               }}
             >
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
-              >
+              <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
                 Plant location
               </Text>
               <Input
@@ -582,7 +576,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                       <Text
                         style={{
                           fontSize: 14,
-                          fontWeight: "bold",
+                          fontFamily: "MB",
                           color: "white",
                         }}
                       >
@@ -606,7 +600,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                   right: 10,
                   backgroundColor: "white",
                 }}
-                inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
+                inputStyle={{ fontSize: 13, fontFamily: "MM", color: "black" }}
               />
             </View>
             <View
@@ -615,9 +609,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 width: "100%",
               }}
             >
-              <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "black" }}
-              >
+              <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
                 Plant direction
               </Text>
               <Input
@@ -647,7 +639,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                       <Text
                         style={{
                           fontSize: 14,
-                          fontWeight: "bold",
+                          fontFamily: "MB",
                           color: "white",
                         }}
                       >
@@ -671,7 +663,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                   right: 10,
                   backgroundColor: "white",
                 }}
-                inputStyle={{ fontSize: 13, fontWeight: "300", color: "black" }}
+                inputStyle={{ fontSize: 13, fontFamily: "MM", color: "black" }}
               />
             </View>
             <View
@@ -707,7 +699,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 placeholder="Select"
                 itemTextStyle={{
                   fontSize: 10,
-                  fontWeight: "Bold",
+                  fontFamily: "MB",
                   color: "grey",
                   textTransform: "capitalize",
                 }}
@@ -716,7 +708,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 itemContainerStyle={{ backgroundColor: "white" }}
                 selectedTextStyle={{
                   fontSize: 10,
-                  fontWeight: "Bold",
+                  fontFamily: "MB",
                   color: "grey",
                   textTransform: "capitalize",
                 }}
@@ -753,10 +745,12 @@ const AddPlantScreen = ({ navigation, route }) => {
                     : "center",
               }}
             >
-            {Object.keys(editPlantDetails).length > 0 && (
+              {Object.keys(editPlantDetails).length > 0 && (
                 <Button
                   title={"Cancel"}
-                  onPress={()=>{navigation.goBack()}}
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
                   buttonStyle={{
                     height: 40,
                     // width: !Object.keys(editDetails).length > 0 ? "50%" : "70%",
@@ -770,22 +764,22 @@ const AddPlantScreen = ({ navigation, route }) => {
                   titleStyle={{ color: "black" }}
                 />
               )}
-            <Button
-              onPress={() => {
-                onProceed();
-              }}
-              buttonStyle={{
-                height: 40,
-                width: "70%",
-                backgroundColor: "#56A434",
-                alignSelf: "center",
-                marginVertical: 10,
-                borderRadius: 10,
-              }}
-              title={
-                Object.keys(editPlantDetails)?.length > 0 ? "Save" : "Proceed"
-              }
-            />
+              <Button
+                onPress={() => {
+                  onProceed();
+                }}
+                buttonStyle={{
+                  height: 40,
+                  width: "70%",
+                  backgroundColor: "#56A434",
+                  alignSelf: "center",
+                  marginVertical: 10,
+                  borderRadius: 10,
+                }}
+                title={
+                  Object.keys(editPlantDetails)?.length > 0 ? "Save" : "Proceed"
+                }
+              />
             </View>
           </View>
         </ScrollView>

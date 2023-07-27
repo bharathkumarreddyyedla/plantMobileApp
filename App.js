@@ -17,6 +17,7 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SplashScreen from "expo-splash-screen";
+import { useFonts } from "./src/configs/appFonts";
 
 // Prevent native splash screen from autohiding before App component declaration
 SplashScreen.preventAutoHideAsync()
@@ -74,8 +75,11 @@ export default function App() {
   const [notification, setNotification] = React.useState(false);
   const notificationListener = React.useRef();
   const responseListener = React.useRef();
-
+  const LoadFonts = async () => {
+    await useFonts();
+  };
   React.useEffect(() => {
+    LoadFonts();
     registerForPushNotificationsAsync().then((token) =>
       setExpoPushToken(token)
     );

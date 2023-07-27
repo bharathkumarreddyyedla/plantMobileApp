@@ -47,7 +47,7 @@ const Filter = (props) => {
             paddingHorizontal: 20,
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "600" }}>Filters</Text>
+          <Text style={{ fontSize: 20, fontFamily: "MB" }}>Filters</Text>
           <Pressable
             onPress={() => {
               onPressToggle(false);

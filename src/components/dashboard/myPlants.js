@@ -27,7 +27,7 @@ const MyPlants = ({ navigation, screen = "" }) => {
         style={{
           color: "black",
           fontSize: 16,
-          fontWeight: "bold",
+          fontFamily: "MB",
           marginVertical: 10,
         }}
       >
@@ -89,7 +89,7 @@ const MyPlants = ({ navigation, screen = "" }) => {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "500",
+              fontFamily: "MR",
               color: "black",
               lineHeight: 20,
             }}
@@ -99,7 +99,7 @@ const MyPlants = ({ navigation, screen = "" }) => {
           <Text
             style={{
               fontSize: 16,
-              fontWeight: "500",
+              fontFamily: "MR",
               color: "black",
               lineHeight: 20,
             }}
@@ -121,7 +121,7 @@ const MyPlants = ({ navigation, screen = "" }) => {
             }}
             titleStyle={{
               fontSize: 16,
-              fontWeight: "700",
+              fontFamily: "MB",
               color: "white",
             }}
           />

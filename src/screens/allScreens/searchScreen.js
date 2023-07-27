@@ -138,9 +138,7 @@ const SearchScreen = ({ navigation }) => {
               paddingHorizontal: 20,
             }}
           >
-            <Text
-              style={{ fontSize: 16, fontWeight: "bold", marginBottom: 10 }}
-            >
+            <Text style={{ fontSize: 16, fontFamily: "MB", marginBottom: 10 }}>
               {showSearch ? "Search Results" : "Recommended Plants"}
             </Text>
             <View style={{ flexWrap: "wrap", flexDirection: "row" }}>

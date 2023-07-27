@@ -73,7 +73,13 @@ const HomeScreen = ({ navigation }) => {
           }}
           resizeMode="contain"
         />
-        <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
+        <Text
+          style={{
+            color: "white",
+            fontSize: 20,
+            fontFamily: "MB",
+          }}
+        >
           Welcome back!
         </Text>
       </View>
@@ -140,7 +146,7 @@ const HomeScreen = ({ navigation }) => {
                 marginVertical: 10,
                 paddingHorizontal: 45,
               }}
-              titleStyle={{ fontSize: 16, fontWeight: "700", color: "white" }}
+              titleStyle={{ fontSize: 16, fontFamily: "MB", color: "white" }}
               onPress={() => {}}
             />
           </View>

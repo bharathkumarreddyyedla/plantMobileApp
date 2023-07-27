@@ -100,13 +100,13 @@ const FavouritesPlantCard = ({ item, index }) => {
           style={{
             color: "black",
             fontSize: 10,
-            fontWeight: "500",
+            fontFamily: "MR",
             textAlign: "center",
           }}
         >
           {item?.plantName}
         </Text>
-        <Text style={{ color: "black", fontSize: 8, fontWeight: "300" }}>
+        <Text style={{ color: "black", fontSize: 8, fontFamily: "MM" }}>
           {item?.cycle || "NA"}
         </Text>
       </View>

@@ -190,12 +190,12 @@ const SignInScreen = ({ navigation }) => {
               resizeMode="contain"
             />
 
-            <Text style={{ fontSize: 24, fontWeight: "600" }}>Sign in</Text>
+            <Text style={{ fontSize: 24, fontFamily: "MB" }}>Sign in</Text>
             <Text
               onPress={() => {
                 navigation.navigate("registration");
               }}
-              style={{ fontSize: 14, fontWeight: "300", lineHeight: 20 }}
+              style={{ fontSize: 14, fontFamily: "MM", lineHeight: 20 }}
             >
               New to leafy?{" "}
               <Text
@@ -277,7 +277,7 @@ const SignInScreen = ({ navigation }) => {
               style={{
                 fontSize: 16,
                 color: "black",
-                fontWeight: "bold",
+                fontFamily: "MB",
                 paddingHorizontal: 10,
                 marginBottom: 30,
               }}

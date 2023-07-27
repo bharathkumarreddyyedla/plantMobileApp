@@ -57,7 +57,7 @@ const PlantGalleryCard = ({
           position: "absolute",
           bottom: 10,
           fontSize: 11,
-          fontWeight: "500",
+          fontFamily: "MR",
           color: "white",
           alignSelf: "center",
         }}

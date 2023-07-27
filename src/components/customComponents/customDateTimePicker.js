@@ -74,7 +74,7 @@ const CustomDateTimePicker = (props) => {
               }}
               titleStyle={{
                 fontSize: 14,
-                fontWeight: "bold",
+                fontFamily:'MB',
                 color: colors.background,
               }}
             />

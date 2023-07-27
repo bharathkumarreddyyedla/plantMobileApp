@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   Dimensions,
   FlatList,
   Image,
@@ -33,6 +34,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
   const { colors } = useTheme();
   const {
     screen = "",
+    showAddPlant = false,
     userDetails = {},
     favourite = false,
   } = route?.params || {};
@@ -64,16 +66,18 @@ const PlantProgressScreen = ({ navigation, route }) => {
   });
   React.useEffect(() => {
     getProgress();
+    checkFavourite();
   }, []);
   const getProgress = async () => {
-    console.log("userDetails", myPlantDetails);
-    await getPlantProgress(user?._id, myPlantDetails?._id, token).then(
-      (res) => {
-        if (res) {
-          setPlantProgress(res || []);
-        }
+    await getPlantProgress(
+      userDetails?.userId ? userDetails?.userId : user?._id,
+      myPlantDetails?._id,
+      token
+    ).then((res) => {
+      if (res) {
+        setPlantProgress(res || []);
       }
-    );
+    });
   };
   const onEditClick = (item) => {
     try {
@@ -125,11 +129,24 @@ const PlantProgressScreen = ({ navigation, route }) => {
   const enlargePicture = (item) => {
     setEnlargedPictrue(item);
   };
+  const checkFavourite = () => {
+    let favArray = [...(favouritePlants || [])];
+    console.log("favArray", favArray, myPlantDetails?.perenulaPlantId);
+    const index = favArray?.findIndex(
+      (i) => i?.perenulaPlantId === myPlantDetails?.perenulaPlantId
+    );
+    console.log("index", index);
+    if (index >= 0) {
+      setFavPlant(true);
+    } else {
+      setFavPlant(false);
+    }
+  };
   const onAddFavourite = () => {
     let favArray = [...(favouritePlants || [])];
-    console.log("favArray", favArray);
+    console.log("favArray", favArray, myPlantDetails?.perenulaPlantId);
     const index = favArray?.findIndex(
-      (i) => i?.perenulaPlantId === myPlantDetails?.id
+      (i) => i?.perenulaPlantId === myPlantDetails?.perenulaPlantId
     );
     console.log("index", index);
     if (index === -1) {
@@ -150,6 +167,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
   };
   return (
     <View style={{ flex: 1, backgroundColor: "#FEF9F1" }}>
+      {/* {console.log("userDetails", myPlantDetails)} */}
       {popupData?.message ? (
         <PopupCard
           title={popupData?.title}
@@ -218,14 +236,13 @@ const PlantProgressScreen = ({ navigation, route }) => {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-
           }}
         >
           <Text
             style={{
               color: "white",
               fontSize: 16,
-              fontWeight: "bold",
+              fontFamily: "MB",
               width: "48%",
               textAlign: "left",
             }}
@@ -237,7 +254,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
             style={{
               color: "white",
               fontSize: 16,
-              fontWeight: "bold",
+              fontFamily: "MB",
               width: "48%",
               textAlign: "right",
             }}
@@ -281,7 +298,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
               borderTopLeftRadius: 20,
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
+            <Text style={{ fontSize: 16, fontFamily: "MB", color: "white" }}>
               Info
             </Text>
           </Pressable>
@@ -298,7 +315,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                 selectedtag === "Journey" ? "#7BC75A" : "#56A434",
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
+            <Text style={{ fontSize: 16, fontFamily: "MB", color: "white" }}>
               Journey
             </Text>
           </Pressable>
@@ -316,7 +333,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
               borderTopRightRadius: 20,
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
+            <Text style={{ fontSize: 16, fontFamily: "MB", color: "white" }}>
               Gallery
             </Text>
           </Pressable>
@@ -336,7 +353,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
               }}
             >
               <Text
-                style={{ fontSize: 16, fontWeight: "bold", color: "white" }}
+                style={{ fontSize: 16, fontFamily:'MB', color: "white" }}
               >
                 Garden
               </Text>
@@ -350,7 +367,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontWeight: "bold",
+                    fontFamily: "MB",
                     color: "black",
                     lineHeight: 30,
                   }}
@@ -360,7 +377,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                 <Text
                   style={{
                     fontSize: 12,
-                    fontWeight: "500",
+                    fontFamily: "MR",
                     color: "black",
                     textAlign: "justify",
                     lineHeight: 20,
@@ -374,7 +391,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontWeight: "bold",
+                    fontFamily: "MB",
                     color: "black",
                     lineHeight: 30,
                   }}
@@ -582,7 +599,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                     marginVertical: 10,
                   }}
                 >
-                  {screen === "feed" ? (
+                  {showAddPlant ? (
                     <Button
                       title={"Wishlist"}
                       onPress={() => {
@@ -593,7 +610,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                         return (
                           <Image
                             source={
-                              myPlantDetails?.favourite
+                              favPlant
                                 ? appImages?.filledFavouritesLogo
                                 : appImages.whishlistLogo
                             }
@@ -655,7 +672,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                       titleStyle={{ color: "black", textAlign: "center" }}
                     />
                   )}
-                  {screen === "feed" ? (
+                  {showAddPlant ? (
                     <Button
                       title={"My Plants"}
                       iconPosition="left"
@@ -717,6 +734,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                   <PlantProgressCard
                     item={item}
                     index={index}
+                    showAddPlant={showAddPlant}
                     onEditClick={onEditClick}
                     onDeleteClick={onDeleteClick}
                   />
@@ -762,7 +780,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                     style={{
                       position: "absolute",
                       fontSize: 11,
-                      fontWeight: "500",
+                      fontFamily:'MR',
                       color: "white",
                       alignSelf: "center",
                       paddingTop: 130,

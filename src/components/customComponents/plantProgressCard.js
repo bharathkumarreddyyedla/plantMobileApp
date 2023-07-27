@@ -1,11 +1,19 @@
 import moment from "moment";
 import React from "react";
-import { Dimensions, Image, Platform, Pressable, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Platform,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import { NativeIcon } from "../../icons/NativeIcons";
 
 const PlantProgressCard = ({
   item,
   index,
+  showAddPlant = false,
   onEditClick = () => {
     return;
   },
@@ -24,17 +32,17 @@ const PlantProgressCard = ({
     try {
       const response = await fetch(item?.picture);
       const blob = await response.blob();
-     if (Platform.OS === "ios") {
-       const uri = URL.createObjectURL(blob);
-       setImageUrl(uri);
-     } else {
-       const reader = new FileReader();
-       reader.onload = () => {
-         const dataUrl = reader.result;
-         setImageUrl(dataUrl);
-       };
-       reader.readAsDataURL(blob);
-     }
+      if (Platform.OS === "ios") {
+        const uri = URL.createObjectURL(blob);
+        setImageUrl(uri);
+      } else {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          setImageUrl(dataUrl);
+        };
+        reader.readAsDataURL(blob);
+      }
     } catch (error) {
       console.error("Error fetching image:", error);
     }
@@ -122,12 +130,14 @@ const PlantProgressCard = ({
           alignItems: "flex-end",
         }}
       >
-        <NativeIcon
-          iconName={"dots-three-horizontal"}
-          iconLib={"Entypo"}
-          iconSize={20}
-          iconColor={"black"}
-        />
+        {showAddPlant && (
+          <NativeIcon
+            iconName={"dots-three-horizontal"}
+            iconLib={"Entypo"}
+            iconSize={20}
+            iconColor={"black"}
+          />
+        )}
       </Pressable>
       <View
         style={{
@@ -150,18 +160,18 @@ const PlantProgressCard = ({
           width: "80%",
         }}
       >
-        <Text style={{ fontSize: 12, fontWeight: "bold", color: "black" }}>
+        <Text style={{ fontSize: 12, fontFamily: "MB", color: "black" }}>
           {moment(item?.progressDate || "").format("DD-MM-YYYY")}
         </Text>
-        <Text style={{ fontSize: 12, fontWeight: "500", color: "black" }}>
+        <Text style={{ fontSize: 12, fontFamily: "MR", color: "black" }}>
           Location: {item?.city ? item?.city + ", " : ""}
           {item?.state || ""}
         </Text>
-        <Text style={{ fontSize: 12, fontWeight: "500", color: "black" }}>
+        <Text style={{ fontSize: 12, fontFamily: "MR", color: "black" }}>
           Position of the plant: {item?.platPosition}
         </Text>
         <Text
-          style={{ fontSize: 12, fontWeight: "bold", color: "black" }}
+          style={{ fontSize: 12, fontFamily: "MB", color: "black" }}
           numberOfLines={3}
         >
           {item?.plantNotes || "NA"}{" "}

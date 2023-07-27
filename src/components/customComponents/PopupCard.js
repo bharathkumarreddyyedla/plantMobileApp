@@ -55,13 +55,13 @@ const PopupCard = ({
           paddingBottom: 20,
         }}
       >
-        <Text style={{ fontSize: 25, fontWeight: "700", color: "black" }}>
+        <Text style={{ fontSize: 25, fontFamily: "MB", color: "black" }}>
           {title}
         </Text>
         <Text
           style={{
             fontSize: 16,
-            fontWeight: "400",
+            fontFamily: "MR",
             color: "black",
             marginVertical: 20,
             textAlign: "center",
@@ -92,7 +92,7 @@ const PopupCard = ({
             }}
             titleStyle={{
               fontSize: 16,
-              fontWeight: "600",
+              fontFamily: "MR",
               color: buttons[0].color,
             }}
           />
@@ -112,7 +112,7 @@ const PopupCard = ({
               }}
               titleStyle={{
                 fontSize: 16,
-                fontWeight: "600",
+                fontFamily: "MR",
                 color: buttons[1].color,
               }}
             />

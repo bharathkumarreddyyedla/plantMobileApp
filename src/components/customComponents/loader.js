@@ -201,6 +201,6 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 16,
     fontSize: 18,
-    fontWeight: "500",
+    fontFamily: "MR",
   },
 });

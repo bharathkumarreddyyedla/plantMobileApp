@@ -351,7 +351,7 @@ const SignUpScreen = () => {
                 resizeMode="contain"
               />
 
-              <Text style={{ fontSize: 24, fontWeight: "600" }}>Sign up</Text>
+              <Text style={{ fontSize: 24, fontFamily: "MB" }}>Sign up</Text>
             </View>
             <View style={{ paddingHorizontal: 30 }}>
               <Input

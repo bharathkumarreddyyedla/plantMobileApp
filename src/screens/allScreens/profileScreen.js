@@ -165,9 +165,7 @@ const ProfileScreen = ({ navigation }) => {
                   justifyContent: "center",
                 }}
               >
-                <Text
-                  style={{ fontSize: 15, fontWeight: "500", color: "grey" }}
-                >
+                <Text style={{ fontSize: 15, fontFamily: "MR", color: "grey" }}>
                   Camera
                 </Text>
               </Pressable>
@@ -183,9 +181,7 @@ const ProfileScreen = ({ navigation }) => {
                   justifyContent: "center",
                 }}
               >
-                <Text
-                  style={{ fontSize: 16, fontWeight: "500", color: "grey" }}
-                >
+                <Text style={{ fontSize: 16, fontFamily: "MR", color: "grey" }}>
                   Gallery
                 </Text>
               </Pressable>

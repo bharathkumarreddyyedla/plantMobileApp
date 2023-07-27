@@ -63,7 +63,7 @@ const SeasonPlants = ({ navigation }) => {
         style={{
           color: "black",
           fontSize: 16,
-          fontWeight: "bold",
+          fontFamily: "MB",
           marginVertical: 10,
         }}
       >
