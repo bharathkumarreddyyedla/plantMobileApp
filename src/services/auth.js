@@ -96,7 +96,7 @@ export function useAuth() {
         await httpService
           .post("auth/register", {
             firstName: firstName,
-            // surName: surName,
+            surName: surName,
             email: email,
             password: password,
           })

@@ -22,7 +22,7 @@ const SignUpScreen = () => {
   const { register } = React.useContext(AuthContext);
   const [registerData, setRegisterData] = React.useState({
     firstName: "",
-    // surName: "",
+    surName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -318,7 +318,7 @@ const SignUpScreen = () => {
       } else {
         const registerResponse = await register(
           registerData.firstName,
-          // registerData.surName,
+          registerData.surName,
           registerData?.email,
           registerData.password
         );
