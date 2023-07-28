@@ -396,7 +396,7 @@ const SignUpScreen = () => {
                 placeholder="Password"
                 autoCapitalize="none"
                 textContentType="password"
-                containerStyle={{ height: 60 }}
+                containerStyle={{ minHeight: 60 }}
                 secureTextEntry={!showPassword}
                 rightIcon={
                   showPassword ? (
@@ -450,7 +450,7 @@ const SignUpScreen = () => {
                 placeholder="Confirm password"
                 autoCapitalize="none"
                 value={registerData?.confirmPassword}
-                containerStyle={{ height: 60 }}
+                containerStyle={{ minHeight: 60 }}
                 textContentType="password"
                 secureTextEntry={!showConfirmPassword}
                 rightIcon={
