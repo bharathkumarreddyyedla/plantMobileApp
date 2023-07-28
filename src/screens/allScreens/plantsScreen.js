@@ -66,7 +66,7 @@ const PlantsScreen = ({ navigation, route }) => {
                   <PlantCard
                     item={item}
                     index={index}
-                    marginValue={index % 2 ? 12 : 0}
+                    marginValue={12}
                     navigation={navigation}
                     screen={"homeScreen"}
                   />
