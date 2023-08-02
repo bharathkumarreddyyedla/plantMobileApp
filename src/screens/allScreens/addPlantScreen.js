@@ -28,6 +28,7 @@ import { plantActions } from "../../services/redux/reduxActions/exportAllActions
 import CustomCamera from "../../components/customComponents/camera";
 import { validateInput } from "../../configs/Validations";
 import PopupCard from "../../components/customComponents/PopupCard";
+import { NativeIcon } from "../../icons/NativeIcons";
 
 const AddPlantScreen = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -444,10 +445,16 @@ const AddPlantScreen = ({ navigation, route }) => {
                   justifyContent: "center",
                 }}
               >
-                <Image
+                <NativeIcon
+                iconName={"camera"}
+                iconLib={"Feather"}
+                iconSize={30}
+                iconColor={"black"}
+              />
+                {/* <Image
                   source={appImages?.cameraOutlinedLogo}
                   style={{ height: 30, width: 30, alignSelf: "center" }}
-                />
+                /> */}
               </View>
             </View>
             <View
@@ -610,7 +617,7 @@ const AddPlantScreen = ({ navigation, route }) => {
               }}
             >
               <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
-                Plant direction
+                Plant position
               </Text>
               <Input
                 autoCorrect={false}
@@ -619,7 +626,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 autoComplete="off"
                 // disabled={true}
                 errorMessage={plantPositionErrorMessage || ""}
-                placeholder="Select plant direction"
+                placeholder="Select plant position"
                 placeholderTextColor={"#A39E9E"}
                 rightIcon={() => {
                   return (

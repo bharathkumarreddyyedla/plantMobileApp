@@ -80,7 +80,7 @@ const HomeScreen = ({ navigation }) => {
             fontFamily: "MB",
           }}
         >
-          Welcome back!
+          Welcome!
         </Text>
       </View>
 

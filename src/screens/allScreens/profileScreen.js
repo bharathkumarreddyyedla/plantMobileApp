@@ -228,7 +228,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
           <View style={{ marginTop: 30 }}>
             <Input
-              placeholder="Full name"
+              placeholder="Fullname"
               autoCapitalize="none"
               value={profileData?.firstName}
               placeholderTextColor={"grey"}
@@ -241,7 +241,7 @@ const ProfileScreen = ({ navigation }) => {
                 });
               }}
             />
-            <Input
+            {/* <Input
               placeholder="Sur name"
               autoCapitalize="none"
               value={profileData?.surName}
@@ -254,7 +254,7 @@ const ProfileScreen = ({ navigation }) => {
                   surName: val,
                 });
               }}
-            />
+            /> */}
             <Input
               placeholder="Email"
               disabled={true}

@@ -355,7 +355,7 @@ const SignUpScreen = () => {
             </View>
             <View style={{ paddingHorizontal: 30 }}>
               <Input
-                placeholder="Full name"
+                placeholder="Fullname"
                 autoCapitalize="none"
                 value={registerData?.firstName}
                 placeholderTextColor={"grey"}

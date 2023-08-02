@@ -26,6 +26,7 @@ import { bindActionCreators } from "redux";
 import { plantActions } from "../../services/redux/reduxActions/exportAllActions";
 import { getAllPost } from "../../services/redux/reduxActions/postActions";
 import PopupCard from "../../components/customComponents/PopupCard";
+import { NativeIcon } from "../../icons/NativeIcons";
 
 const AddPlantProgress = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -413,10 +414,16 @@ const AddPlantProgress = ({ navigation, route }) => {
                   borderRadius: 15,
                 }}
               >
-                <Image
+                <NativeIcon
+                iconName={"camera"}
+                iconLib={"Feather"}
+                iconSize={30}
+                iconColor={"black"}
+              />
+                {/* <Image
                   source={appImages?.cameraOutlinedLogo}
                   style={{ height: 40, width: 40, alignSelf: "center" }}
-                />
+                /> */}
               </View>
             </View>
             <View
@@ -529,7 +536,7 @@ const AddPlantProgress = ({ navigation, route }) => {
               }}
             >
               <Text style={{ fontSize: 16, fontFamily: "MB", color: "black" }}>
-                Plant direction
+                Plant position
               </Text>
               <Input
                 autoCorrect={false}
@@ -537,7 +544,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                 autoComplete="off"
                 // disabled={true}
                 errorMessage={plantPositionErrorMessage || ""}
-                placeholder="Select plant direction"
+                placeholder="Select plant position"
                 placeholderTextColor={"#A39E9E"}
                 rightIcon={() => {
                   return (

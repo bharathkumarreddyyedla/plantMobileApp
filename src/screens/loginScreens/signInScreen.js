@@ -20,13 +20,13 @@ const SignInScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  // const [request, response, promptAsync] = Google.useAuthRequest({
-  //   iosClientId:
-  //     "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
-  //   androidClientId:
-  //     "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
-  //   expoClientId: "https://auth.expo.io/@leafy/leafy",
-  // });
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId:
+      "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
+    androidClientId:
+      "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
+    expoClientId: "https://auth.expo.io/@leafy/leafy",
+  });
   // const [token, setToken] = React.useState("");
   // const [userInfo, setUserInfo] = React.useState(null);
   const loginForm = {
@@ -306,9 +306,9 @@ const SignInScreen = ({ navigation }) => {
                     resizeMode="cover"
                   />
                 }
-                // onPress={() => {
-                //   promptAsync();
-                // }}
+                onPress={() => {
+                  promptAsync();
+                }}
                 buttonStyle={{
                   backgroundColor: "white",
                   borderRadius: 20,

@@ -154,6 +154,7 @@ const PlantCard = ({
               fontSize: 14,
               fontFamily: "MB",
               textAlign: "center",
+              textTransform: "capitalize",
             }}
           >
             {screen ? item?.plantName : item?.common_name}
