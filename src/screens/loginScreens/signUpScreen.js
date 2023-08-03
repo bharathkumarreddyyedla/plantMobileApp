@@ -40,6 +40,8 @@ const SignUpScreen = () => {
       "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
     androidClientId:
       "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
+      expoClientId:
+      "221059836769-ctjao3n1iupr97ro2oivdg23so5aseud.apps.googleusercontent.com",
   });
   const [token, setToken] = React.useState("");
   React.useEffect(() => {

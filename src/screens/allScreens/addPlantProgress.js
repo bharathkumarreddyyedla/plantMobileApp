@@ -413,6 +413,8 @@ const AddPlantProgress = ({ navigation, route }) => {
                   bottom: 30,
                   right: 110,
                   borderRadius: 15,
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <NativeIcon

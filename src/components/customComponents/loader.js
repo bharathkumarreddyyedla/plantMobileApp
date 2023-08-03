@@ -15,6 +15,7 @@ import { loadingActions } from "../../services/redux/reduxActions/exportAllActio
 
 import { AuthContext } from "../../configs/contexts";
 import { NativeIcon } from "../../icons/NativeIcons";
+import { MD2Colors } from "react-native-paper";
 
 export const Loader = () => {
   const { colors } = useTheme();
@@ -40,17 +41,20 @@ export const Loader = () => {
     return (
       <>
         {visible && loading.text === "" ? (
-          <LinearProgress
-            color="secondary"
-            variant="indeterminate"
-            style={{
-              zIndex: 1000,
-              top: Platform.OS === "ios" ? 100 : 65,
-              height: 4,
-              position: "absolute",
-            }}
-          />
+          <View style={styles.overlay}>
+            <ActivityIndicator animating={true} color={"grey"} size={40} />
+          </View>
         ) : (
+          // <LinearProgress
+          //   color="secondary"
+          //   variant="indeterminate"
+          //   style={{
+          //     zIndex: 1000,
+          //     top: Platform.OS === "ios" ? 100 : 65,
+          //     height: 4,
+          //     position: "absolute",
+          //   }}
+          // />
           <View style={styles.overlay}>
             <ActivityIndicator
               color={colors.linearGradientFirst}

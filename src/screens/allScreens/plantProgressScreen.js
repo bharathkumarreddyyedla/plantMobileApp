@@ -710,6 +710,7 @@ const PlantProgressScreen = ({ navigation, route }) => {
                         width: 130,
                         backgroundColor: "#56A434",
                         borderRadius: 15,
+                        
                       }}
                       titleStyle={{ color: "white" }}
                     />

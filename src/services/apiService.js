@@ -5,7 +5,7 @@ import { API_URL } from "@env";
 export const apiClientService = axios.create({
   timeout: 50000,
 });
-export const api_Url = "http://192.168.1.241:3001/"; // wifi 192.168.0.135, mobile 192.168.220.17
+export const api_Url = "http://192.168.0.135:3001/"; // wifi 192.168.0.135, mobile 192.168.220.17
 export const httpService = {
   get: (url, token) => {
     return apiClientService.get(`${api_Url}${url}`, {
