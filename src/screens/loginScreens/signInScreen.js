@@ -12,7 +12,7 @@ import { appImages } from "../../configs/appImages";
 import * as Google from "expo-auth-session/providers/google";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const SignInScreen = ({ navigation }) => {
-  const { login } = React.useContext(AuthContext);
+  const { login, oAuthLoginOrRegister } = React.useContext(AuthContext);
   const [loginData, setLoginData] = React.useState({
     email: "",
     password: "",
@@ -25,10 +25,11 @@ const SignInScreen = ({ navigation }) => {
       "221059836769-t9fc1c28ruud8admu7eghqkdf9lcaa44.apps.googleusercontent.com",
     androidClientId:
       "221059836769-hosbio25vhdq5vqp2anfc09ges7q1p7h.apps.googleusercontent.com",
-    expoClientId: "https://auth.expo.io/@leafy/leafy",
+    expoClientId:
+      "221059836769-ctjao3n1iupr97ro2oivdg23so5aseud.apps.googleusercontent.com",
   });
-  // const [token, setToken] = React.useState("");
-  // const [userInfo, setUserInfo] = React.useState(null);
+  const [token, setToken] = React.useState("");
+  const [userInfo, setUserInfo] = React.useState(null);
   const loginForm = {
     email: {
       value: loginData?.email,
@@ -53,55 +54,58 @@ const SignInScreen = ({ navigation }) => {
       ],
     },
   };
-  // React.useEffect(() => {
-  //   handleEffect();
-  // }, [response, token]);
+  React.useEffect(() => {
+    handleEffect();
+  }, [response, token]);
 
-  // async function handleEffect() {
-  //   const user = await getLocalUser();
-  //   console.log("user", user);
-  //   if (!user) {
-  //     if (response?.type === "success") {
-  //       // setToken(response.authentication.accessToken);
-  //       getUserInfo(response.authentication.accessToken);
-  //     }
-  //   } else {
-  //     setUserInfo(user);
-  //     setLoginData({
-  //       ...loginData,
-  //       email: user?.email,
-  //     });
-  //     console.log("loaded locally");
-  //   }
-  // }
+  async function handleEffect() {
+    // const user = await getLocalUser();
+    // console.log("user", user);
+    // if (!user) {
+    if (response?.type === "success") {
+      // setToken(response.authentication.accessToken);
+      getUserInfo(response.authentication.accessToken);
+    }
+    // } else {
+    //   setUserInfo(user);
+    //   setLoginData({
+    //     ...loginData,
+    //     email: user?.email,
+    //   });
+    //   console.log("loaded locally");
+    // }
+  }
   // const getLocalUser = async () => {
   //   const data = await AsyncStorage.getItem("@googleUserInfo");
   //   if (!data) return null;
   //   return JSON.parse(data);
   // };
 
-  // const getUserInfo = async (token) => {
-  //   if (!token) return;
-  //   try {
-  //     console.log("google token", token);
-  //     const response = await fetch(
-  //       "https://www.googleapis.com/userinfo/v2/me",
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       }
-  //     );
+  const getUserInfo = async (token) => {
+    if (!token) return;
+    try {
+      console.log("google token", token);
+      const response = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-  //     const user = await response.json();
-  //     await AsyncStorage.setItem("@googleUserInfo", JSON.stringify(user));
-  //     setUserInfo(user);
-  //     setLoginData({
-  //       ...loginData,
-  //       email: user?.email,
-  //     });
-  //   } catch (error) {
-  //     // Add your own error handler here
-  //   }
-  // };
+      const user = await response.json();
+      // await AsyncStorage.setItem("@googleUserInfo", JSON.stringify(user));
+      setUserInfo(user);
+      setLoginData({
+        ...loginData,
+        email: user?.email,
+      });
+      oAuthLoginOrRegister(user?.email, user?.name, token).then((res) => {
+        console.log("oAuthLoginOrRegister", res);
+      });
+    } catch (error) {
+      // Add your own error handler here
+    }
+  };
   const onEmailChange = (emailVal) => {
     setLoginData({
       ...loginData,

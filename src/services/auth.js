@@ -123,23 +123,23 @@ export function useAuth() {
       oAuthLoginOrRegister: async (
         email = "",
         firstName = "",
-        oAuthToken = "",
-        deviceToken = ""
+        oAuthToken = ""
       ) => {
+        let deviceToken = await AsyncStorage.getItem("firebaseToken");
         await httpService
           .post("auth/googleOAuthLoginOrRegister", {
             email,
             firstName,
             oAuthToken,
-            deviceToken,
+            deviceToken: deviceToken || "",
           })
           .then(async (res) => {
             if (res?.status === 200) {
               console.log("res?.data ", res?.data);
-              if (res?.data && res?.data?.user) {
+              if (res?.data && res?.data?.registeredUser) {
                 const user = {
                   token: res?.data?.token || "",
-                  user: res?.data?.user || {},
+                  user: res?.data?.registeredUser || {},
                 };
                 await AsyncStorage.setItem("user", JSON.stringify(user));
                 dispatch(createAction("SET_USER", user));

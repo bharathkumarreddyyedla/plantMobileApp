@@ -29,6 +29,7 @@ import CustomCamera from "../../components/customComponents/camera";
 import { validateInput } from "../../configs/Validations";
 import PopupCard from "../../components/customComponents/PopupCard";
 import { NativeIcon } from "../../icons/NativeIcons";
+import CheckBoxNew from "../../components/customComponents/checkBoxNew";
 
 const AddPlantScreen = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -41,7 +42,6 @@ const AddPlantScreen = ({ navigation, route }) => {
   const [direction, setDirection] = React.useState("N/A");
   const [imageUrl, setImageUrl] = React.useState("");
   const [datePicker, setDatePicker] = React.useState(false);
-  const [share, setShare] = React.useState(false);
   const [imageFetched, setImageFetched] = React.useState(false);
   const [showCamera, setShowCamera] = React.useState(false);
   const [cameraBase64, setCameraBase64] = React.useState("");
@@ -446,11 +446,11 @@ const AddPlantScreen = ({ navigation, route }) => {
                 }}
               >
                 <NativeIcon
-                iconName={"camera"}
-                iconLib={"Feather"}
-                iconSize={30}
-                iconColor={"black"}
-              />
+                  iconName={"camera"}
+                  iconLib={"Feather"}
+                  iconSize={30}
+                  iconColor={"black"}
+                />
                 {/* <Image
                   source={appImages?.cameraOutlinedLogo}
                   style={{ height: 30, width: 30, alignSelf: "center" }}
@@ -682,12 +682,20 @@ const AddPlantScreen = ({ navigation, route }) => {
               }}
             >
               <Text>Share your post to feed</Text>
-              <CheckBox
+              <CheckBoxNew
+                checked={plantData?.share}
+                label={""}
+                onSelect={(val) => {
+                  console.log("val", val);
+                  setPlantData({ ...plantData, share: !plantData?.share });
+                }}
+              />
+              {/* <CheckBox
                 checked={plantData?.share}
                 onPress={() => {
                   setPlantData({ ...plantData, share: !plantData?.share });
                 }}
-              />
+              /> */}
             </View>
             <View
               style={{
@@ -695,6 +703,7 @@ const AddPlantScreen = ({ navigation, route }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
+                marginTop: 20,
               }}
             >
               <Text style={{ width: "50%" }}>Get reminders</Text>

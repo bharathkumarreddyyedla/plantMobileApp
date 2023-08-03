@@ -27,6 +27,7 @@ import { plantActions } from "../../services/redux/reduxActions/exportAllActions
 import { getAllPost } from "../../services/redux/reduxActions/postActions";
 import PopupCard from "../../components/customComponents/PopupCard";
 import { NativeIcon } from "../../icons/NativeIcons";
+import CheckBoxNew from "../../components/customComponents/checkBoxNew";
 
 const AddPlantProgress = ({ navigation, route }) => {
   const { userState = {} } = React.useContext(UserContext) || {};
@@ -415,11 +416,11 @@ const AddPlantProgress = ({ navigation, route }) => {
                 }}
               >
                 <NativeIcon
-                iconName={"camera"}
-                iconLib={"Feather"}
-                iconSize={30}
-                iconColor={"black"}
-              />
+                  iconName={"camera"}
+                  iconLib={"Feather"}
+                  iconSize={30}
+                  iconColor={"black"}
+                />
                 {/* <Image
                   source={appImages?.cameraOutlinedLogo}
                   style={{ height: 40, width: 40, alignSelf: "center" }}
@@ -600,7 +601,17 @@ const AddPlantProgress = ({ navigation, route }) => {
               }}
             >
               <Text>Share your post to feed</Text>
-              <CheckBox
+              <CheckBoxNew
+                checked={progressData?.share}
+                label={""}
+                onSelect={(val) => {
+                  setProgressData({
+                    ...progressData,
+                    share: !progressData?.share,
+                  });
+                }}
+              />
+              {/* <CheckBox
                 checked={progressData?.share}
                 onPress={() => {
                   setProgressData({
@@ -608,7 +619,7 @@ const AddPlantProgress = ({ navigation, route }) => {
                     share: !progressData?.share,
                   });
                 }}
-              />
+              /> */}
             </View>
             <View
               style={{

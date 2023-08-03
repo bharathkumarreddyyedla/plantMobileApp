@@ -109,8 +109,8 @@ const MyPlants = ({ navigation, screen = "" }) => {
           <Button
             title={"Start Planting"}
             onPress={() => {
-              // navigation.navigate("plantProgressScreen");
-              navigation.navigate("searchScreen");
+              navigation.navigate("addPlantScreen");
+              // navigation.navigate("searchScreen");
             }}
             buttonStyle={{
               height: 40,
